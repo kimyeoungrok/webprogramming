@@ -1,0 +1,179 @@
+@font-face {
+    font-family: 'GangwonEduPowerExtraBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+*{
+    font-family: 'GangwonEduPowerExtraBoldA';
+}
+body{
+    position: relative;
+    margin-top: 0;
+}
+#maindiv{
+    position: relative;
+}
+#main{
+    position: absolute;
+}
+#menu{
+    position: relative;
+}
+#gamestart{
+    font-size: 50px;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    position: absolute;
+    top: 500px;
+}
+
+#menutitle, #leveltitle{
+    text-shadow: 2px 2px 2px black;
+    position: absolute;
+    font-size: 70px;
+    text-align: center;
+    line-height: 100px;
+    color: white;
+    top: 65px;
+    display: none;
+}
+
+.prne{
+    position: absolute;
+    top: 580px;
+    display: none;
+    width: 220px;
+}
+.ch{
+    top: 290px;
+    width: 300px; height: 300px;
+    position: absolute;
+    display: none;
+}
+
+#setimg{
+    position: absolute;
+    top: 25px;
+    height: 60px; width: 60px;
+    display: none;
+}
+#set_ximg{
+    position: absolute;
+    right: 20px; top: 20px;
+    width: 30px; height: 30px;
+}
+#set{
+    background-color: #FFCCCC;
+    position: relative;
+    display: none;
+}
+#set h2{
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+.popup{
+    top: 70px;
+    border:3px solid black;
+    border-radius: 18px;
+    position: fixed;
+    background-color: white;
+    padding: 20px 20px;
+    z-index: 1;
+    width: 400px;
+    height: 400px;
+}
+.level{
+    top: 260px;
+    width: 350px;
+    position: absolute;
+    display: none;
+}
+.set-container{
+    margin-top: 40px;
+}
+.set-title{
+    display: inline-block;
+    margin: 45px;
+
+}
+.set-contents{
+    display: inline-block;
+}
+.bgm{
+    display: inline-block;
+    margin: 10px;
+    padding: 6px;
+}
+#result{
+    display: inline-block;
+    margin-left: 15px;
+}
+
+#story1{
+    font-size: 20px;
+    position: absolute;
+    top: 190px;
+}
+#story2{
+    font-size: 20px;
+    position: absolute;
+    top: 230px;
+}
+#story3{
+    font-size: 20px;
+    position: absolute;
+    top: 330px;
+}
+#story4{
+    font-size: 20px;
+    position: absolute;
+    top: 430px;
+}
+
+#storych1{
+    font-size: 25px;
+    position: absolute;
+    top: 320px;
+}
+#storych2{
+    font-size: 25px;
+    position: absolute;
+    top: 390px;
+}
+
+#storych3{
+    font-size: 30px;
+    position: absolute;
+    top: 330px;
+}
+#storydk1{
+    font-size: 20px; 
+    position: absolute;
+    top: 380px;
+}
+#storydk2{
+    font-size: 20px;
+    position: absolute;
+    top: 450px;
+}
+#storykd1{
+    font-size: 25px;
+    position: absolute;
+    top: 250px;
+}
+#storykd2{
+    font-size: 20px;
+    position: absolute;
+    top: 300px;
+}
+
+#gamestartimg{
+    position: absolute;
+    top: 620px;
+    display: none;
+    height: 100px;
+}
+
+
