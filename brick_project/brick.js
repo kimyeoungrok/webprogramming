@@ -27,8 +27,17 @@ var space = false; // 스페이스바 누름 여부
 
 var life = 3; // 라이프
 var score = 0; //점수
+var brick_count = 0; //벽돌 개수
 
+var item_width = 50; // 아이템 가로 길이
+var item_height = 50; // 아이템 세로 길이
+var item_x; // 아이템 x위치
+var item_y; // 아이템 y위치
+var item_array = []; //아이템 위치 저장
+var item_count = 0; //먹은 아이템 개수
+var item_total = 0; //아이템 총 개수
 
+var interval; //인터벌 객체
 $("document").ready(function(){
 	canvas_width = parseInt($("#mycanvas").attr("width"));
 	canvas_height = parseInt($("#mycanvas").attr("height"));
@@ -41,23 +50,28 @@ $("document").ready(function(){
 	console.log(Ball_y);
 	init();
 	//document.addEventListener("mousemove", mouseMoveHandler, false);
-	$(this).on("mousemove", mouseMoveHandler);
-	$(this).on("keydown",function(e){
+	
+	// $("#start").on("click",function(){
+	// 	start = !start;
+	// });
+	
+});
+function init(){ // 맵 초기화
+	$(document).on("mousemove", mouseMoveHandler);
+	$(document).on("keydown",function(e){
 		if(e.key == " "){
 			start = !start;
 		}
 		console.log(e.key); //트러블 슈팅 : 한글키는 인식안됨
 	});
-	// $("#start").on("click",function(){
-	// 	start = !start;
-	// });
-	setInterval(draw,20);
-});
-function init(){
 	canvas = document.getElementById("mycanvas");
 	context = canvas.getContext('2d');
-	map()
+	brick = [];
+	item_array = [];
+	map();
+	item();
 	draw();
+	interval = setInterval(draw,20);
 
 }
 function map(){ //벽돌배치
@@ -66,58 +80,143 @@ function map(){ //벽돌배치
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 320;
 	brick_y = 80;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 580;
 	brick_y = 80;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 450;
 	brick_y = 140;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 320;
 	brick_y = 200;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 320;
 	brick_y = 270;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 320;
 	brick_y = 340;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 580;
 	brick_y = 200;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 630;
 	brick_y = 250;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
 	brick_x = 680;
 	brick_y = 300;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
+	brick_count += 1;
+}
+function item(){ // 아이템 배치
+	item_x = 300;
+	item_y = 20;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 480;
+	item_y = 80;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 700;
+	item_y = 100;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 480;
+	item_y = 300;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 250;
+	item_y = 330;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 700;
+	item_y = 400;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
 }
 function draw(){
 	context.clearRect(0,0,canvas_width,canvas_height);
-	drawPaddle();
-	drawBall();
-	makebrick();
-	moveBall();
+	if(start){
+		$(document).off("keydown");
+	}else{
+		$(document).on("keydown",function(e){
+			if(e.key == " "){
+				start = !start;
+			}
+			if(life <= 0){
+				life = 3;
+				score = 0;
+				item_count = 0;
+				item_total = 0;
+				init();
+				$("#life").text("생명 : " + life);
+				$("#score").text("점수 : " + score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
+				$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
+			}
+			console.log(e.key); //트러블 슈팅 : 한글키는 인식안됨
+		});
+	}
+	if(life <= 0) { // 생명이 고갈되면 게임오버 화면으로 전환
+		gameover();
+	}
+	if(item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환
+		gameclear();
+	}
+	else{
+		drawPaddle();
+		drawBall();
+		makebrick();
+		makeitem();
+		moveBall();
+	}
+	
+
 }
 function drawPaddle(){
 	context.beginPath();
@@ -131,7 +230,7 @@ function drawBall(){
 	
 	context.beginPath();
 	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치
-	context.fillStyle = "red";
+	context.fillStyle = "black";
 	context.fill();
 	context.closePath();
 	
@@ -142,14 +241,25 @@ function makebrick(){
 	for(var i=0; i<brick.length; i=i+3){
 		if(brick[i] == 1){
 			context.beginPath();
-			context.fillStyle = "blue";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); // 항상 가운데에 배치
+			context.fillStyle = "gray";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
 		}
 		
 	}
 	
 	
+}
+
+function makeitem(){
+	for(var i=0; i<item_array.length; i=i+3){
+		if(item_array[i] == 1){
+			context.beginPath();
+			context.fillStyle = "red";
+			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height); 
+		}
+		
+	}
 }
 var paddlecolision = false; // 패들 충돌 감지
 
@@ -191,8 +301,22 @@ function moveBall(){
 				if((Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height) && Ball_x-Ball_radius >= brick[i+1] && Ball_x+Ball_radius <= brick[i+1]+brick_width){
 					brick[i] = 0;
 					Balldy = -Balldy;
+					score += 20;
+					$("#score").text("점수 : " + score);
 				}
-			}
+			} // 벽돌충돌 이벤트
+		}
+
+		for(var i=0; i<item_array.length; i=i+3){
+			if(item_array[i] == 1){
+				if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height) && Ball_x-Ball_radius >= item_array[i+1] && Ball_x+Ball_radius <= item_array[i+1]+item_width){
+					item_array[i] = 0;
+					score += 50;
+					item_count += 1;
+					$("#score").text("점수 : " + score);
+					$("#item").text("아이템 : " + item_count + "/" + item_total);
+				}
+			} // 아이템 먹었을 때
 		// context.beginPath();
 		// context.fillStyle = "blue";
 		// context.fillRect(brick[i],brick[i+1],brick_width,brick_height); // 항상 가운데에 배치
@@ -202,6 +326,20 @@ function moveBall(){
 		Ball_y += Balldy;
 	}
 	
+}
+
+function gameover(){ // 게임오버시 나타나는 창
+	clearInterval(interval);
+	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
+	context.font = 'italic 30pt Arial'
+	context.fillText("게임 오버 다시 시작하려면 스페이바 키를 눌러주세요!", canvas_width/6-150, canvas_height/2);
+}
+
+function gameclear(){ // 게임 클리어시 나타나는 창
+	clearInterval(interval);
+	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
+	context.font = 'italic 30pt Arial'
+	context.fillText("게임클리어! 다음단계로 넘어가려면 (키)를 눌러주세요!", canvas_width/6-150, canvas_height/2);
 }
 
 function mouseMoveHandler(e) {
@@ -216,4 +354,3 @@ function mouseMoveHandler(e) {
         //console.log(paddle_x);
     }
 }
-
