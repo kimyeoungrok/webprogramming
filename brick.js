@@ -1,6 +1,21 @@
 $(document).ready(function(){
+
 	$("#start").click(function(){
 		$("#button_field").hide();
+		$("#stage").show();
+		//$(".interfaceMenu").show();
+	});
+
+	$("#red").click(function(){
+		$("#stage").hide();
+		$(".interfaceMenu").show();
+	});
+	$("#green").click(function(){
+		$("#stage").hide();
+		$(".interfaceMenu").show();
+	});
+	$("#blue").click(function(){
+		$("#stage").hide();
 		$(".interfaceMenu").show();
 	});
 
@@ -45,5 +60,9 @@ $(document).ready(function(){
 		change_position($(".popup"));
 	});
 
+	$("#back").click(function(){
+		$("#stage").hide();
+		$("#button_field").show();
+	});
 
 });
