@@ -1,0 +1,28 @@
+*{
+	margin: 0;
+}
+body{
+	width: 1300px;
+	margin: 0 auto 0 auto;
+
+}
+div#game{
+	position: absolute;
+}
+canvas{
+	background-color: yellow;
+	float: left;
+}
+div#black{
+	width: 1000px;
+	background-color: black;
+	height: 100px;
+	position: absolute;
+	top: 600px;
+}
+div#infomation{
+	width: 300px;
+	background-color: green;
+	font-size: 30px;
+	float: right;
+}
