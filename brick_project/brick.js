@@ -38,18 +38,9 @@ var item_array = []; //아이템 위치 저장
 var item_count = 0; //먹은 아이템 개수
 var item_total = 0; //아이템 총 개수
 
-var interval; //인터벌 객체
+var interval, level; //인터벌 객체
 //김영록
 $("document").ready(function(){
-	canvas_width = parseInt($("#mycanvas").attr("width"));
-	canvas_height = parseInt($("#mycanvas").attr("height"));
-	paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
-	paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
-
-	Ball_x = paddle_x + 100;										//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-	Ball_y = paddle_y - 50;
-	console.log(Ball_x);
-	console.log(Ball_y);
 	init();
 	//document.addEventListener("mousemove", mouseMoveHandler, false);
 	
@@ -60,6 +51,15 @@ $("document").ready(function(){
 });
 //김영록
 function init(){ // 맵 초기화
+	canvas_width = parseInt($("#mycanvas").attr("width"));
+	canvas_height = parseInt($("#mycanvas").attr("height"));
+	paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+	paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
+
+	Ball_x = paddle_x + 100;										//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+	Ball_y = paddle_y - 50;
+	console.log(Ball_x);
+	console.log(Ball_y);
 	$(document).on("mousemove", mouseMoveHandler);
 	$(document).on("keydown",function(e){
 		if(e.key == " "){
@@ -71,8 +71,8 @@ function init(){ // 맵 초기화
 	context = canvas.getContext('2d');
 	brick = [];
 	item_array = [];
-	map();
-	item();
+	mapG();																//test용 mapG,itemG
+	itemG();
 	draw();
 	interval = setInterval(draw,20);
 
@@ -136,16 +136,43 @@ function drawBall(){
 //김영록
 function makebrick(){
 	for(var i=0; i<brick.length; i=i+3){
-		if(brick[i] == 1){
-			context.beginPath();
-			context.fillStyle = "gray";
+		context.beginPath();
+		if(brick[i]==1){
+			context.fillStyle = "#E2E2E2";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
 		}
-		
+		else if(brick[i]==2){
+			context.fillStyle = "#666666";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==3){
+			context.fillStyle = "black";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==4){
+			context.fillStyle = "red";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==5){
+			context.fillStyle = "green";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==6){
+			context.fillStyle = "blue";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==7){
+			context.fillStyle = "blue"
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();;
+		}
 	}
-	
-	
 }
 //김영록
 function makeitem(){
@@ -202,7 +229,7 @@ function moveBall(){
 
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3){
-			if(brick[i] == 1){
+			if(brick[i] > 0){
 				if((Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height)
 					&& (Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width)){
 					brick[i] = 0;
@@ -219,7 +246,6 @@ function moveBall(){
 				}
 			}
 		}
-
 		// 아이템 먹었을 때
 		for(var i=0; i<item_array.length; i=i+3){
 			if(item_array[i] == 1){
@@ -270,7 +296,7 @@ function mouseMoveHandler(e) {
     }
 }
 //김영록
-function map(){ //벽돌배치
+function mapR(){ //벽돌배치
 	brick_x = 450;
 	brick_y = 30;
 	brick.push(1);
@@ -333,7 +359,7 @@ function map(){ //벽돌배치
 	brick_count += 1;
 }
 //김영록
-function item(){ // 아이템 배치
+function itemR(){ // 아이템 배치
 	item_x = 300;
 	item_y = 20;
 	item_array.push(1);
@@ -375,5 +401,112 @@ function item(){ // 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
+} 
 
+//김영록
+function mapG(){ //벽돌배치
+	brick_x = 450;
+	brick_y = 30;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 320;
+	brick_y = 80;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 580;
+	brick_y = 80;
+	brick.push(3);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 450;
+	brick_y = 140;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 320;
+	brick_y = 200;
+	brick.push(5);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 320;
+	brick_y = 270;
+	brick.push(6);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 320;
+	brick_y = 340;
+	brick.push(7);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 580;
+	brick_y = 200;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 630;
+	brick_y = 250;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 680;
+	brick_y = 300;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+}
+//김영록
+function itemG(){ // 아이템 배치
+	item_x = 300;
+	item_y = 20;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 480;
+	item_y = 80;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 700;
+	item_y = 100;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 480;
+	item_y = 300;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 250;
+	item_y = 330;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 700;
+	item_y = 400;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
 } 
