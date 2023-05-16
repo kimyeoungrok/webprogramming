@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="brick.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="brick.js"></script>
+</head>
+<body>
+	<div id="interface">
+		<div class="interfaceMenu" id="score">
+			<h1>Score</h1>
+			<h2>0</h2>
+		</div>
+		<div class="interfaceMenu" id="life">
+			<h1>Life</h1>
+			<h2>♥♥♥</h2>
+		</div>
+		<div class="interfaceMenu" id="skill">
+			<h1>Skills</h1>
+		</div>
+	</div>
+	<div id="container">
+		<canvas id="myCanvas"></canvas>
+		<div id="button_field">
+			<button id="start">게임 시작</button>
+			<button id="setting">환경 설정</button>
+			<button id="guide">가이드</button>
+			<button id="story">스토리</button>
+		</div>
+
+		<div id="setting_div" class="popup">
+			<h1>환경 설정</h1>
+			<div class="setting_list">
+				<h2>배경 음악</h2>
+				<audio src="audio1.mp3" controls loop></audio>
+			</div>
+			<div class="setting_list">
+				<h2>효과음 볼륨</h2>
+				<input type="range" min="0" max="100" value="50" id="effect_volume">
+			</div>
+			<button id="setting_ok">확인</button>
+		</div>
+
+		<div id="guide_div" class="popup">
+			<h1>가이드</h1>
+			<div class="guide_list">
+				게임 기능 진행 설명
+			</div>
+			<button id="guide_ok">확인</button>
+		</div>
+
+		<div id="story_div3" class="story_div">
+			3
+		</div>
+		<div id="story_div2" class="story_div">
+			2
+		</div>
+		<div id="story_div1" class="story_div">
+			1
+		</div>
+
+
+	</div>
+</body>
