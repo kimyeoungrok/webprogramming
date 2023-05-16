@@ -16,6 +16,8 @@ var Ball_y; //ball 중심 y좌표
 var Ball_radius = 10; // Ball 반지름
 var Balldx = 5; // Ball 변환값
 var Balldy = 5; // Ball 변환값
+var BallColor = ["white", "gray", "black"];
+var BCIndex = 0;
 
 
 var brick_width = 100;
@@ -127,9 +129,12 @@ function drawPaddle(){
 //김영록
 function drawBall(){
 	context.beginPath();
-	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치
-	context.fillStyle = "black";
+	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치   
+	context.fillStyle = BallColor[BCIndex];
 	context.fill();
+	context.lineWidth = 1;     
+	context.strokeStyle = "white";
+	context.stroke();  
 	context.closePath();
 	
 }
@@ -148,6 +153,9 @@ function makebrick(){
 			context.closePath();
 		}
 		else if(brick[i]==3){
+			context.lineWidth = 1;     
+			context.strokeStyle = "white";
+			context.strokeRect(brick[i+1],brick[i+2],brick_width,brick_height);
 			context.fillStyle = "black";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
@@ -168,7 +176,7 @@ function makebrick(){
 			context.closePath();
 		}
 		else if(brick[i]==7){
-			context.fillStyle = "blue"
+			context.fillStyle = "red"
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();;
 		}
@@ -223,6 +231,7 @@ function moveBall(){
 			start = !start;
 			life -= 1;
 			$("#life").text("생명 : " + life);
+			BCIndex++;
 			Ball_x = paddle_x + 100;
 			Ball_y = paddle_y - 50;
 		}
@@ -230,19 +239,20 @@ function moveBall(){
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3){
 			if(brick[i] > 0){
-				if((Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height)
-					&& (Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width)){
-					brick[i] = 0;
-					Balldx = -Balldx;
-					score += 20;
-					$("#score").text("점수 : " + score);
-				}
-				else if((Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height)
-					&& Ball_x+Ball_radius > brick[i+1] && Ball_x-Ball_radius < brick[i+1]+brick_width){
-					brick[i] = 0;
-					Balldy = -Balldy;
-					score += 20;
-					$("#score").text("점수 : " + score);
+				if(Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height){
+					if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
+						brickSmash(i);
+						Balldx = -Balldx;
+						score += 20;
+						$("#score").text("점수 : " + score);
+					}
+					else if(Ball_x+Ball_radius > brick[i+1] && Ball_x-Ball_radius < brick[i+1]+brick_width){
+						brickSmash(i);
+						Balldy = -Balldy;
+						score += 20;
+						$("#score").text("점수 : " + score);
+
+					}
 				}
 			}
 		}
@@ -267,6 +277,21 @@ function moveBall(){
 		Ball_y += Balldy;
 	}
 	
+}
+function brickSmash(i) {
+	if(brick[i] == 1 || brick[i] == 2) brick[i]--;
+	else if(brick[i] == 3) {
+		life -= 1;
+		$("#life").text("생명 : " + life);
+		BCIndex++;
+	}
+	else if(brick[i] == 4 || brick[i] == 5 || brick[i] == 6) {
+		brick[i] = 0;
+		//스킬 포인트 ++;
+	}
+	else if(brick[i] == 7) {
+		//공이 red상태일 때 0
+	}
 }
 //김영록
 function gameover(){ // 게임오버시 나타나는 창

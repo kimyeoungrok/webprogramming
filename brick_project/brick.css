@@ -10,7 +10,7 @@ div#game{
 	position: absolute;
 }
 canvas{
-	background-color: yellow;
+	background-color: black;
 	float: left;
 }
 div#black{
@@ -19,6 +19,7 @@ div#black{
 	height: 100px;
 	position: absolute;
 	top: 600px;
+	border: 1px solid white;
 }
 div#infomation{
 	width: 300px;
