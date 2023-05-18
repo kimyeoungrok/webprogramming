@@ -227,6 +227,7 @@ function draw(){
 					item_count = 0;
 					item_total = 0;
 					level_count = 1;
+					BCIndex = 0;
 					init();
 					$("#life h2").text("");
 					for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
@@ -291,9 +292,12 @@ function drawPaddle(){
 //김영록
 function drawBall(){
 	context.beginPath();
-	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치
 	context.fillStyle = BallColor(BS);
+	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치   
 	context.fill();
+	context.lineWidth = 1;     
+	context.strokeStyle = "white";
+	context.stroke();  
 	context.closePath();
 	
 }
@@ -507,6 +511,22 @@ function brickSmash(i) {
 		//공이 red상태일 때 0
 	}
 }
+
+//김시현 R스킬 메소드
+function Rskill() {
+
+}
+
+//김시현 G스킬 메소드
+function Gskill() {
+
+}
+
+//김시현 B스킬 메소드
+function Bskill() {
+	
+}
+
 //김영록
 function gameover(){ // 게임오버시 나타나는 창
 	clearInterval(interval);
