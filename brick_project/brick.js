@@ -29,7 +29,10 @@ var brick_height = 30;
 var brick = [] // 벽돌 위치 저장
 
 var start = false;
-var space = false; // 스페이스바 누름 여부
+//RGB 키 입력 확인 변수
+var keyR = false;
+var keyG = false;
+var keyB = false;
 
 var life = 3; // 라이프
 var score = 0; //점수
@@ -69,8 +72,6 @@ $(document).ready(function(){
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
 
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -85,9 +86,6 @@ $(document).ready(function(){
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
-
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -103,8 +101,6 @@ $(document).ready(function(){
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
 
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -160,6 +156,9 @@ $(document).ready(function(){
 
 //김영록 맵 초기화
 function init(){
+		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
+
 	$(document).on("mousemove", mouseMoveHandler);
 	// $(document).on("keydown",function(e){
 	// 	if(e.key == " "){
@@ -220,7 +219,7 @@ function draw(){
 			if(e.key == " "){
 				start = !start;
 				if(life <= 0){
-					start = !start;
+					start = false;
 					console.log("다시시작");
 					life = 3;
 					score = 0;
@@ -237,10 +236,7 @@ function draw(){
 					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
 				}
 				else if(item_count >= item_total){
-					start = !start;
-					//볼 위치 수정
-					Ball_x = paddle_x + 100;
-					Ball_y = paddle_y - 50;
+					start = false;
 					// 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
 					Balldx = 5;
 					Balldy = 5;
@@ -260,6 +256,18 @@ function draw(){
 			//console.log(e.key); //트러블 슈팅 : 한글키는 인식안됨
 		});
 	}
+	//스킬 사용 조건
+	// if(RToggle) {
+	// 	$(document).off("keydown");
+	// }else{
+	// 	$(document).on("keydown",function(k){
+	// 		if(k.key == "R"){
+	// 			RToggle = false;
+	// 			//인터벌R 객체 생성하고 Rskill()
+	// 		}
+	// 	}
+	// }
+
 	if(life <= 0) { // 생명이 고갈되면 게임오버 화면으로 전환
 		console.log("게임오버" + start);
 		gameover();
@@ -269,7 +277,6 @@ function draw(){
 		//start = false;
 		level_count += 1;
 		gameclear();
-
 	}
 	else{
 		drawPaddle();
@@ -278,9 +285,8 @@ function draw(){
 		makeitem();
 		moveBall();
 	}
-	
-
 }
+
 //김영록
 function drawPaddle(){
 	context.beginPath();
@@ -557,7 +563,12 @@ function mouseMoveHandler(e) {
         }
         //console.log(paddle_x);
     }
+    if(!start){
+		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
+	}
 }
+
 //김영록
 function mapR(){ //1단계 벽돌배치
 	brick_x = 450;
@@ -664,7 +675,6 @@ function itemR(){ // 1단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-
 }
 function mapG(){ //2단계 벽돌배치
 	brick_x = 450;
@@ -771,9 +781,7 @@ function itemG(){ //2단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-
 }
-
 function mapB(){ //3단계 벽돌배치
 	brick_x = 450;
 	brick_y = 30;
@@ -879,5 +887,4 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-
 } 
