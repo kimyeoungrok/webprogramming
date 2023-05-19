@@ -158,8 +158,8 @@ $(document).ready(function(){
 
 });
 
-//김영록
-function init(){ // 맵 초기화
+//김영록 맵 초기화
+function init(){
 	$(document).on("mousemove", mouseMoveHandler);
 	// $(document).on("keydown",function(e){
 	// 	if(e.key == " "){
@@ -198,7 +198,6 @@ function imagemakingR(){
 		$("#" + "img" + i).css("opacity","0.3");
 	}
 }
-
 //2단계 아이템 이미지 구현
 function imagemakingG(){
 	for(var i=1; i<item_array.length; i++) {
@@ -424,7 +423,8 @@ function moveBall(){
 			// }
 			paddlecolision = true;
 		}
-		else if(Ball_y - Ball_radius > canvas_height){//바닥에 떨어졌을때
+		//바닥에 떨어졌을때
+		else if(Ball_y - Ball_radius > canvas_height){
 			start = !start;
 			life -= 1;
 			$("#life h2").text("");
@@ -444,13 +444,11 @@ function moveBall(){
 					if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
 						brickSmash(i);
 						Balldx = -Balldx;
-						score += 20;
 						$("#score h2").text(score);
 					}
 					else if(Ball_x+Ball_radius > brick[i+1] && Ball_x-Ball_radius < brick[i+1]+brick_width){
 						brickSmash(i);
 						Balldy = -Balldy;
-						score += 20;
 						$("#score h2").text(score);
 					}
 				}
@@ -486,7 +484,10 @@ function moveBall(){
 }
 //김시현 벽돌 색깔별 이벤트
 function brickSmash(i) {
-	if(brick[i] == 1 || brick[i] == 2) brick[i]--;
+	if(brick[i] == 1 || brick[i] == 2) {
+		brick[i]--;
+		score += 20;
+	}
 	else if(brick[i] == 3) {
 		life -= 1;
 		$("#life h2").text("");
@@ -497,18 +498,18 @@ function brickSmash(i) {
 	}
 	else if(brick[i] == 4) {
 		brick[i] = 0;
-		Rnum++;
+		if(Rnum==0) Rnum++;
+		score += 20;
 	}
 	else if(brick[i] == 5) {
 		brick[i] = 0;
-		Gnum++;
+		if(Gnum==0) Gnum++;
+		score += 20;
 	}
 	else if(brick[i] == 6) {
 		brick[i] = 0;
-		Bnum++;
-	}
-	else if(brick[i] == 7) {
-		//공이 red상태일 때 0
+		if(Bnum==0) Bnum++;
+		score += 20;
 	}
 }
 
@@ -703,7 +704,7 @@ function mapG(){ //2단계 벽돌배치
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 340;
-	brick.push(7);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
