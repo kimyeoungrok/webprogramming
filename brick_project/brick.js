@@ -204,6 +204,7 @@ function imagemakingG(){
 		$("#" + "img" + i).css("opacity","0.3");
 	}
 }
+//3단계 아이템 이미지 구현
 function imagemakingB(){
 	for(var i=1; i<item_array.length; i++) {
 		$("#" + "img" + i).css("opacity","0.3");
