@@ -212,6 +212,7 @@ function imagemakingB(){
 function draw(){
 	context.clearRect(0,0,canvas_width,canvas_height);
 	if(start){
+		//RGB 키 입력 시 함수 호출, 스킬 사용 중 다른 스킬 입력/중복 입력 불가
 		$(document).on("keydown", function(k){
 			if(k.key == "r" && !key && Rnum > 0) Rskill();
 			else if(k.key == "g" && !key && Gnum > 0) Gskill();
@@ -495,6 +496,7 @@ function moveBall(){
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3) {
 			if(brick[i] > 0) {
+				//R스킬 사용 중일 때
 				if(BS === "R" && !(brick[i] == 3)) {
 					if(Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height){
 						if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
@@ -556,6 +558,7 @@ function brickSmash(i) {
 		score += 20;
 	}
 	else if(brick[i] == 2) {
+		//R스킬 사용 중일 때
 		if(BS === "R") {
 			brick[i] = 0;;
 			score += 40;
@@ -565,6 +568,7 @@ function brickSmash(i) {
 			score += 20;
 		}
 	}
+	//G스킬 사용 중일 때
 	else if(brick[i] == 3 && !(BS === "G")) {
 		life -= 1;
 		$("#life h2").text("");
