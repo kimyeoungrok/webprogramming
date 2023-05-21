@@ -1,4 +1,4 @@
-* {margin: 0; padding: 0; font-family: 'Poor Story', cursive; /*송찬우 추가*/}}
+* {margin: 0; padding: 0;}
 img {border: 0;}
 body{
 	background-color:black;
@@ -67,7 +67,7 @@ button{
 	height:50px;
 	font-size:20px;
 	margin:auto 50px;
-	background-color:white;
+	background-color:#A8BBBE;
 }
 button:hover{
 	transform:scale(1.3);
@@ -86,27 +86,22 @@ button:hover{
 .story_div{
 	position:fixed;
 	top:0;
-	left:235px;
+	left:0;
 	padding:30px 20px;
 	z-index:1;
-	width:1000px;
-	height:800px;
+	width:100vw;
+	height:100vh;
+	border: 1px solid black;
 	display:none;
-	color: white;
-    font-size: 30px;
 }
 #story_div1{
-	background-image:url("witch.jpg");
-	background-size: cover;
+	background-color:red;
 }
-
 #story_div2{
-	background-image:url("village.jpg");
-	background-size: cover;
+	background-color:green;
 }
 #story_div3{
-	background-image:url("forest.jpg");
-	background-size: cover;
+	background-color:blue;
 }
 #setting_div{
 	display:none;
@@ -133,7 +128,8 @@ button:hover{
 	padding:30px 50px;
 }
 .guide_list{
-	
+	width:500px;
+	height:100px;
 	overflow:hidden;
 	margin:25px 0px;
 }
