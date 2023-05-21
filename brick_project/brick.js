@@ -217,12 +217,19 @@ function draw(){
 			if(k.key == "r" && !key && Rnum > 0) Rskill();
 			else if(k.key == "g" && !key && Gnum > 0) Gskill();
 			else if(k.key == "b" && !key && Bnum > 0) Bskill();
+			// 방향키 dx값 변경 해봤는데 흠... 고려 필요
+			// else if(k.key == "ArrowRight") {
+			// 	Balldx += 0.001;
+			// }
+			// else if(k.key == "ArrowLeft") {
+			// 	Balldx -= 0.001;
+			// }
 		});
 	}else{
 		$(document).on("keydown",function(e){
 			if(e.key == " "){
 				start = true;
-				// start = !start; 스페이스바가 더 잘먹네요
+				// start = !start; 요게 스페이스바가 더 잘먹네요
 				if(life <= 0){
 					start = false;
 					console.log("다시시작");
