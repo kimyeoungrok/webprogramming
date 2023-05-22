@@ -1,21 +1,22 @@
-* {margin: 0; padding: 0; font-family: 'Poor Story', cursive; /*송찬우 추가*/}}
+* {margin: 0; padding: 0; font-family: 'Poor Story', cursive;/*송찬우 추가*/}}
 img {border: 0;}
 body{
+	position:relative;
 	background-color:black;
 }
 #container{
 	text-align:center;
 	width:1000px;
-	height:800px;
-	position:relative;
+	height:720px;
+	position:absolute; /* 송찬우 수정, 모든 컴퓨터에서 화면 상 가운데 배치*/
+	top:10px;
 	overflow:hidden;
-	margin: 0 auto;
-	background-image:url("brick_dark.jpg");
+	background-image:url("img/brick_dark.jpg");
 	background-size:cover;
 }
 #mycanvas{ /*김영록 수정*/
 	display: none;
-	float: left;
+	/* float: left; 송찬우 수정, 필요없는 코드같아서 주석처리 했습니다. 혹시 필요한거였다면 죄송합니다.*/
 }
 /*div#item-image-level1{
 	width: 200px;
@@ -24,18 +25,19 @@ body{
 #interface{
 	width:1000px;
 	height:100px;
-	margin:0 auto;
-	position:relative;
+/*	margin-top:620px; /* 인터페이스 영역 변경 위해 수정 - 송찬우*/*/
 	text-align:center;
+	display:none;
 }
+
 .interfaceMenu{
 	width:200px;
 	height:100px;
 	/*padding:0px 50px;*/
 	background-color:gray;
 	float:left;
-	display:none;
 }
+
 #item-image-level1{
 	display: none;
 }
@@ -45,6 +47,7 @@ body{
 #item-image-level3{
 	display: none;
 }
+
 div.level1-image{
 	float: left;
 	width: 50px;
@@ -53,7 +56,6 @@ div.level1-image{
 }
 div#item-image-level1>div{
 	overflow: hidden;
-	/*display: none;*/
 }
 div.level1-image>img{
 	width: 50px;
@@ -87,6 +89,11 @@ div.level3-image>img{
 	width: 30px;
 	height: 30px;
 }
+div#item-image-level4{ /*보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우*/
+	width: 200px;
+	height: 100px;
+	display: none;
+}
 .interfaceMenu:nth-of-type(3){
 	width:300px;
 	height:100px;
@@ -112,8 +119,7 @@ button:hover{
 }
 .popup{
 	position:fixed;
-	top:0;
-	left:0;
+	top:100px;
 	background-color:gray;
 	padding:30px 20px;
 	z-index:1;
@@ -124,26 +130,27 @@ button:hover{
 .story_div{
 	position:fixed;
 	top:0;
-	left:235px;
-	padding:30px 20px;
 	z-index:1;
 	width:1000px;
-	height:800px;
+	height:720px;
 	display:none;
 	color: white;
     font-size: 30px;
 }
+.story_div>p{
+	padding:30px 20px;
+}
 #story_div1{
-	background-image:url("witch.jpg");
+	background-image:url("img/witch.jpg");
 	background-size: cover;
 }
 
 #story_div2{
-	background-image:url("village.jpg");
+	background-image:url("img/village.jpg");
 	background-size: cover;
 }
 #story_div3{
-	background-image:url("forest.jpg");
+	background-image:url("img/forest.jpg");
 	background-size: cover;
 }
 #setting_div{
@@ -175,6 +182,7 @@ button:hover{
 	overflow:hidden;
 	margin:25px 0px;
 }
+
 #stage{
 	display:none;
 	margin:500px 0px 0px 0px; /*김영록 수정 margintop 0 -> 500으로 수정(가운데 배치)*/
@@ -183,6 +191,7 @@ button:hover{
 }
 .stage_field{
 	float:left;
+	margin-top:10px;
 	width:200px;
 
 }
@@ -210,6 +219,7 @@ button:hover{
 	color:yellow;
 	font-size:60px;
 }
+
 /*스킬블록 추가 김영록 */
 div#skill div{
 	overflow: hidden;
@@ -235,7 +245,7 @@ div.skill_block{
 #ending{
 	text-align:center;
 	width:1000px;
-	height:800px;
+	height:720px;
 	position:relative;
 	overflow:hidden;
 	margin: 0 auto;
@@ -244,7 +254,7 @@ div.skill_block{
 }
 .ending_story{
 	width:1000px;
-	height:800px;
+	height:720px;
 	/*display:none;*/
 	color: black;
     font-size: 30px;
