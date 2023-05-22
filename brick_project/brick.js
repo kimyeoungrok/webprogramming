@@ -73,7 +73,7 @@ $(document).ready(function(){
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
-		paddle_y = canvas_height-paddle_height; //paddle y축 위치
+		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우
 
 		console.log(Ball_x);
 		console.log(Ball_y);
@@ -88,7 +88,7 @@ $(document).ready(function(){
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
-		paddle_y = canvas_height-paddle_height; //paddle y축 위치
+		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -102,7 +102,7 @@ $(document).ready(function(){
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
-		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
+		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 - 송찬우-
 
 		console.log(Ball_x);
 		console.log(Ball_y);
