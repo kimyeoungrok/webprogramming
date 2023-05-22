@@ -83,7 +83,7 @@ $(document).ready(function(){
 	$("#start").click(function(){
 		$("#button_field").hide();
 		$("#stage").show();
-		//$(".interfaceMenu").show();
+		audio.play();
 	});
 
 	$("#red").click(function(){
@@ -688,6 +688,7 @@ function moveBall(){
 			if(item_array[i] == 1){
 				if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height)
 					&& Ball_x+Ball_radius >= item_array[i+1] && Ball_x-Ball_radius <= item_array[i+1]+item_width){
+					playSound("piece_sound.mp3",effvolume);
 					item_array[i] = 0;
 					score += 50;
 					item_count += 1;
