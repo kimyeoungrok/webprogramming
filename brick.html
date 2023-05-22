@@ -2,6 +2,7 @@
 <html>
 <head>
 	<link type="text/css" rel="stylesheet" href="brick.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="brick.js"></script>
 </head>
@@ -17,10 +18,145 @@
 		</div>
 		<div class="interfaceMenu" id="skill">
 			<h1>Skills</h1>
+			<div>
+				<div class = "skill_block" id="skill1">R</div>
+				<div class = "skill_block" id="skill2">G</div>
+				<div class = "skill_block" id="skill3">B</div>
+			</div>
+		</div>
+		<div class="interfaceMenu" id="item-image-level1">
+			<div>
+				<div class = 'level1-image'>
+					<img src="ruby_001.png" id = "img1">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_002.png"id = "img2">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level1-image'>
+					<img src="ruby_004.png"id = "img4">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_005.png"id = "img5">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_006.png"id = "img6">
+				</div>
+			</div>
+		</div>
+		<div class="interfaceMenu" id="item-image-level2">
+			<div>
+				<div class = 'level2-image'>
+					<img src="Emerald_001.png" id = "img1">
+				</div>
+				<div class = 'level2-image'>
+					<img src="Emerald_002.png"id = "img2">
+				</div>
+				<div class = 'level2-image'>
+					<img src="Emerald_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level2-image'>
+					<img src="Emerald_004.png"id = "img4">
+				</div>
+				<div class = 'level2-image'>
+					<img src="Emerald_005.png"id = "img5">
+				</div>
+				<div class = 'level2-image'>
+					<img src="Emerald_006.png"id = "img6">
+				</div>
+			</div>
+			<div>
+				<div class = 'level2-image'>
+					<img src="Emerald_007.png"id = "img7">
+				</div>
+				<div class = 'level2-image'>
+					<img src="Emerald_008.png"id = "img8">
+				</div>
+				<div class = 'level2-image'>
+					<img src="Emerald_009.png"id = "img9">
+				</div>
+			</div>
+		</div>
+
+		<div class="interfaceMenu" id="item-image-level3">
+			<div>
+				<div class = 'level3-image'>
+					<img src="safire_001.png" id = "img1">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_002.png"id = "img2">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_003.png"id = "img3">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_004.png"id = "img4">
+				</div>
+			</div>
+			<div>
+				<div class = 'level3-image'>
+					<img src="safire_005.png"id = "img5">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_006.png"id = "img6">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_007.png"id = "img7">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_008.png"id = "img8">
+				</div>
+			</div>
+			<div>
+				<div class = 'level3-image'>
+					<img src="safire_009.png"id = "img9">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_010.png"id = "img10">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_011.png"id = "img11">
+				</div>
+				<div class = 'level3-image'>
+					<img src="safire_012.png"id = "img12">
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="container">
-		<canvas id="myCanvas"></canvas>
+		<canvas id="mycanvas" width="1000px" height="800px"></canvas>
+		<!--루비 이미지 출력 부분 김영록-->
+		<!-- <div id = "item-image-level1">
+			<div>
+				<div class = 'level1-image'>
+					<img src="ruby_001.png" id = "img1">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_002.png"id = "img2">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level1-image'>
+					<img src="ruby_004.png"id = "img4">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_005.png"id = "img5">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_006.png"id = "img6">
+				</div>
+			</div>
+			
+		</div> -->
 		<div id="button_field">
 			<button id="start">게임 시작</button>
 			<button id="setting">환경 설정</button>
@@ -41,6 +177,9 @@
 			<div id="blue" class="stage_field">
 				<h1>Ⓑ</h1>
 			</div>
+			<div id="boss" class="stage_field">
+				<h1>???</h1>
+			</div>
 			
 		</div>
 
@@ -48,7 +187,7 @@
 			<h1>환경 설정</h1>
 			<div class="setting_list">
 				<h2>배경 음악</h2>
-				<audio id="audio" src="audio1.mp3" controls loop></audio>
+				<input type="range" min="0" max="100" value="50" id="bgm_volume">
 			</div>
 			<div class="setting_list">
 				<h2>효과음 볼륨</h2>
@@ -60,20 +199,61 @@
 		<div id="guide_div" class="popup">
 			<h1>가이드</h1>
 			<div class="guide_list">
-				게임 기능 진행 설명
+				<ul>
+				
+				<li>   1. 회색 벽돌: 일반 벽돌, 내구도가 다할 시 파괴됨 (내구도는 R스킬/공 충돌에 의해 깎임, 내구도는 추후 조정)</li>
+                <li>   2. 진한 회색 벽돌: 충돌 시 회색 벽돌로 변경</li>
+                <li>   3. 검정 벽돌: 파괴 불가(R스킬로 파괴 가능?), 공과 충돌 시 공이 어두워짐(생명력 감소)</li>
+                <li>   4. RGB 벽돌: 공과 충돌 시 파괴되며, 해당 빛을 흡수하여 스킬을 1회 사용할 수 있게 됨</li>
+                <li>   5. (미정)R 장애물 벽돌: R 스킬을 사용한 상태에서만 파괴 가능</li>
+                <li>   2. 스킬: 키 입력으로 사용, 사용 시 가능 횟수 소진</li>
+                <li>   1. R: n초 간 충돌 시 공격력 상승 / (미정)n초 간 빨간 장애물 벽돌 파괴 가능</li>
+                <li>   2. G: n초 간 검정 벽돌과 충돌해도 생명력이 소진되지 않음</li>
+                <li>   3. B: n초 간 주변 특정 범위 내의 빛 조각 획득 가능</li>
+                
+                </ul>
 			</div>
 			<button id="guide_ok">확인</button>
 		</div>
 
 		<div id="story_div3" class="story_div">
-			3
+			
+			<p>
+				당신은 곧 태어날 당신의 아이가 처음으로 볼 풍경을 회색빛이 아닌 알록달록한 빛깔로 만들어 주기 위해 흩어진 색깔 조각들을 모으고자 합니다. 당신의 건투를 빕니다!!!
+			</p>
+		    
 		</div>
 		<div id="story_div2" class="story_div">
-			2
+			
+			<p>
+				다행히 밤에 순찰을 돌고 있던 마을 자경단원 덕분에 마녀를 도중에 멈출 수 있었습니다. 하지만.. 그 과정에서 마을의 색깔 조각들은 이곳저곳에 뿔뿔히 흩어지고 마을은 회색빛이 되버렸습니다.
+			</p>
+		    
 		</div>
 		<div id="story_div1" class="story_div">
-			1
+			
+			<p>
+				당신이 사는 마을은 다채로운 색으로 둘러싸여 있는 아름답고 평화로운 마을입니다.
+				어느 날 정체를 숨긴 색깔의 마녀가 마을에 찾아왔습니다.
+				마을 사람들은 마녀를 친절히 맞아주었지만 마을의 다채로운 풍경을 탐낸 마녀가 마을의 색깔을 앚아가려고 했습니다.
+			</p>
+
 		</div>
 
+
+
 	</div>
+	<div id = ending>
+		<!--김영록 엔딩 스토리 추가 -->
+		<div class="ending_story" id="end1">
+			<p>엔딩 스토리1</p>
+		</div>
+		<div class="ending_story" id="end2">
+			<p>엔딩 스토리2</p>
+		</div>
+		<div class="ending_story" id="end3">
+			<p>엔딩 스토리3</p>
+		</div>
+	</div>
+	
 </body>
