@@ -7,7 +7,8 @@
 	<script src="brick.js"></script>
 </head>
 <body>
-	<div id="interface">
+	<!-- 인터페이스 영역 변경 위해 수정 -송찬우
+	<div id="interface"> 
 		<div class="interfaceMenu" id="score">
 			<h1>Score</h1>
 			<h2>0</h2>
@@ -44,8 +45,10 @@
 			</div>
 		</div>
 	</div>
+-->
+	
 	<div id="container">
-		<canvas id="mycanvas" width="1000px" height="800px"></canvas>
+		<canvas id="mycanvas" width="1000px" height="620px"></canvas>
 		<!--루비 이미지 출력 부분 김영록-->
 		<!-- <div id = "item-image-level1">
 			<div>
@@ -72,12 +75,54 @@
 			</div>
 			
 		</div> -->
+
+		<div id="interface"> <!-- 인터페이스 영역 변경 위해 수정 -송찬우-->
+		<div class="interfaceMenu" id="score">
+			<h1>Score</h1>
+			<h2>0</h2>
+		</div>
+		<div class="interfaceMenu" id="life">
+			<h1>Life</h1>
+			<h2>♥♥♥</h2>
+		</div>
+		<div class="interfaceMenu" id="skill">
+			<h1>Skills</h1>
+		</div>
+		<div class="interfaceMenu" id="item-image-level1">
+			<div>
+				<div class = 'level1-image'>
+					<img src="ruby_001.png" id = "img1">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_002.png"id = "img2">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level1-image'>
+					<img src="ruby_004.png"id = "img4">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_005.png"id = "img5">
+				</div>
+				<div class = 'level1-image'>
+					<img src="ruby_006.png"id = "img6">
+				</div>
+			</div>
+		</div>
+	</div>
+		
+		
 		<div id="button_field">
 			<button id="start">게임 시작</button>
 			<button id="setting">환경 설정</button>
-			<button id="guide">가이드</button>
+			<button id="guide">게임방법</button> <!-- 가이드보다 적절한 단어인 것 같아 변경 -->
 			<button id="story">스토리</button>
 		</div>
+
+
 
 		<div id="stage">
 			<div id="back" class="stage_field">

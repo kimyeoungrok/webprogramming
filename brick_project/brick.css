@@ -1,21 +1,22 @@
-* {margin: 0; padding: 0; font-family: 'Poor Story', cursive; /*송찬우 추가*/}}
+* {margin: 0; padding: 0; font-family: 'Poor Story', cursive;/*송찬우 추가*/}}
 img {border: 0;}
 body{
+	position:relative;
 	background-color:black;
 }
 #container{
 	text-align:center;
 	width:1000px;
-	height:800px;
-	position:relative;
+	height:720px;
+	position:absolute; /* 송찬우 수정, 모든 컴퓨터에서 화면 상 가운데 배치*/
+	top:0;
 	overflow:hidden;
-	margin: 0 auto;
 	background-image:url("brick_dark.jpg");
 	background-size:cover;
 }
 #mycanvas{ /*김영록 수정*/
 	display: none;
-	float: left;
+	/* float: left; 송찬우 수정, 필요없는 코드같아서 주석처리 했습니다. 혹시 필요한거였다면 죄송합니다.*/
 }
 /*div#item-image-level1{
 	width: 200px;
@@ -24,17 +25,17 @@ body{
 #interface{
 	width:1000px;
 	height:100px;
-	margin:0 auto;
-	position:relative;
+	margin-top:620px 0 0 0; /* 인터페이스 영역 변경 위해 수정 - 송찬우*/
 	text-align:center;
+	display:none;
 }
+
 .interfaceMenu{
 	width:200px;
 	height:100px;
 	/*padding:0px 50px;*/
 	background-color:gray;
 	float:left;
-	display:none;
 }
 div.level1-image{
 	float: left;
@@ -74,8 +75,7 @@ button:hover{
 }
 .popup{
 	position:fixed;
-	top:0;
-	left:0;
+	top:10px;
 	background-color:gray;
 	padding:30px 20px;
 	z-index:1;
@@ -86,11 +86,10 @@ button:hover{
 .story_div{
 	position:fixed;
 	top:0;
-	left:235px;
 	padding:30px 20px;
 	z-index:1;
-	width:1000px;
-	height:800px;
+	width:960px;
+	height:660px;
 	display:none;
 	color: white;
     font-size: 30px;
@@ -137,6 +136,7 @@ button:hover{
 	overflow:hidden;
 	margin:25px 0px;
 }
+
 #stage{
 	display:none;
 	margin:500px 200px 0px 0px; /*김영록 수정 margintop 0 -> 500으로 수정(가운데 배치)*/
@@ -146,7 +146,6 @@ button:hover{
 .stage_field{
 	float:left;
 	width:200px;
-
 }
 .stage_field h1{
 	font-size:60px;
@@ -171,4 +170,3 @@ button:hover{
 	text-align:left;
 	color:yellow;
 	font-size:60px;
-}

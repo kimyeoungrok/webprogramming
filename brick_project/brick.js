@@ -16,6 +16,11 @@ var Ball_y; //ball 중심 y좌표
 var Ball_radius = 10; // Ball 반지름
 var Balldx = 5; // Ball 변환값
 var Balldy = 5; // Ball 변환값
+//김시현 Ball색 설정
+var BallC = ["white", "gray", "black"];
+var BCIndex = 0;
+//Ball상태 (N,R,G,B)
+var BS = "N";
 
 
 var brick_width = 100;
@@ -24,7 +29,10 @@ var brick_height = 30;
 var brick = [] // 벽돌 위치 저장
 
 var start = false;
-var space = false; // 스페이스바 누름 여부
+//RGB 키 입력 확인 변수
+var keyR = false;
+var keyG = false;
+var keyB = false;
 
 var life = 3; // 라이프
 var score = 0; //점수
@@ -38,11 +46,18 @@ var item_array = []; //아이템 위치 저장
 var item_count = 0; //먹은 아이템 개수
 var item_total = 0; //아이템 총 개수
 
+var Rnum = 0; //김시현 색깔별 스킬 횟수
+var Gnum = 0;
+var Bnum = 0;
+
 var level_count = 1; // 레벨을 나타내는 변수
 
 var interval; //인터벌 객체
 $(document).ready(function(){
 
+    var w=($(window).width()-1000)/2; /*container 영역 하단 중앙 배치 위해 추가 -송찬우*/
+	$("#container").css({left:w});
+	
 	$("#start").click(function(){
 		$("#button_field").hide();
 		$("#stage").show();
@@ -51,42 +66,37 @@ $(document).ready(function(){
 
 	$("#red").click(function(){
 		$("#stage").hide();
-		$(".interfaceMenu").show();
-		// 김영록 추가 수정
+		$("#interface").show();
+		// 김영록 추가 수정 + 송찬우 추가 수정
 		$("#mycanvas").show();
 		level_count = 1;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
-		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
+		paddle_y = canvas_height-paddle_height; //paddle y축 위치
 
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
 	});
 	$("#green").click(function(){
 		$("#stage").hide();
-		$(".interfaceMenu").show();
-		// 김영록 추가 수정
+		$("#interface").show();
+		// 김영록 추가 수정 + 송찬우 추가 수정
 		$("#mycanvas").show();
 		level_count = 2;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
-		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
-
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
+		paddle_y = canvas_height-paddle_height; //paddle y축 위치
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
 	});
 	$("#blue").click(function(){
 		$("#stage").hide();
-		$(".interfaceMenu").show();
-		// 김영록 추가 수정
+		$("#interface").show();
+		// 김영록 추가 수정 + 송찬우 추가 수정
 		$("#mycanvas").show();
 		level_count = 3;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
@@ -94,8 +104,6 @@ $(document).ready(function(){
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = (canvas_height-100)-paddle_height; //paddle y축 위치
 
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -103,7 +111,7 @@ $(document).ready(function(){
 
 	$("#setting").click(function(){
 		$("#button_field").hide();
-		change_position($(".popup"));
+	    change_position($(".popup"));
 		$("#setting_div").show();
 	});
 
@@ -114,6 +122,9 @@ $(document).ready(function(){
 	});
 
 	$("#story").click(function(){
+		var x=($(window).width()-1000)/2; /*스토리 영역 가운데 배치 위해 추가 -송찬우*/
+		$(".story_div").css({left:x});
+		
 		$(".story_div").fadeIn();
 	});
 
@@ -138,6 +149,7 @@ $(document).ready(function(){
 		var t = ($(window).height()-obj.height())/2;
 		obj.css({top:t,left:l});
 	}
+	
 	$(window).resize(function(){
 		change_position($(".popup"));
 	});
@@ -149,8 +161,11 @@ $(document).ready(function(){
 
 });
 
-//김영록
-function init(){ // 맵 초기화
+//김영록 맵 초기화
+function init(){
+		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
+
 	$(document).on("mousemove", mouseMoveHandler);
 	// $(document).on("keydown",function(e){
 	// 	if(e.key == " "){
@@ -189,13 +204,13 @@ function imagemakingR(){
 		$("#" + "img" + i).css("opacity","0.3");
 	}
 }
-
 //2단계 아이템 이미지 구현
 function imagemakingG(){
 	for(var i=1; i<item_array.length; i++) {
 		$("#" + "img" + i).css("opacity","0.3");
 	}
 }
+//3단계 아이템 이미지 구현
 function imagemakingB(){
 	for(var i=1; i<item_array.length; i++) {
 		$("#" + "img" + i).css("opacity","0.3");
@@ -211,13 +226,14 @@ function draw(){
 			if(e.key == " "){
 				start = !start;
 				if(life <= 0){
-					start = !start;
+					start = false;
 					console.log("다시시작");
 					life = 3;
 					score = 0;
 					item_count = 0;
 					item_total = 0;
 					level_count = 1;
+					BCIndex = 0;
 					init();
 					$("#life h2").text("");
 					for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
@@ -227,10 +243,7 @@ function draw(){
 					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
 				}
 				else if(item_count >= item_total){
-					start = !start;
-					//볼 위치 수정
-					Ball_x = paddle_x + 100;
-					Ball_y = paddle_y - 50;
+					start = false;
 					// 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
 					Balldx = 5;
 					Balldy = 5;
@@ -250,6 +263,18 @@ function draw(){
 			//console.log(e.key); //트러블 슈팅 : 한글키는 인식안됨
 		});
 	}
+	//스킬 사용 조건
+	// if(RToggle) {
+	// 	$(document).off("keydown");
+	// }else{
+	// 	$(document).on("keydown",function(k){
+	// 		if(k.key == "R"){
+	// 			RToggle = false;
+	// 			//인터벌R 객체 생성하고 Rskill()
+	// 		}
+	// 	}
+	// }
+
 	if(life <= 0) { // 생명이 고갈되면 게임오버 화면으로 전환
 		console.log("게임오버" + start);
 		gameover();
@@ -259,7 +284,6 @@ function draw(){
 		//start = false;
 		level_count += 1;
 		gameclear();
-
 	}
 	else{
 		drawPaddle();
@@ -268,9 +292,8 @@ function draw(){
 		makeitem();
 		moveBall();
 	}
-	
-
 }
+
 //김영록
 function drawPaddle(){
 	context.beginPath();
@@ -282,34 +305,74 @@ function drawPaddle(){
 //김영록
 function drawBall(){
 	context.beginPath();
-	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치
-	context.fillStyle = "black";
+	context.fillStyle = BallColor(BS);
+	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치   
 	context.fill();
+	context.lineWidth = 1;     
+	context.strokeStyle = "white";
+	context.stroke();  
 	context.closePath();
 	
 }
-//김영록
+//김영록 김시현 벽돌색 수정
 function makebrick(){
 	for(var i=0; i<brick.length; i=i+3){
-		if(brick[i] == 1){
-			context.beginPath();
-			context.fillStyle = "gray";
+		context.beginPath();
+		if(brick[i]==1){
+			context.fillStyle = "#E2E2E2";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
 		}
-		
+		else if(brick[i]==2){
+			context.fillStyle = "#666666";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==3){
+			context.lineWidth = 1;     
+			context.strokeStyle = "white";
+			context.strokeRect(brick[i+1],brick[i+2],brick_width,brick_height);
+			context.fillStyle = "black";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==4){
+			context.fillStyle = "red";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==5){
+			context.fillStyle = "green";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==6){
+			context.fillStyle = "blue";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==7){
+			context.fillStyle = "red"
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();;
+		}
 	}
-	
-	
 }
 //김영록
 function makeitem(){
 	if(level_count == 1){ //1단계일때는 빨간색 아이템
 		for(var i=0; i<item_array.length; i=i+3){ 
 		if(item_array[i] == 1){
-			context.beginPath();
+			
+			/*context.beginPath();
 			context.fillStyle = "red";
-			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height); 
+			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height);  아이템 보석 조각 모양으로 변경 -송찬우-*/
+
+
+			var red_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+            red_piece.src = "red_piece.png"
+
+            context.drawImage(red_piece,item_array[i+1],item_array[i+2],item_width,item_height);
 			}
 		
 		}
@@ -317,9 +380,14 @@ function makeitem(){
 	else if(level_count == 2){
 		for(var i=0; i<item_array.length; i=i+3){ 
 		if(item_array[i] == 1){
-			context.beginPath();
-			context.fillStyle = "green";
-			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height); 
+			/*context.beginPath();
+			context.fillStyle = "red";
+			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height);  아이템 보석 조각 모양으로 변경 -송찬우-*/
+
+
+			var green_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+            green_piece.src = "green_piece.png"
+            context.drawImage(green_piece,item_array[i+1],item_array[i+2],item_width,item_height);
 			}
 		
 		}
@@ -327,9 +395,14 @@ function makeitem(){
 	else if(level_count == 3){
 		for(var i=0; i<item_array.length; i=i+3){ 
 		if(item_array[i] == 1){
-			context.beginPath();
-			context.fillStyle = "blue";
-			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height); 
+			/*context.beginPath();
+			context.fillStyle = "red";
+			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height);  아이템 보석 조각 모양으로 변경 -송찬우-*/
+
+
+			var blue_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+            blue_piece.src = "blue_piece.png"
+            context.drawImage(blue_piece,item_array[i+1],item_array[i+2],item_width,item_height);
 			}
 		
 		}
@@ -338,6 +411,14 @@ function makeitem(){
 }
 //김영록
 var paddlecolision = false; // 패들 충돌 감지
+
+//김시현 공 상태별 색 출력: 변수 BS 변경으로 공 색 변경 가능
+function BallColor(BS) {
+	if(BS === "N") return BallC[BCIndex];
+	else if(BS === "R") return "red";
+	else if(BS === "G") return "green";
+	else if(BS === "B") return "blue";
+}
 
 function moveBall(){
 	
@@ -373,7 +454,8 @@ function moveBall(){
 			// }
 			paddlecolision = true;
 		}
-		else if(Ball_y - Ball_radius > canvas_height){//바닥에 떨어졌을때
+		//바닥에 떨어졌을때
+		else if(Ball_y - Ball_radius > canvas_height){
 			start = !start;
 			life -= 1;
 			$("#life h2").text("");
@@ -381,26 +463,25 @@ function moveBall(){
 				$("#life h2").append("♥");
 			}
 			//$("#life").text("생명 : " + life);
+			BCIndex++;
 			Ball_x = paddle_x + 100;
 			Ball_y = paddle_y - 50;
 		}
 
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3){
-			if(brick[i] == 1){
-				if((Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height)
-					&& (Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width)){
-					brick[i] = 0;
-					Balldx = -Balldx;
-					score += 20;
-					$("#score h2").text(score);
-				}
-				else if((Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height)
-					&& Ball_x+Ball_radius > brick[i+1] && Ball_x-Ball_radius < brick[i+1]+brick_width){
-					brick[i] = 0;
-					Balldy = -Balldy;
-					score += 20;
-					$("#score h2").text(score);
+			if(brick[i] > 0){
+				if(Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height){
+					if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
+						brickSmash(i);
+						Balldx = -Balldx;
+						$("#score h2").text(score);
+					}
+					else if(Ball_x+Ball_radius > brick[i+1] && Ball_x-Ball_radius < brick[i+1]+brick_width){
+						brickSmash(i);
+						Balldy = -Balldy;
+						$("#score h2").text(score);
+					}
 				}
 			}
 		}
@@ -432,6 +513,52 @@ function moveBall(){
 	}
 	
 }
+//김시현 벽돌 색깔별 이벤트
+function brickSmash(i) {
+	if(brick[i] == 1 || brick[i] == 2) {
+		brick[i]--;
+		score += 20;
+	}
+	else if(brick[i] == 3) {
+		life -= 1;
+		$("#life h2").text("");
+		for(var i=0; i<life; i++) {
+			$("#life h2").append("♥");
+		}
+		BCIndex++;
+	}
+	else if(brick[i] == 4) {
+		brick[i] = 0;
+		if(Rnum==0) Rnum++;
+		score += 20;
+	}
+	else if(brick[i] == 5) {
+		brick[i] = 0;
+		if(Gnum==0) Gnum++;
+		score += 20;
+	}
+	else if(brick[i] == 6) {
+		brick[i] = 0;
+		if(Bnum==0) Bnum++;
+		score += 20;
+	}
+}
+
+//김시현 R스킬 메소드
+function Rskill() {
+
+}
+
+//김시현 G스킬 메소드
+function Gskill() {
+
+}
+
+//김시현 B스킬 메소드
+function Bskill() {
+	
+}
+
 //김영록
 function gameover(){ // 게임오버시 나타나는 창
 	clearInterval(interval);
@@ -460,7 +587,12 @@ function mouseMoveHandler(e) {
         }
         //console.log(paddle_x);
     }
+    if(!start){
+		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
+	}
 }
+
 //김영록
 function mapR(){ //1단계 벽돌배치
 	brick_x = 450;
@@ -567,7 +699,6 @@ function itemR(){ // 1단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-
 }
 function mapG(){ //2단계 벽돌배치
 	brick_x = 450;
@@ -578,37 +709,37 @@ function mapG(){ //2단계 벽돌배치
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 80;
-	brick.push(1);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 580;
 	brick_y = 80;
-	brick.push(1);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 450;
 	brick_y = 140;
-	brick.push(1);
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 200;
-	brick.push(1);
+	brick.push(5);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 270;
-	brick.push(1);
+	brick.push(6);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 340;
-	brick.push(1);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
@@ -674,9 +805,7 @@ function itemG(){ //2단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-
 }
-
 function mapB(){ //3단계 벽돌배치
 	brick_x = 450;
 	brick_y = 30;
@@ -782,5 +911,4 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-
 } 
