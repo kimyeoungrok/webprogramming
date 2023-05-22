@@ -29,14 +29,18 @@ var brick_height = 30;
 var brick = [] // 벽돌 위치 저장
 
 var start = false;
-//RGB 키 입력 확인 변수
-var keyR = false;
-var keyG = false;
-var keyB = false;
+var space = false; // 스페이스바 누름 여부
 
 var life = 3; // 라이프
 var score = 0; //점수
 var brick_count = 0; //벽돌 개수
+
+var red_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+red_piece.src = "img/red_piece.png"
+var green_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+green_piece.src = "img/green_piece.png"
+var blue_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+blue_piece.src = "img/blue_piece.png"
 
 var item_width = 50; // 아이템 가로 길이
 var item_height = 50; // 아이템 세로 길이
@@ -52,16 +56,43 @@ var Bnum = 0;
 
 var level_count = 1; // 레벨을 나타내는 변수
 
+var boss_x = 450; // 보스 x좌표 위치
+var boss_y = 100; // 보스 y좌표 위치
+var boss_dx = 1; // 보스 x좌표 속도
+//보스 이미지 생성
+var bossImage1 = new Image();
+bossImage1.src = "img/boss1.png"
+var bossImage2 = new Image();
+bossImage2.src = "img/boss2.png";
+var boss_width = 150; //보스 크기
+var boss_height = 150; //보스 크기
+
+var boss_blackball_x = 450; // 보스 검은공 위치(공격)
+var boss_blackball_y = 250; // 보스 검은공 위치
+var boss_blackball_dy= 4; //보스 검은 공 떨어지는 속도
+var boss_blackball_radius = 10; //보스 검은 공 반지름 크기
+var boss_HP = 450; //보스 체력
+var boss_flag = true;
+
 var interval; //인터벌 객체
+
+var effvolume=0.5;
+//효과음 재생 함수
+function playSound(source,volume){
+	var audio2 = new Audio();
+	audio2.src=source;
+	audio2.play();
+	audio2.volume=volume;
+}
+
 $(document).ready(function(){
 
-    var w=($(window).width()-1000)/2; /*container 영역 하단 중앙 배치 위해 추가 -송찬우*/
-	$("#container").css({left:w});
+    change_position($("#container"));
 	
 	$("#start").click(function(){
 		$("#button_field").hide();
 		$("#stage").show();
-		//$(".interfaceMenu").show();
+		audio.play();
 	});
 
 	$("#red").click(function(){
@@ -74,7 +105,9 @@ $(document).ready(function(){
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우
-
+        
+	    Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -89,6 +122,9 @@ $(document).ready(function(){
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
+		
+		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
@@ -103,11 +139,55 @@ $(document).ready(function(){
 		canvas_height = parseInt($("#mycanvas").attr("height"));
 		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 - 송찬우-
-
+        
+        Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
 		init();
 	});
+
+	$("#boss").click(function(){
+		$("#stage").hide();
+		$("#interface").show();
+		// 김영록 추가 수정 + 송찬우 추가 수정
+		$("#mycanvas").show();
+		level_count = 4;
+		canvas_width = parseInt($("#mycanvas").attr("width"));
+		canvas_height = parseInt($("#mycanvas").attr("height"));
+		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
+
+		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_y = paddle_y - 50;
+		console.log(Ball_x);
+		console.log(Ball_y);
+		init();
+	})
+
+	//배경음악 오디오 객체 생성
+	var audio=new Audio();
+	audio.src="audio/audio1.mp3";
+	audio.loop=true;
+	var bgmvolume=parseFloat($("#bgm_volume").val())/100;
+	$("#bgm_volume").change(function()	{
+		bgmvolume = parseFloat($("#bgm_volume").val())/100;
+		audio.volume=bgmvolume;
+	});
+	//효과음
+	effvolume=parseFloat($("#effect_volume").val())/100;
+	$("#effect_volume").change(function(){
+		effvolume=parseFloat($("#effect_volume").val())/100;
+	});
+	$("button").mouseover(function(){
+		playSound("audio/button_sound.mp3",effvolume);
+	});
+	$("button").click(function(){
+		playSound("audio/buttonclick_sound.mp3",effvolume);
+	})
+	$(".stage_field h1").mouseover(function(){
+		playSound("audio/button_sound.mp3",effvolume);
+	})
 
 	$("#setting").click(function(){
 		$("#button_field").hide();
@@ -122,9 +202,8 @@ $(document).ready(function(){
 	});
 
 	$("#story").click(function(){
-		var x=($(window).width()-1000)/2; /*스토리 영역 가운데 배치 위해 추가 -송찬우*/
-		$(".story_div").css({left:x});
-		
+
+		change_position($(".story_div")); /*스토리 영역 가운데 배치 위해 추가 -송찬우*/
 		$(".story_div").fadeIn();
 	});
 
@@ -145,13 +224,14 @@ $(document).ready(function(){
 	});
 
 	function change_position(obj){
-		var l = ($(window).width()-obj.width())/2;
-		var t = ($(window).height()-obj.height())/2;
-		obj.css({top:t,left:l});
+		var l = ($(window).width()-obj.width())/2; /* 5/22 y축 좌표 삭제 -송찬우-*/
+		obj.css({left:l});
 	}
 	
 	$(window).resize(function(){
 		change_position($(".popup"));
+		change_position($("#container")); /* container, stroy_div추가 송찬우 */
+		change_position($(".story_div")); 
 	});
 
 	$("#back").click(function(){
@@ -163,8 +243,6 @@ $(document).ready(function(){
 
 //김영록 맵 초기화
 function init(){
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
 
 	$(document).on("mousemove", mouseMoveHandler);
 	// $(document).on("keydown",function(e){
@@ -178,55 +256,142 @@ function init(){
 	context = canvas.getContext('2d');
 	brick = [];
 	item_array = [];
+	$("#item-image-level1").hide();
+	$("#item-image-level2").hide();
+	$("#item-image-level3").hide();
 	if(level_count == 1){
 		mapR();
 		itemR();
-		imagemakingR(); // 아이템 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
+		imagemakingR(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
+		Balldx = 5;
+		Balldy = 5;
+		
+		$("#item-image-level" + level_count).show();
 	}
 	else if(level_count == 2){
 		mapG();
 		itemG();
-		imagemakingG(); // 아이템 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
+		imagemakingG(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
+		// 레벨에 따라 속도 빨라지게
+		Balldx = 7;
+		Balldy = 7;
+		
+		$("#item-image-level" + level_count).show();
 	}
 	else if(level_count == 3){
 		mapB();
 		itemB();
-		imagemakingB(); // 아이템 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
+		imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
+		// 레벨에 따라 속도 빨라지게
+		Balldx = 9;
+		Balldy = 9;
+		
+		$("#item-image-level" + level_count).show();
 	}
-	
+	else if(level_count == 4){
+		// life = 3;
+		// score = 0;
+		// item_count = 0;
+		// item_total = 0;
+		// BCIndex = 0;
+		// Ball_x = paddle_x + 100;
+		// Ball_y = paddle_y - 50;
+		// 레벨에 따라 속도 빨라지게
+		Balldx = 9;
+		Balldy = 9;
+		mapBoss();
+		//itemB();
+		//imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
+		$("#item-image-level4").css({"display":"block"})  /*보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우*/
+	}
+	if(level_count != 1){
+		for(var i=1; i<level_count; i++){ //RGB블록 활성화 김영록
+			$("#skill" + i).css("opacity","1");
+		}
+	}
 	draw(); 
 	interval = setInterval(draw,20);
 
 }
-//1단계 아이템 이미지 구현
+//1단계 게임 클리어 조건 이미지 구현, 맵의 아이템 용어와 혼동 여지 있어서 용어 수정하였습니다. - 송찬우 -
 function imagemakingR(){
 	for(var i=1; i<item_array.length; i++) {
-		$("#" + "img" + i).css("opacity","0.3");
+		// 수정 5/21 김영록
+		$(".level" + level_count + "-image" + ">" + "#" + "img" + i).css("opacity","0.3");
 	}
 }
-//2단계 아이템 이미지 구현
+//2단계 게임 클리어 조건 이미지 구현 - 송찬우 수정-
 function imagemakingG(){
 	for(var i=1; i<item_array.length; i++) {
-		$("#" + "img" + i).css("opacity","0.3");
+		// 수정 5/21 김영록
+		$(".level" + level_count + "-image" + ">" + "#" + "img" + i).css("opacity","0.3");
 	}
 }
-//3단계 아이템 이미지 구현
+//3단계 게임 클리어 조건 이미지 구현 - 송찬우 수정-
 function imagemakingB(){
 	for(var i=1; i<item_array.length; i++) {
-		$("#" + "img" + i).css("opacity","0.3");
+		$(".level" + level_count + "-image" + ">" + "#" + "img" + i).css("opacity","0.3");
 	}
 }
 //김영록
 function draw(){
 	context.clearRect(0,0,canvas_width,canvas_height);
+	//김영록(05/20) 게임오버, 클리어시 키 값 안먹히는 현상 고치기 위해 위 코드의 위치를 위로 올렸음
+	if(life <= 0) { // 생명이 고갈되면 게임오버 화면으로 전환
+		start = false;
+		console.log("게임오버" + start + interval);
+		gameover();
+	}
+	else if(level_count<3 && item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환 수정(05/20) : 4단계는 먹는 아이템 없음(빛의 조각)
+		start = false;
+		console.log("게임클리어" + start + item_count + " : " + item_total);
+		//start = false;
+		level_count += 1;
+		gameclear();
+
+	}
+	else if(level_count == 3 && item_count >= item_total){
+		start = false;
+		level_count += 1;
+		Ball_x = paddle_x + 100;
+		Ball_y = paddle_y - 50;
+		// // 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
+		// Balldx = 5;
+		// Balldy = 5;
+		// Ball_x = paddle_x + 100;
+		// Ball_y = paddle_y - 50;
+		// life = 3;
+		// console.log("다음단계");
+		item_count = 0;
+		item_total = 0;
+		clearInterval(interval); // 보스 맵으로 넘어갈때 공이 비정상적으로 빨라지는 현상 막기 위함 김영록
+		init();
+	}
+	//보스 처치
+	else if(level_count==4 && boss_HP <= 0){
+		start = false;
+		gameending(); // 엔딩화면
+	}
+	else{
+		drawPaddle();
+		drawBall();
+		if(level_count == 4){
+			// makebrick(); // 검은 벽돌만 생성
+			makeboss(); // 보스 생성 메소드
+			makebossattack(); // 보스 공격 메소드(검은 공 1개 생성)
+		}
+		makebrick();
+		makeitem();
+		moveBall();
+	}
 	if(start){
 		$(document).off("keydown");
 	}else{
 		$(document).on("keydown",function(e){
-			if(e.key == " "){
+			if(e.key == "q"){ // 스페이스바 대신 q값으로 바꿈 김영록(05/20)
 				start = !start;
 				if(life <= 0){
-					start = false;
+					//start = false;
 					console.log("다시시작");
 					life = 3;
 					score = 0;
@@ -234,6 +399,8 @@ function draw(){
 					item_total = 0;
 					level_count = 1;
 					BCIndex = 0;
+					Ball_x = paddle_x + 100;
+					Ball_y = paddle_y - 50;
 					init();
 					$("#life h2").text("");
 					for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
@@ -242,11 +409,17 @@ function draw(){
 					$("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
 					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
 				}
-				else if(item_count >= item_total){
-					start = false;
+				else if(level_count != 4 && item_count >= item_total){
+					//start = false;
+					//볼 위치 수정
+					Ball_x = paddle_x + 100;
+					Ball_y = paddle_y - 50;
 					// 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
 					Balldx = 5;
 					Balldy = 5;
+					Ball_x = paddle_x + 100;
+					Ball_y = paddle_y - 50;
+					life = 3;
 					console.log("다음단계");
 					item_count = 0;
 					item_total = 0;
@@ -257,41 +430,26 @@ function draw(){
 					}
 					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
 				}
+
 			
 			}
 			
 			//console.log(e.key); //트러블 슈팅 : 한글키는 인식안됨
 		});
 	}
-	//스킬 사용 조건
-	// if(RToggle) {
-	// 	$(document).off("keydown");
-	// }else{
-	// 	$(document).on("keydown",function(k){
-	// 		if(k.key == "R"){
-	// 			RToggle = false;
-	// 			//인터벌R 객체 생성하고 Rskill()
-	// 		}
-	// 	}
-	// }
 
-	if(life <= 0) { // 생명이 고갈되면 게임오버 화면으로 전환
-		console.log("게임오버" + start);
-		gameover();
-	}
-	else if(item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환
-		console.log("게임클리어" + start + item_count + " : " + item_total);
-		//start = false;
-		level_count += 1;
-		gameclear();
-	}
-	else{
-		drawPaddle();
-		drawBall();
-		makebrick();
-		makeitem();
-		moveBall();
-	}
+	// else if(level_count == 4){ // 보스맵 생성
+	// 	console.log(boss_dx);
+	// 	drawPaddle();
+	// 	drawBall();
+		
+	// 	//moveboss(); // 보스 움직이는 메소드
+	// 	//movebossattack(); // 보스 공격 움직이는 메소드
+	// 	moveBall();
+	// }
+	
+	
+
 }
 
 //김영록
@@ -363,15 +521,9 @@ function makeitem(){
 	if(level_count == 1){ //1단계일때는 빨간색 아이템
 		for(var i=0; i<item_array.length; i=i+3){ 
 		if(item_array[i] == 1){
-			
 			/*context.beginPath();
 			context.fillStyle = "red";
 			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height);  아이템 보석 조각 모양으로 변경 -송찬우-*/
-
-
-			var red_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
-            red_piece.src = "red_piece.png"
-
             context.drawImage(red_piece,item_array[i+1],item_array[i+2],item_width,item_height);
 			}
 		
@@ -383,10 +535,6 @@ function makeitem(){
 			/*context.beginPath();
 			context.fillStyle = "red";
 			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height);  아이템 보석 조각 모양으로 변경 -송찬우-*/
-
-
-			var green_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
-            green_piece.src = "green_piece.png"
             context.drawImage(green_piece,item_array[i+1],item_array[i+2],item_width,item_height);
 			}
 		
@@ -398,10 +546,6 @@ function makeitem(){
 			/*context.beginPath();
 			context.fillStyle = "red";
 			context.fillRect(item_array[i+1],item_array[i+2],item_width,item_height);  아이템 보석 조각 모양으로 변경 -송찬우-*/
-
-
-			var blue_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
-            blue_piece.src = "blue_piece.png"
             context.drawImage(blue_piece,item_array[i+1],item_array[i+2],item_width,item_height);
 			}
 		
@@ -467,6 +611,63 @@ function moveBall(){
 			Ball_x = paddle_x + 100;
 			Ball_y = paddle_y - 50;
 		}
+		if(level_count == 4){
+			//패들에 보스 공격 맞았을 때
+			if(boss_blackball_y + boss_blackball_radius >= paddle_y && boss_blackball_y - boss_blackball_radius <= paddle_y + paddle_height && boss_blackball_x - boss_blackball_radius >= paddle_x && boss_blackball_x + boss_blackball_radius <= paddle_x + paddle_width){
+				life -= 1
+				boss_blackball_y = boss_y;
+				boss_blackball_x = boss_x + boss_width/2;
+				$("#life h2").text("");
+				for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
+					$("#life h2").append("♥");
+				}
+			}
+			//보스 오른쪽 맞추었을 때
+			if(Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
+				console.log("보스 오른쪽!");
+				
+				Balldx = -Balldx;
+				Ball_x = boss_x - Ball_radius - 1;
+				boss_HP -= 30;
+			}
+			//보스 왼쪽 맞추었을 때
+			else if(Ball_x - Ball_radius <= boss_x + boss_width&& Ball_x + Ball_radius >= boss_x + boss_width && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
+				console.log("보스 왼쪽!");
+				
+				Balldx = -Balldx;
+				Ball_x = boss_x +boss_width + Ball_radius +1;
+				boss_HP -= 30;
+			}
+			//보스 아래쪽 맞추었을 때
+			else if(Ball_y - Ball_radius <= boss_y + boss_height && Ball_y + Ball_radius >= boss_y + boss_height && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
+				console.log("보스 아래쪽!");
+				
+				Balldy = -Balldy;
+				Ball_y = boss_y + boss_height + Ball_radius +1;
+				boss_HP -= 30;
+			}
+			//보스 위쪽 맞추었을 때
+			else if(Ball_y + Ball_radius >= boss_y && Ball_y - Ball_radius <= boss_y && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
+				console.log("보스 위쪽!");
+				
+				Balldy = -Balldy;
+				Ball_y = boss_y - Ball_radius - 1;
+				boss_HP -= 30;
+			}
+			//보스 폭주 기능
+			if(boss_HP <= 200){
+				if(boss_dx < 0){
+					boss_dx = -3;
+				}
+				else{
+					boss_dx = 3;
+				}
+				boss_blackball_dy= 8; //보스 검은 공 떨어지는 속도
+			}
+			
+			
+		}
+
 
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3){
@@ -491,13 +692,14 @@ function moveBall(){
 			if(item_array[i] == 1){
 				if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height)
 					&& Ball_x+Ball_radius >= item_array[i+1] && Ball_x-Ball_radius <= item_array[i+1]+item_width){
+					playSound("audio/piece_sound.mp3",effvolume);
 					item_array[i] = 0;
 					score += 50;
 					item_count += 1;
 					$("#score h2").text(score);
 					$("#item").text("아이템 : " + item_count + "/" + item_total);
 					//아이템 그림이 선명해지는 작업 추가 김영록
-					$("#" + "img" + item_count).css("opacity","1");
+					$(".level" + level_count + "-image" + ">" + "#" + "img" + item_count).css("opacity","1");
 					if(item_count >= item_total){
 						start = !start;
 					}
@@ -575,6 +777,74 @@ function gameclear(){ // 게임 클리어시 나타나는 창
 	context.fillText("게임클리어! 다음단계로 넘어가려면 스페이스바 를 눌러주세요!", canvas_width/6-150, canvas_height/2);
 
 }
+//김영록 보스 생성
+function makeboss(){
+	if(boss_dx > 0 && boss_x + boss_width >= canvas_width){
+		boss_dx *= -1;
+	}
+	if(boss_dx < 0 && boss_x <= 0){
+		boss_dx *= -1;
+	}
+	if(boss_dx < 0){
+		bossImage = bossImage1;
+	}
+	else{
+		bossImage = bossImage2;
+	}
+	context.fillStyle = "red";
+	context.fillRect(boss_x - boss_HP/4, boss_y-20, boss_HP, 10);
+	context.drawImage(bossImage, boss_x, boss_y, boss_width, boss_height);
+	boss_x += boss_dx;
+}
+//김영록 보스 공격
+function makebossattack(){
+	if(boss_blackball_y > canvas_height) {
+		boss_blackball_y = 250;
+		boss_blackball_x = boss_x + boss_width/2;
+	}
+	context.beginPath();
+	context.arc(boss_blackball_x, boss_blackball_y,boss_blackball_radius, 0, 2.0*Math.PI, false);
+	context.fillStyle = "black";
+	context.fill();
+	context.closePath();
+	boss_blackball_y += boss_blackball_dy;
+}
+
+// 게임 엔딩 페이지(보스 처치시) 제작 김영록
+function gameending(){
+	clearInterval(interval);
+	var ending = 3; // 엔딩 스토리 페이지수
+	$(".interfaceMenu").hide();
+		// 김영록 추가 수정
+	$("#mycanvas").hide();
+	$("#container").hide();
+	$("#ending").fadeIn();
+	
+
+	$(".ending_story").each(function(){
+		$(this).click(function(){
+			$(this).fadeOut();
+			ending -= 1;
+			console.log(ending);
+			if(ending <= 0){
+				$("#ending").hide();
+				$("#container").show();
+				$("#button_field").show();
+			}		
+		});
+	});
+
+	boss_HP = 450; //보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
+	life = 3; // 생명력 원상 복구
+	score = 0; // 점수 원상 복구
+	$("#life h2").text("");
+	for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
+		$("#life h2").append("♥");
+	}
+	$("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
+
+}
+
 //김영록
 function mouseMoveHandler(e) {
 	
@@ -587,12 +857,7 @@ function mouseMoveHandler(e) {
         }
         //console.log(paddle_x);
     }
-    if(!start){
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
-		Ball_y = paddle_y - 50;
-	}
 }
-
 //김영록
 function mapR(){ //1단계 벽돌배치
 	brick_x = 450;
@@ -699,6 +964,7 @@ function itemR(){ // 1단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
+
 }
 function mapG(){ //2단계 벽돌배치
 	brick_x = 450;
@@ -805,7 +1071,30 @@ function itemG(){ //2단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
+
+	item_x = 30;
+	item_y = 400;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 800;
+	item_y = 400;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 30;
+	item_y = 150;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
 }
+
 function mapB(){ //3단계 벽돌배치
 	brick_x = 450;
 	brick_y = 30;
@@ -911,4 +1200,76 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
+
+	item_x = 30;
+	item_y = 400;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 800;
+	item_y = 400;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 30;
+	item_y = 150;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 800;
+	item_y = 100;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 800;
+	item_y = 300;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 30;
+	item_y = 500;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
 } 
+
+function mapBoss(){ //보스 단계 벽돌 배치 테스트 위해서 일반 벽돌로 설정 나중에 검은 벽돌로 바꾸는 것을 권장
+	brick_x = 450;
+	brick_y = 30;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 200;
+	brick_y = 300;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 800;
+	brick_y = 300;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	/*brick_x = 450;
+	brick_y = 500;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	패들과 너무 가까운 블록 삭제 - 송찬우-*/
+	
+}
