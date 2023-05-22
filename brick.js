@@ -760,6 +760,7 @@ function Bskill() {
 //김영록
 function gameover(){ // 게임오버시 나타나는 창
 	clearInterval(interval);
+	playSound("witchlaugh_sound.mp3",effvolume);
 	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
 	context.font = 'italic 30pt Arial'
 	context.fillText("게임 오버 다시 시작하려면 스페이스바 키를 눌러주세요!", canvas_width/6-150, canvas_height/2);
