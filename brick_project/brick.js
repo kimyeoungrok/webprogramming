@@ -35,8 +35,8 @@ var life = 3; // 라이프
 var score = 0; //점수
 var brick_count = 0; //벽돌 개수
 
-var Bwidth = 0;
-var Bheight = 0;
+var Rwidth = 0;
+var Rheight = 0;
 var item_width = 50; // 아이템 가로 길이
 var item_height = 50; // 아이템 세로 길이
 var item_x; // 아이템 x위치
@@ -45,9 +45,9 @@ var item_array = []; //아이템 위치 저장
 var item_count = 0; //먹은 아이템 개수
 var item_total = 0; //아이템 총 개수
 
-var Rnum = 100; //김시현 색깔별 스킬 횟수 ----------------- 추후 조정
-var Gnum = 100;
-var Bnum = 100;
+// var Rnum = 100; //김시현 색깔별 스킬 횟수 -> 삭제
+// var Gnum = 100;
+// var Bnum = 100;
 
 var level_count = 1; // 레벨을 나타내는 변수
 
@@ -214,9 +214,9 @@ function draw(){
 	if(start){
 		//RGB 키 입력 시 함수 호출, 스킬 사용 중 다른 스킬 입력/중복 입력 불가
 		$(document).on("keydown", function(k){
-			if(k.key == "r" && !key && Rnum > 0) Rskill();
-			else if(k.key == "g" && !key && Gnum > 0) Gskill();
-			else if(k.key == "b" && !key && Bnum > 0) Bskill();
+			if(k.key == "r" && !key && score > 50) Rskill();
+			else if(k.key == "g" && !key && score > 100) Gskill();
+			else if(k.key == "b" && !key && score > 100) Bskill();
 			// 방향키 dx값 변경 해봤는데 흠... 고려 필요
 			// else if(k.key == "ArrowRight") {
 			// 	Balldx += 0.001;
@@ -301,15 +301,22 @@ function draw(){
 
 //김시현 R스킬 메소드
 function Rskill() {
-	Rnum--;
+	score -= 50;
 	BS = "R";
 	key = true;
-	setTimeout(function(){key = false; BS = "N";},3000);
+	Rwidth = 25;
+	Rheight = 25;
+	setTimeout(function(){
+		key = false;
+		BS = "N";
+		Rwidth = 0;
+		Rheight = 0;
+	},3000);
 }
 
 //김시현 G스킬 메소드
 function Gskill() {
-	Gnum--;
+	score -= 100;
 	BS = "G";
 	key = true;
 	setTimeout(function(){key = false; BS = "N";},3000);
@@ -317,17 +324,10 @@ function Gskill() {
 
 //김시현 B스킬 메소드
 function Bskill() {
-	Bnum--;
+	score -= 100;
 	BS = "B";
 	key = true;
-	Bwidth = 25;
-	Bheight = 25;
-	setTimeout(function(){
-		key = false;
-		BS = "N";
-		Bwidth = 0;
-		Bheight = 0;
-	},3000);
+	setTimeout(function(){key = false; BS = "N";},3000);
 }
 
 //김영록
@@ -340,10 +340,10 @@ function drawPaddle(){
 
 //김영록
 function drawBall(){
-	if(BS === "B") {
+	if(BS === "R") {
 		context.beginPath();
-		context.fillStyle = "skyblue";
-		context.arc(Ball_x,Ball_y,(Ball_radius+Bwidth),0,2.0*Math.PI,false); // 항상 가운데에 배치
+		context.fillStyle = "pink";
+		context.arc(Ball_x,Ball_y,(Ball_radius+Rwidth),0,2.0*Math.PI,false); // 항상 가운데에 배치
 		context.fill();
 		context.closePath();
 	}
@@ -373,33 +373,30 @@ function makebrick(){
 			context.closePath();
 		}
 		else if(brick[i]==3){
-			context.lineWidth = 1;     
-			context.strokeStyle = "white";
-			context.strokeRect(brick[i+1],brick[i+2],brick_width,brick_height);
 			context.fillStyle = "black";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
 		}
-		else if(brick[i]==4){
-			context.fillStyle = "red";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();
-		}
-		else if(brick[i]==5){
-			context.fillStyle = "green";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();
-		}
-		else if(brick[i]==6){
-			context.fillStyle = "blue";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();
-		}
-		else if(brick[i]==7){
-			context.fillStyle = "red"
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();;
-		}
+		// else if(brick[i]==4){
+		// 	context.fillStyle = "red";
+		// 	context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+		// 	context.closePath();
+		// }
+		// else if(brick[i]==5){
+		// 	context.fillStyle = "green";
+		// 	context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+		// 	context.closePath();
+		// }
+		// else if(brick[i]==6){
+		// 	context.fillStyle = "blue";
+		// 	context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+		// 	context.closePath();
+		// }
+		// else if(brick[i]==7){
+		// 	context.fillStyle = "red"
+		// 	context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+		// 	context.closePath();;
+		// }
 	}
 }
 //김영록
@@ -504,7 +501,7 @@ function moveBall(){
 		for(var i=0; i<brick.length; i=i+3) {
 			if(brick[i] > 0) {
 				//R스킬 사용 중일 때
-				if(BS === "R" && !(brick[i] == 3)) {
+				if(BS === "B" && !(brick[i] == 3)) {
 					if(Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height){
 						if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
 							brickSmash(i);
@@ -534,8 +531,8 @@ function moveBall(){
 		// 아이템 먹었을 때
 		for(var i=0; i<item_array.length; i=i+3){
 			if(item_array[i] == 1){
-				if((Ball_y+Ball_radius+Bheight >= item_array[i+2] && Ball_y-Ball_radius-Bheight <= item_array[i+2]+item_height)
-					&& Ball_x+Ball_radius+Bwidth >= item_array[i+1] && Ball_x-Ball_radius-Bwidth <= item_array[i+1]+item_width){
+				if((Ball_y+Ball_radius+Rheight >= item_array[i+2] && Ball_y-Ball_radius-Rheight <= item_array[i+2]+item_height)
+					&& Ball_x+Ball_radius+Rwidth >= item_array[i+1] && Ball_x-Ball_radius-Rwidth <= item_array[i+1]+item_width){
 					item_array[i] = 0;
 					score += 50;
 					item_count += 1;
@@ -565,8 +562,8 @@ function brickSmash(i) {
 		score += 20;
 	}
 	else if(brick[i] == 2) {
-		//R스킬 사용 중일 때
-		if(BS === "R") {
+		//B스킬 사용 중일 때
+		if(BS === "B") {
 			brick[i] = 0;;
 			score += 40;
 		}
@@ -581,21 +578,21 @@ function brickSmash(i) {
 		$("#life h2").text("");
 		for(var i=0; i<life; i++) $("#life h2").append("♥");
 	}
-	else if(brick[i] == 4) {
-		brick[i] = 0;
-		if(Rnum==0) Rnum++;
-		score += 20;
-	}
-	else if(brick[i] == 5) {
-		brick[i] = 0;
-		if(Gnum==0) Gnum++;
-		score += 20;
-	}
-	else if(brick[i] == 6) {
-		brick[i] = 0;
-		if(Bnum==0) Bnum++;
-		score += 20;
-	}
+	// else if(brick[i] == 4) {
+	// 	brick[i] = 0;
+	// 	if(Rnum==0) Rnum++;
+	// 	score += 20;
+	// }
+	// else if(brick[i] == 5) {
+	// 	brick[i] = 0;
+	// 	if(Gnum==0) Gnum++;
+	// 	score += 20;
+	// }
+	// else if(brick[i] == 6) {
+	// 	brick[i] = 0;
+	// 	if(Bnum==0) Bnum++;
+	// 	score += 20;
+	// }
 }
 
 //김영록
@@ -620,7 +617,7 @@ function mouseMoveHandler(e) {
     var relativeX = e.clientX - canvas.offsetLeft;
     
     if(relativeX > 0 && relativeX < canvas.width) {
-        paddle_x = relativeX - paddle_width;
+        paddle_x = relativeX - paddle_width *2;
         if(paddle_x < 0) {
         	paddle_x = 0;
         }
@@ -760,19 +757,19 @@ function mapG(){ //2단계 벽돌배치
 	brick_count += 1;
 	brick_x = 450;
 	brick_y = 140;
-	brick.push(4);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 200;
-	brick.push(5);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 270;
-	brick.push(6);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
