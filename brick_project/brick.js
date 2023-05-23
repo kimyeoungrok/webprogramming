@@ -21,6 +21,8 @@ var Balldy = 5; // Ball 변환값
 var BallC = ["black", "gray", "white"];
 //Ball상태 (N,R,G,B)
 var BS = "N";
+var Bball_x =[0,0,0,0,0];
+var Bball_y =[0,0,0,0,0];
 
 
 var brick_width = 100;
@@ -258,9 +260,10 @@ function init(){
 	boss_blackball_x = 450; // 보스 검은공 위치(공격)
 	boss_blackball_y = 250; // 보스 검은공 위치
 	boss_blackball_dy= 4; //보스 검은 공 떨어지는 속도
-	boss_blackball_radius = 10; //보스 검은 공 반지름 크기
+	boss_blackball_radius = 10; //보스 검은 공 반지름 크기 
 	boss_HP = 450; //보스 체력
 	pdlIndx = 0; //패들 상태
+	BS = "N";
 
 	canvas = document.getElementById("mycanvas");
 	context = canvas.getContext('2d');
@@ -357,9 +360,9 @@ function draw(){
 	
 	if(start){
 		$(document).on("keydown", function(k){
-			if(k.key == "r" && !key && score > 50) Rskill();
-			else if(k.key == "g" && !key && score > 100) Gskill();
-			else if(k.key == "b" && !key && score > 100) Bskill();
+			if(k.key == "r" && !key && score >= 50) Rskill();
+			else if(k.key == "g" && !key && score >= 100) Gskill();
+			else if(k.key == "b" && !key && score >= 100) Bskill();
 			// 방향키 dx값 변경 해봤는데 흠... 고려 필요
 			// else if(k.key == "ArrowRight") {
 			// 	Balldx += 0.001;
@@ -498,13 +501,38 @@ function drawBall(){
 		context.fill();
 		context.closePath();
 	}
+	else if(BS === "B") Bballs();
 	context.beginPath();
 	context.fillStyle = BallColor(BS);
 	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치   
 	context.fill();
 	context.closePath();
-	
 }
+
+//b스킬 사용 시 공 잔상 만들기
+var bbc = ["#002AFA","#284BFA","#4560E6","#6E86FF","#8496EB"];
+function Bballs() {
+	for(var i = 3; i >= 0; i--) {
+		Bball_x[i + 1] = Bball_x[i];
+	}
+	Bball_x[0] = Ball_x;
+
+	for(var i = 3; i >= 0; i--) {
+		Bball_y[i + 1] = Bball_y[i];
+	}
+	Bball_y[0] = Ball_y;
+
+	for(var i = 5; i >= 0; i--) {
+		context.beginPath();
+		context.globalAlpha = 0.8 - i * 0.1;
+		context.fillStyle = bbc[i];
+		context.arc(Bball_x[i],Bball_y[i],Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치
+		context.fill();
+		context.closePath();
+	}
+	context.globalAlpha = 1;
+}
+
 //김영록 김시현 벽돌색 수정
 function makebrick(){
 	for(var i=0; i<brick.length; i=i+3){
