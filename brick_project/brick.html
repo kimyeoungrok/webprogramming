@@ -7,7 +7,8 @@
 	<script src="brick.js"></script>
 </head>
 <body>
-	<div id="interface">
+	<!-- 인터페이스 영역 변경 위해 수정 -송찬우
+	<div id="interface"> 
 		<div class="interfaceMenu" id="score">
 			<h1>Score</h1>
 			<h2>0</h2>
@@ -44,8 +45,10 @@
 			</div>
 		</div>
 	</div>
+-->
+	
 	<div id="container">
-		<canvas id="mycanvas" width="1000px" height="800px"></canvas>
+		<canvas id="mycanvas" width="1000px" height="620px"></canvas>
 		<!--루비 이미지 출력 부분 김영록-->
 		<!-- <div id = "item-image-level1">
 			<div>
@@ -72,12 +75,144 @@
 			</div>
 			
 		</div> -->
+
+		<div id="interface">
+		<div class="interfaceMenu" id="score">
+			<h1>Score</h1>
+			<h2>0</h2>
+		</div>
+		<div class="interfaceMenu" id="life">
+			<h1>Life</h1>
+			<h2>♥♥♥</h2>
+		</div>
+		<div class="interfaceMenu" id="skill">
+			<h1>Skills</h1>
+			<div>
+				<div class = "skill_block" id="skill1">R</div>
+				<div class = "skill_block" id="skill2">G</div>
+				<div class = "skill_block" id="skill3">B</div>
+			</div>
+		</div>
+		<div class="interfaceMenu" id="item-image-level1">
+			<div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_001.png" id = "img1">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_002.png"id = "img2">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_004.png"id = "img4">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_005.png"id = "img5">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_006.png"id = "img6">
+				</div>
+			</div>
+		</div>
+		<div class="interfaceMenu" id="item-image-level2">
+			<div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_001.png" id = "img1">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_002.png"id = "img2">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_004.png"id = "img4">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_005.png"id = "img5">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_006.png"id = "img6">
+				</div>
+			</div>
+			<div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_007.png"id = "img7">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_008.png"id = "img8">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_009.png"id = "img9">
+				</div>
+			</div>
+		</div>
+
+		<div class="interfaceMenu" id="item-image-level3">
+			<div>
+				<div class = 'level3-image'>
+					<img src="img/safire_001.png" id = "img1">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_002.png"id = "img2">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_003.png"id = "img3">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_004.png"id = "img4">
+				</div>
+			</div>
+			<div>
+				<div class = 'level3-image'>
+					<img src="img/safire_005.png"id = "img5">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_006.png"id = "img6">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_007.png"id = "img7">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_008.png"id = "img8">
+				</div>
+			</div>
+			<div>
+				<div class = 'level3-image'>
+					<img src="img/safire_009.png"id = "img9">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_010.png"id = "img10">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_011.png"id = "img11">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_012.png"id = "img12">
+				</div>
+			</div>
+		</div>
+			
+		<div class="interfaceMenu" id="item-image-level4"> <!--보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우-->
+
+		</div>
+	    
+	    </div>
+		
+		
 		<div id="button_field">
 			<button id="start">게임 시작</button>
 			<button id="setting">환경 설정</button>
-			<button id="guide">가이드</button>
+			<button id="guide">게임방법</button> <!-- 가이드보다 적절한 단어인 것 같아 변경 -->
 			<button id="story">스토리</button>
 		</div>
+
+
 
 		<div id="stage">
 			<div id="back" class="stage_field">
@@ -92,6 +227,9 @@
 			<div id="blue" class="stage_field">
 				<h1>Ⓑ</h1>
 			</div>
+			<div id="boss" class="stage_field">
+				<h1>???</h1>
+			</div>
 			
 		</div>
 
@@ -99,7 +237,7 @@
 			<h1>환경 설정</h1>
 			<div class="setting_list">
 				<h2>배경 음악</h2>
-				<audio id="audio" src="audio1.mp3" controls loop></audio>
+				<input type="range" min="0" max="100" value="50" id="bgm_volume">
 			</div>
 			<div class="setting_list">
 				<h2>효과음 볼륨</h2>
@@ -109,7 +247,7 @@
 		</div>
 
 		<div id="guide_div" class="popup">
-			<h1>가이드</h1>
+			<h1>게임방법</h1>
 			<div class="guide_list">
 				<ul>
 				
@@ -152,6 +290,21 @@
 
 		</div>
 
+		
+
 	</div>
+	<div id = ending>
+		<!--김영록 엔딩 스토리 추가 -->
+		<div class="ending_story" id="end1">
+			<p>엔딩 스토리1</p>
+		</div>
+		<div class="ending_story" id="end2">
+			<p>엔딩 스토리2</p>
+		</div>
+		<div class="ending_story" id="end3">
+			<p>엔딩 스토리3</p>
+		</div>
+	    
+	    </div>
 </body>
 
