@@ -2,14 +2,15 @@
 var canvas; // 캔버스 객체
 var context; // context
 
-var paddle_width = 200; // paddle 너비
-var paddle_height = 30; // paddle 높이
-
 var canvas_width; // 캔버스 너비
 var canvas_height; // 캔버스 높이
 
 var paddle_x; // paddle x위치
 var paddle_y; // paddle y위치
+var paddle_width = [200, 150, 100]; // paddle 너비
+var paddle_height = 30; // paddle 높이
+var paddleC = ["white", "gray", "black"];
+var pdlIndx = 0;
 
 var Ball_x; // ball 중심 x좌표
 var Ball_y; //ball 중심 y좌표
@@ -106,10 +107,10 @@ $(document).ready(function(){
 		level_count = 1;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우
         
-	    Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+	    Ball_x = paddle_x + paddle_width[pdlIndx]/2;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
 		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
@@ -123,7 +124,7 @@ $(document).ready(function(){
 		level_count = 2;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 		
 		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -140,7 +141,7 @@ $(document).ready(function(){
 		level_count = 3;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 - 송찬우-
         
         Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -158,7 +159,7 @@ $(document).ready(function(){
 		level_count = 4;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 
 		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -170,7 +171,7 @@ $(document).ready(function(){
 
 	//배경음악 오디오 객체 생성
 	var audio=new Audio();
-	audio.src="audio/audio1.mp3";
+	// audio.src="audio/audio1.mp3";
 	audio.loop=true;
 	var bgmvolume=parseFloat($("#bgm_volume").val())/100;
 	$("#bgm_volume").change(function()	{
@@ -259,9 +260,11 @@ function init(){
 	boss_blackball_dy= 4; //보스 검은 공 떨어지는 속도
 	boss_blackball_radius = 10; //보스 검은 공 반지름 크기
 	boss_HP = 450; //보스 체력
+	pdlIndx = 0; //패들 상태
 
 	canvas = document.getElementById("mycanvas");
 	context = canvas.getContext('2d');
+	canvas.style.cursor = 'none'; //김시현 커서 숨김
 	brick = [];
 	item_array = [];
 	$("#item-image-level1").hide();
@@ -390,13 +393,11 @@ function draw(){
 				else if(level_count != 4 && item_count >= item_total){
 					start = false;
 					//볼 위치 수정
-					Ball_x = paddle_x + 100;
+					Ball_x = paddle_x + paddle_width[pdlIndx]/2;;
 					Ball_y = paddle_y - 50;
 					// 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
 					Balldx = 5;
 					Balldy = 5;
-					Ball_x = paddle_x + 100;
-					Ball_y = paddle_y - 50;
 					life = 3;
 					console.log("다음단계");
 					item_count = 0;
@@ -483,8 +484,8 @@ function draw(){
 //김영록
 function drawPaddle(){
 	context.beginPath();
-	context.fillStyle = "#00FF00";
-	context.fillRect(paddle_x,paddle_y,paddle_width,paddle_height); // 항상 가운데에 배치
+	context.fillStyle = paddleC[pdlIndx];
+	context.fillRect(paddle_x,paddle_y,paddle_width[pdlIndx],paddle_height); // 항상 가운데에 배치
 	context.closePath();
 }
 
@@ -519,9 +520,6 @@ function makebrick(){
 			context.closePath();
 		}
 		else if(brick[i]==3){
-			context.lineWidth = 1;     
-			context.strokeStyle = "white";
-			context.strokeRect(brick[i+1],brick[i+2],brick_width,brick_height);
 			context.fillStyle = "black";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
@@ -600,7 +598,7 @@ function moveBall(){
 		var paddle_height = 30; // paddle 높이*/
 		//패들에 부딪혔을 떨어졌을때				//무한튕김 수정(김시현 수정)
 		else if(Ball_y+Ball_radius >= paddle_y && Ball_y-Ball_radius <= paddle_y+paddle_height && Ball_x-Ball_radius >= paddle_x
-		&& Ball_x+Ball_radius <= paddle_x+paddle_width && Balldy > 0){
+		&& Ball_x+Ball_radius <= paddle_x+paddle_width[pdlIndx] && Balldy > 0){
 			// var speedx = ((Ball_x)-((paddle_x + paddle_width)/2))*0.02;
 			// console.log(speedx);
 			Balldy = -Balldy;
@@ -619,19 +617,15 @@ function moveBall(){
 				$("#life h2").append("♥");
 			}
 			//$("#life").text("생명 : " + life);
-			Ball_x = paddle_x + 100;
+			Ball_x = paddle_x + paddle_width[pdlIndx]/2;;
 			Ball_y = paddle_y - 50;
 		}
 		if(level_count == 4){
-			//패들에 보스 공격 맞았을 때
-			if(boss_blackball_y + boss_blackball_radius >= paddle_y && boss_blackball_y - boss_blackball_radius <= paddle_y + paddle_height && boss_blackball_x - boss_blackball_radius >= paddle_x && boss_blackball_x + boss_blackball_radius <= paddle_x + paddle_width){
-				life -= 1
+			//패들에 보스 공격 맞았을 때 pdlIndx 감소
+			if(boss_blackball_y + boss_blackball_radius >= paddle_y && boss_blackball_y - boss_blackball_radius <= paddle_y + paddle_height && boss_blackball_x - boss_blackball_radius >= paddle_x && boss_blackball_x + boss_blackball_radius <= paddle_x + paddle_width[pdlIndx]){
 				boss_blackball_y = boss_y;
 				boss_blackball_x = boss_x + boss_width/2;
-				$("#life h2").text("");
-				for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
-					$("#life h2").append("♥");
-				}
+				pdlIndx < 2 ? pdlIndx++ : null;
 			}
 			//보스 오른쪽 맞추었을 때
 			if(Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
@@ -775,16 +769,19 @@ function brickSmash(i) {
 	if(brick[i] == 1) {
 		brick[i]--;
 		score += 20;
+		$("#score h2").text(score);
 	}
 	else if(brick[i] == 2) {
 		//B스킬 사용 중일 때
 		if(BS === "B") {
 			brick[i] = 0;;
 			score += 40;
+			$("#score h2").text(score);
 		}
 		else {
 			brick[i]--;
 			score += 20;
+			$("#score h2").text(score);
 		}
 	}
 	//G스킬 사용 중일 때
@@ -799,8 +796,10 @@ function brickSmash(i) {
 function Rskill() {
 	console.log("r스킬");
 	score -= 50;
+	$("#score h2").text(score);
 	BS = "R";
-	key = true;	Rwidth = 25;
+	key = true;
+	Rwidth = 25;
 	Rheight = 25;
 	setTimeout(function(){
 		key = false;
@@ -814,6 +813,7 @@ function Rskill() {
 function Gskill() {
 	console.log("g스킬");
 	score -= 100;
+	$("#score h2").text(score);
 	BS = "G";
 	key = true;
 	setTimeout(function(){key = false; BS = "N";},3000);
@@ -823,6 +823,7 @@ function Gskill() {
 function Bskill() {
 	console.log("b스킬");
 	score -= 100;
+	$("#score h2").text(score);
 	BS = "B";
 	key = true;
 	Bwidth = 25;
@@ -920,17 +921,20 @@ function gameending(){
 //김영록
 function mouseMoveHandler(e) {
 	
-    var relativeX = e.clientX - canvas.offsetLeft;
-    
-    if(relativeX > 0 && relativeX < canvas.width) {
-        paddle_x = relativeX - paddle_width;
+    var relativeX = e.clientX - context.canvas.offsetLeft;
+
+    if(relativeX >= 0 && relativeX <= canvas.width){
+        paddle_x = relativeX - paddle_width[pdlIndx];
         if(paddle_x < 0) {
         	paddle_x = 0;
         }
-        //console.log(paddle_x);
+        else if(paddle_x > relativeX - paddle_width[pdlIndx]) {
+        	paddle_x = canvas_width;
+        }
+        // console.log(paddle_x);
     }
     if(!start){
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_x = paddle_x + paddle_width[pdlIndx]/2;;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
 		Ball_y = paddle_y - 50;
 	}
 }
