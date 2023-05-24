@@ -477,6 +477,7 @@ function draw(){
 		start = false;
 		audio.src="./audio/audio4-2.mp3";
 		audio.play();
+		playSound("./audio/stageclearaudio.mp3",effvolume);
 		gameending(); // 엔딩화면
 	}
 	else{
