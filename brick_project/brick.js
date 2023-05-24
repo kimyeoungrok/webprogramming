@@ -659,6 +659,7 @@ function moveBall(){
 				Balldx = -Balldx;
 				Ball_x = boss_x - Ball_radius - 1;
 				boss_HP -= 30;
+				playSound("./audio/breakaudio.mp3",effvolume);
 			}
 			//보스 왼쪽 맞추었을 때
 			else if(Ball_x - Ball_radius <= boss_x + boss_width&& Ball_x + Ball_radius >= boss_x + boss_width && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
@@ -667,6 +668,7 @@ function moveBall(){
 				Balldx = -Balldx;
 				Ball_x = boss_x +boss_width + Ball_radius +1;
 				boss_HP -= 30;
+				playSound("./audio/breakaudio.mp3",effvolume);
 			}
 			//보스 아래쪽 맞추었을 때
 			else if(Ball_y - Ball_radius <= boss_y + boss_height && Ball_y + Ball_radius >= boss_y + boss_height && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
@@ -675,6 +677,7 @@ function moveBall(){
 				Balldy = -Balldy;
 				Ball_y = boss_y + boss_height + Ball_radius +1;
 				boss_HP -= 30;
+				playSound("./audio/breakaudio.mp3",effvolume);
 			}
 			//보스 위쪽 맞추었을 때
 			else if(Ball_y + Ball_radius >= boss_y && Ball_y - Ball_radius <= boss_y && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
@@ -683,6 +686,7 @@ function moveBall(){
 				Balldy = -Balldy;
 				Ball_y = boss_y - Ball_radius - 1;
 				boss_HP -= 30;
+				playSound("./audio/breakaudio.mp3",effvolume);
 			}
 			//보스 폭주 기능
 			if(boss_HP <= 200){
