@@ -232,15 +232,17 @@ div.skill_block{
 	line-height: 50px;
 	width: 100px;
 	height: 50px;
+	font-weight: bold;
+	font-size: 20px;
 }
 #skill1{
-	background-color: red;
+	background-image: url("skill_R_interface.PNG");
 }
 #skill2{
-	background-color: green;
+	background-image: url("skill_G_interface.PNG");
 }
 #skill3{
-	background-color: blue;
+	background-image: url("skill_B_interface.PNG");
 }
 #ending{
 	text-align:center;

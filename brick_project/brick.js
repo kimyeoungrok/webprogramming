@@ -2,8 +2,12 @@
 var canvas; // 캔버스 객체
 var context; // context
 
-var paddle_width = 200; // paddle 너비
+// var paddle_width = 200; // paddle 너비
+// var paddle_height = 30; // paddle 높이
+var paddle_width = [200, 150, 100]; // paddle 너비
 var paddle_height = 30; // paddle 높이
+var paddleC = ["white", "gray", "black"];
+var pdlIndx = 0;
 
 var canvas_width; // 캔버스 너비
 var canvas_height; // 캔버스 높이
@@ -22,6 +26,8 @@ var BallC = ["white", "gray", "black"];
 var BCIndex = 0;
 //Ball상태 (N,R,G,B)
 var BS = "N";
+var Bball_x =[0,0,0,0,0];
+var Bball_y =[0,0,0,0,0];
 
 
 var brick_width = 100;
@@ -76,6 +82,8 @@ var boss_blackball_dy= 4; //보스 검은 공 떨어지는 속도
 var boss_blackball_radius = 10; //보스 검은 공 반지름 크기
 var boss_HP = 450; //보스 체력
 var boss_flag = true;
+	pdlIndx = 0; //패들 상태
+	BS = "N";
 
 var interval; //인터벌 객체
 
@@ -123,10 +131,12 @@ $(document).ready(function(){
 		level_count = 2;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		// paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 		
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		// Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+	    Ball_x = paddle_x + paddle_width[pdlIndx]/2;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
 		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
@@ -140,7 +150,8 @@ $(document).ready(function(){
 		level_count = 3;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		// paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 - 송찬우-
         
         Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -158,7 +169,8 @@ $(document).ready(function(){
 		level_count = 4;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		// paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 
 		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -259,9 +271,11 @@ function init(){
 	boss_blackball_dy= 4; //보스 검은 공 떨어지는 속도
 	boss_blackball_radius = 10; //보스 검은 공 반지름 크기
 	boss_HP = 450; //보스 체력
+	pdlIndx = 0; //패들 상태
 
 	canvas = document.getElementById("mycanvas");
 	context = canvas.getContext('2d');
+	canvas.style.cursor = 'none'; //김시현 커서 숨김
 	brick = [];
 	item_array = [];
 	$("#item-image-level1").hide();
@@ -357,13 +371,6 @@ function draw(){
 			if(level_count > 1 && k.key == "r" && !key && Rnum > 0) Rskill();
 			else if(level_count > 2 && k.key == "g" && !key && Gnum > 0) Gskill();
 			else if(level_count > 3 && k.key == "b" && !key && Bnum > 0) Bskill();
-			// 방향키 dx값 변경 해봤는데 흠... 고려 필요
-			// else if(k.key == "ArrowRight") {
-			// 	Balldx += 0.001;
-			// }
-			// else if(k.key == "ArrowLeft") {
-			// 	Balldx -= 0.001;
-			// }
 		});
 	}else{
 		$(document).on("keydown",function(e){
@@ -390,13 +397,12 @@ function draw(){
 				else if(level_count != 4 && item_count >= item_total){
 					start = false;
 					//볼 위치 수정
-					Ball_x = paddle_x + 100;
+					// Ball_x = paddle_x + 100;
+					Ball_x = paddle_x + paddle_width[pdlIndx]/2;;
 					Ball_y = paddle_y - 50;
 					// 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
 					Balldx = 5;
 					Balldy = 5;
-					Ball_x = paddle_x + 100;
-					Ball_y = paddle_y - 50;
 					life = 3;
 					console.log("다음단계");
 					item_count = 0;
@@ -483,23 +489,52 @@ function draw(){
 //김영록
 function drawPaddle(){
 	context.beginPath();
-	context.fillStyle = "#00FF00";
-	context.fillRect(paddle_x,paddle_y,paddle_width,paddle_height); // 항상 가운데에 배치
+	context.fillStyle = paddleC[pdlIndx];
+	context.fillRect(paddle_x,paddle_y,paddle_width[pdlIndx],paddle_height); // 항상 가운데에 배치
 	context.closePath();
 }
 
 //김영록
 function drawBall(){
+	if(BS === "R") {
+		context.beginPath();
+		context.fillStyle = "pink";
+		context.arc(Ball_x,Ball_y,(Ball_radius+Rwidth),0,2.0*Math.PI,false); // 항상 가운데에 배치
+		context.fill();
+		context.closePath();
+	}
+	else if(BS === "B") Bballs();
 	context.beginPath();
 	context.fillStyle = BallColor(BS);
 	context.arc(Ball_x,Ball_y,Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치   
 	context.fill();
-	context.lineWidth = 1;     
-	context.strokeStyle = "white";
-	context.stroke();  
 	context.closePath();
 	
 }
+//b스킬 사용 시 공 잔상 만들기
+var bbc = ["#002AFA","#284BFA","#4560E6","#6E86FF","#8496EB"];
+function Bballs() {
+	for(var i = 3; i >= 0; i--) {
+		Bball_x[i + 1] = Bball_x[i];
+	}
+	Bball_x[0] = Ball_x;
+
+	for(var i = 3; i >= 0; i--) {
+		Bball_y[i + 1] = Bball_y[i];
+	}
+	Bball_y[0] = Ball_y;
+
+	for(var i = 5; i >= 0; i--) {
+		context.beginPath();
+		context.globalAlpha = 0.8 - i * 0.1;
+		context.fillStyle = bbc[i];
+		context.arc(Bball_x[i],Bball_y[i],Ball_radius,0,2.0*Math.PI,false); // 항상 가운데에 배치
+		context.fill();
+		context.closePath();
+	}
+	context.globalAlpha = 1;
+}
+
 //김영록 김시현 벽돌색 수정
 function makebrick(){
 	for(var i=0; i<brick.length; i=i+3){
@@ -515,32 +550,9 @@ function makebrick(){
 			context.closePath();
 		}
 		else if(brick[i]==3){
-			context.lineWidth = 1;     
-			context.strokeStyle = "white";
-			context.strokeRect(brick[i+1],brick[i+2],brick_width,brick_height);
 			context.fillStyle = "black";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
-		}
-		else if(brick[i]==4){
-			context.fillStyle = "red";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();
-		}
-		else if(brick[i]==5){
-			context.fillStyle = "green";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();
-		}
-		else if(brick[i]==6){
-			context.fillStyle = "blue";
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();
-		}
-		else if(brick[i]==7){
-			context.fillStyle = "red"
-			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
-			context.closePath();;
 		}
 	}
 }
@@ -616,20 +628,20 @@ function moveBall(){
 		var paddle_height = 30; // paddle 높이*/
 		//패들에 부딪혔을 떨어졌을때				//무한튕김 수정(김시현 수정)
 		else if(Ball_y+Ball_radius >= paddle_y && Ball_y-Ball_radius <= paddle_y+paddle_height && Ball_x-Ball_radius >= paddle_x
-		&& Ball_x+Ball_radius <= paddle_x+paddle_width && Balldy > 0){
+		&& Ball_x+Ball_radius <= paddle_x+paddle_width[pdlIndx]  && Balldy > 0){
 			// var speedx = ((Ball_x)-((paddle_x + paddle_width)/2))*0.02;
 			// console.log(speedx);
 			Balldy = -Balldy;
 			if(Balldx > 0){
 				// 보정 5/24 김영록 원리 : 패들이 닿는 위치마다 튕기는 각도를 다르게 해주었음
-				Balldx = (1/(Math.tan(((45+((((paddle_width/2)-(Ball_x-paddle_x))/100)*41)))*(Math.PI/180))))*Balldy*(-1);
+				Balldx = (1/(Math.tan(((45+((((paddle_width[pdlIndx]/2)-(Ball_x-paddle_x))/100)*41)))*(Math.PI/180))))*Balldy*(-1);
 				// Balldy = Math.sqrt(Math.abs(25-(Balldx*Balldx)));
 				console.log(Balldx);
 				console.log(Balldy);
 			}
 			else{
 				// 보정 5/24 김영록 원리 : 패들이 닿는 위치마다 튕기는 각도를 다르게 해주었음
-				Balldx = (1/(Math.tan(((45+((((paddle_width/2)-((paddle_x + paddle_width) - Ball_x))/100)*41)))*(Math.PI/180))))*Balldy;
+				Balldx = (1/(Math.tan(((45+((((paddle_width[pdlIndx]/2)-((paddle_x + paddle_width[pdlIndx]) - Ball_x))/100)*41)))*(Math.PI/180))))*Balldy;
 				// Balldy = Math.sqrt(Math.abs(25-(Balldx*Balldx)));
 				console.log(Balldx);
 				console.log(Balldy);
@@ -650,19 +662,15 @@ function moveBall(){
 			}
 			//$("#life").text("생명 : " + life);
 			BCIndex++;
-			Ball_x = paddle_x + 100;
+			Ball_x = paddle_x + paddle_width[pdlIndx]/2;
 			Ball_y = paddle_y - 50;
 		}
 		if(level_count == 4){
-			//패들에 보스 공격 맞았을 때
-			if(boss_blackball_y + boss_blackball_radius >= paddle_y && boss_blackball_y - boss_blackball_radius <= paddle_y + paddle_height && boss_blackball_x - boss_blackball_radius >= paddle_x && boss_blackball_x + boss_blackball_radius <= paddle_x + paddle_width){
-				life -= 1
+			//패들에 보스 공격 맞았을 때 pdlIndx 감소
+			if(boss_blackball_y + boss_blackball_radius >= paddle_y && boss_blackball_y - boss_blackball_radius <= paddle_y + paddle_height && boss_blackball_x - boss_blackball_radius >= paddle_x && boss_blackball_x + boss_blackball_radius <= paddle_x + paddle_width[pdlIndx]){
 				boss_blackball_y = boss_y;
 				boss_blackball_x = boss_x + boss_width/2;
-				$("#life h2").text("");
-				for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
-					$("#life h2").append("♥");
-				}
+				pdlIndx < 2 ? pdlIndx++ : null;
 			}
 			//보스 오른쪽 맞추었을 때
 			if(Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
@@ -670,7 +678,7 @@ function moveBall(){
 				
 				Balldx = -Balldx;
 				Ball_x = boss_x - Ball_radius - 1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -684,7 +692,7 @@ function moveBall(){
 				
 				Balldx = -Balldx;
 				Ball_x = boss_x +boss_width + Ball_radius +1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -698,7 +706,7 @@ function moveBall(){
 				
 				Balldy = -Balldy;
 				Ball_y = boss_y + boss_height + Ball_radius +1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -712,7 +720,7 @@ function moveBall(){
 				
 				Balldy = -Balldy;
 				Ball_y = boss_y - Ball_radius - 1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -739,8 +747,8 @@ function moveBall(){
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3) {
 			if(brick[i] > 0) {
-				//R스킬 사용 중일 때
-				if(BS === "R" && !(brick[i] == 3)) {
+				//B스킬 사용 중일 때
+				if(BS === "B" && !(brick[i] == 3)) {
 					if(Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height){
 						if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
 							brickSmash(i);
@@ -802,7 +810,7 @@ function moveBall(){
 		for(var i=0; i<item_array.length; i=i+3){
 			if(item_array[i] == 1){
 				// 자석 스킬 구현 5/24 김영록
-				if(BS == 'B'){
+				if(BS == 'R'){
 					if((Ball_y+Ball_radius + 25 >= item_array[i+2] && Ball_y-Ball_radius - 25<= item_array[i+2]+item_height)
 					&& Ball_x+Ball_radius + 25 >= item_array[i+1] && Ball_x-Ball_radius - 25 <= item_array[i+1]+item_width){
 						playSound("audio/piece_sound.mp3",effvolume);
@@ -845,52 +853,54 @@ function moveBall(){
 }
 //김시현 벽돌 색깔별 이벤트
 function brickSmash(i) {
-	if(brick[i] == 1 || brick[i] == 2) {
+	if(brick[i] == 1) {
 		brick[i]--;
 		score += 20;
+		$("#score h2").text(score);
 	}
-	else if(brick[i] == 3) {
-		if(BS != 'G'){ // G스킬 구현 5/24 김영록
-			life -= 1;
+	else if(brick[i] == 2) {
+		//B스킬 사용 중일 때
+		if(BS === "B") {
+			brick[i] = 0;;
+			score += 40;
+			$("#score h2").text(score);
 		}
-		
+		else {
+			brick[i]--;
+			score += 20;
+			$("#score h2").text(score);
+		}
+	}
+	//G스킬 사용 중일 때
+	else if(brick[i] == 3 && !(BS === "G")) {
+		life -= 1;
 		$("#life h2").text("");
-		for(var i=0; i<life; i++) {
-			$("#life h2").append("♥");
-		}
-		BCIndex++;
-	}
-	else if(brick[i] == 4) {
-		brick[i] = 0;
-		if(Rnum==0) Rnum++;
-		score += 20;
-	}
-	else if(brick[i] == 5) {
-		brick[i] = 0;
-		if(Gnum==0) Gnum++;
-		score += 20;
-	}
-	else if(brick[i] == 6) {
-		brick[i] = 0;
-		if(Bnum==0) Bnum++;
-		score += 20;
+		for(var i=0; i<life; i++) $("#life h2").append("♥");
 	}
 }
 
 //김시현 R스킬 메소드
 function Rskill() {
 	console.log("r스킬");
-	Rnum--;
+	score -= 50;
+	$("#score h2").text(score);
 	BS = "R";
 	key = true;
-
-	setTimeout(function(){key = false; BS = "N";},3000);
+	Rwidth = 25;
+	Rheight = 25;
+	setTimeout(function(){
+		key = false;
+		BS = "N";
+		Rwidth = 0;
+		Rheight = 0;
+	},3000);
 }
 
 //김시현 G스킬 메소드
 function Gskill() {
 	console.log("g스킬");
-	Gnum--;
+	score -= 100;
+	$("#score h2").text(score);
 	BS = "G";
 	key = true;
 	setTimeout(function(){key = false; BS = "N";},3000);
@@ -899,17 +909,13 @@ function Gskill() {
 //김시현 B스킬 메소드
 function Bskill() {
 	console.log("b스킬");
-	Bnum--;
+	score -= 100;
+	$("#score h2").text(score);
 	BS = "B";
 	key = true;
 	Bwidth = 25;
 	Bheight = 25;
-	setTimeout(function(){
-		key = false;
-		BS = "N";
-		Bwidth = 0;
-		Bheight = 0;
-	},3000);
+	setTimeout(function(){key = false; BS = "N";},3000);
 }
 
 //김영록
@@ -1005,17 +1011,20 @@ function gameending(){
 function mouseMoveHandler(e) {
 	
 	pre_paddle_x = paddle_x;
-    var relativeX = e.clientX - canvas.offsetLeft;
+    var relativeX = e.clientX - context.canvas.offsetLeft;
     
     if(relativeX > 0 && relativeX < canvas.width) {
-        paddle_x = relativeX - paddle_width;
+        paddle_x = relativeX - paddle_width[pdlIndx];
         if(paddle_x < 0) {
         	paddle_x = 0;
+        }
+        else if(paddle_x > relativeX - paddle_width[pdlIndx]) {
+        	paddle_x = canvas_width;
         }
         //console.log(paddle_x);
     }
     if(!start){
-		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+		Ball_x = paddle_x + paddle_width[pdlIndx]/2;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
 		Ball_y = paddle_y - 50;
 	}
 }
@@ -1142,25 +1151,25 @@ function mapG(){ //2단계 벽돌배치
 	brick_count += 1;
 	brick_x = 580;
 	brick_y = 80;
-	brick.push(3);
+	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 450;
 	brick_y = 140;
-	brick.push(4);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 200;
-	brick.push(5);
+	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 270;
-	brick.push(6);
+	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
