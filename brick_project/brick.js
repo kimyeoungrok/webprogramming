@@ -8,6 +8,7 @@ var paddle_height = 30; // paddle 높이
 var canvas_width; // 캔버스 너비
 var canvas_height; // 캔버스 높이
 
+var pre_paddle_x; //이전 paddlex위치
 var paddle_x; // paddle x위치
 var paddle_y; // paddle y위치
 
@@ -353,9 +354,9 @@ function draw(){
 	
 	if(start){
 		$(document).on("keydown", function(k){
-			if(k.key == "r" && !key && Rnum > 0) Rskill();
-			else if(k.key == "g" && !key && Gnum > 0) Gskill();
-			else if(k.key == "b" && !key && Bnum > 0) Bskill();
+			if(level_count > 1 && k.key == "r" && !key && Rnum > 0) Rskill();
+			else if(level_count > 2 && k.key == "g" && !key && Gnum > 0) Gskill();
+			else if(level_count > 3 && k.key == "b" && !key && Bnum > 0) Bskill();
 			// 방향키 dx값 변경 해봤는데 흠... 고려 필요
 			// else if(k.key == "ArrowRight") {
 			// 	Balldx += 0.001;
@@ -585,14 +586,14 @@ var paddlecolision = false; // 패들 충돌 감지
 
 //김시현 공 상태별 색 출력: 변수 BS 변경으로 공 색 변경 가능
 function BallColor(BS) {
-	if(BS === "N") return BallC[BCIndex];
+	if(BS === "N") return BallC[BallC.length - life]; // 김영록 수정 5/24 생명에 따라 공 색깔변하게
 	else if(BS === "R") return "red";
 	else if(BS === "G") return "green";
 	else if(BS === "B") return "blue";
 }
 
 function moveBall(){
-	
+	//console.log("paddle속도 " + ": " + (paddle_x - pre_paddle_x)); paddle속도에 따라서도 각도 변하게 하고 싶었는데 너무 복잡해서 생략할게요
 	if(start){
 		if(paddlecolision) {
 			if(Balldx < 0) {
@@ -619,6 +620,20 @@ function moveBall(){
 			// var speedx = ((Ball_x)-((paddle_x + paddle_width)/2))*0.02;
 			// console.log(speedx);
 			Balldy = -Balldy;
+			if(Balldx > 0){
+				// 보정 5/24 김영록 원리 : 패들이 닿는 위치마다 튕기는 각도를 다르게 해주었음
+				Balldx = (1/(Math.tan(((45+((((paddle_width/2)-(Ball_x-paddle_x))/100)*41)))*(Math.PI/180))))*Balldy*(-1);
+				// Balldy = Math.sqrt(Math.abs(25-(Balldx*Balldx)));
+				console.log(Balldx);
+				console.log(Balldy);
+			}
+			else{
+				// 보정 5/24 김영록 원리 : 패들이 닿는 위치마다 튕기는 각도를 다르게 해주었음
+				Balldx = (1/(Math.tan(((45+((((paddle_width/2)-((paddle_x + paddle_width) - Ball_x))/100)*41)))*(Math.PI/180))))*Balldy;
+				// Balldy = Math.sqrt(Math.abs(25-(Balldx*Balldx)));
+				console.log(Balldx);
+				console.log(Balldy);
+			}
 			//Balldx = 1/Math.tan(45*(Math.PI/180) + (Ball_x - (paddle_width + paddle_x)/2)*0.44)*Balldy; // 보정 구현(아직 완벽하게 구현x 김영록)
 			// if(Balldx < 0){
 			// 	Balldx = -Balldx;
@@ -655,7 +670,13 @@ function moveBall(){
 				
 				Balldx = -Balldx;
 				Ball_x = boss_x - Ball_radius - 1;
-				boss_HP -= 30;
+				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+					boss_HP -= 60;
+				}
+				else{
+					boss_HP -= 30;
+				}
+				console.log("boss_HP : " + boss_HP);
 			}
 			//보스 왼쪽 맞추었을 때
 			else if(Ball_x - Ball_radius <= boss_x + boss_width&& Ball_x + Ball_radius >= boss_x + boss_width && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
@@ -663,7 +684,13 @@ function moveBall(){
 				
 				Balldx = -Balldx;
 				Ball_x = boss_x +boss_width + Ball_radius +1;
-				boss_HP -= 30;
+				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+					boss_HP -= 60;
+				}
+				else{
+					boss_HP -= 30;
+				}
+				console.log("boss_HP : "  + boss_HP);
 			}
 			//보스 아래쪽 맞추었을 때
 			else if(Ball_y - Ball_radius <= boss_y + boss_height && Ball_y + Ball_radius >= boss_y + boss_height && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
@@ -671,7 +698,13 @@ function moveBall(){
 				
 				Balldy = -Balldy;
 				Ball_y = boss_y + boss_height + Ball_radius +1;
-				boss_HP -= 30;
+				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+					boss_HP -= 60;
+				}
+				else{
+					boss_HP -= 30;
+				}
+				console.log("boss_HP : "  + boss_HP);
 			}
 			//보스 위쪽 맞추었을 때
 			else if(Ball_y + Ball_radius >= boss_y && Ball_y - Ball_radius <= boss_y && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
@@ -679,7 +712,14 @@ function moveBall(){
 				
 				Balldy = -Balldy;
 				Ball_y = boss_y - Ball_radius - 1;
-				boss_HP -= 30;
+				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+					boss_HP -= 60;
+				}
+				else{
+					boss_HP -= 30;
+				}
+				console.log("boss_HP : "  + boss_HP);
+				
 			}
 			//보스 폭주 기능
 			if(boss_HP <= 200){
@@ -761,7 +801,24 @@ function moveBall(){
 		// 아이템 먹었을 때
 		for(var i=0; i<item_array.length; i=i+3){
 			if(item_array[i] == 1){
-				if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height)
+				// 자석 스킬 구현 5/24 김영록
+				if(BS == 'B'){
+					if((Ball_y+Ball_radius + 25 >= item_array[i+2] && Ball_y-Ball_radius - 25<= item_array[i+2]+item_height)
+					&& Ball_x+Ball_radius + 25 >= item_array[i+1] && Ball_x-Ball_radius - 25 <= item_array[i+1]+item_width){
+						playSound("audio/piece_sound.mp3",effvolume);
+						item_array[i] = 0;
+						score += 50;
+						item_count += 1;
+						$("#score h2").text(score);
+						$("#item").text("아이템 : " + item_count + "/" + item_total);
+						//아이템 그림이 선명해지는 작업 추가 김영록
+						$(".level" + level_count + "-image" + ">" + "#" + "img" + item_count).css("opacity","1");
+						if(item_count >= item_total){
+							start = !start;
+						}
+					}
+				}
+				else if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height)
 					&& Ball_x+Ball_radius >= item_array[i+1] && Ball_x-Ball_radius <= item_array[i+1]+item_width){
 					playSound("audio/piece_sound.mp3",effvolume);
 					item_array[i] = 0;
@@ -793,7 +850,10 @@ function brickSmash(i) {
 		score += 20;
 	}
 	else if(brick[i] == 3) {
-		life -= 1;
+		if(BS != 'G'){ // G스킬 구현 5/24 김영록
+			life -= 1;
+		}
+		
 		$("#life h2").text("");
 		for(var i=0; i<life; i++) {
 			$("#life h2").append("♥");
@@ -823,6 +883,7 @@ function Rskill() {
 	Rnum--;
 	BS = "R";
 	key = true;
+
 	setTimeout(function(){key = false; BS = "N";},3000);
 }
 
@@ -920,6 +981,7 @@ function gameending(){
 				$("#ending").hide();
 				$("#container").show();
 				$("#button_field").show();
+				
 			}		
 		});
 	});
@@ -930,6 +992,7 @@ function gameending(){
 	boss_HP = 450; //보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
 	life = 3; // 생명력 원상 복구
 	score = 0; // 점수 원상 복구
+	
 	$("#life h2").text("");
 	for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
 		$("#life h2").append("♥");
@@ -941,6 +1004,7 @@ function gameending(){
 //김영록
 function mouseMoveHandler(e) {
 	
+	pre_paddle_x = paddle_x;
     var relativeX = e.clientX - canvas.offsetLeft;
     
     if(relativeX > 0 && relativeX < canvas.width) {
