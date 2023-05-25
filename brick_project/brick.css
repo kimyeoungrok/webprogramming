@@ -9,9 +9,9 @@ body{
 	width:1000px;
 	height:720px;
 	position:absolute; /* 송찬우 수정, 모든 컴퓨터에서 화면 상 가운데 배치*/
-	top:10px;
+	top:0;
 	overflow:hidden;
-	background-image:url("img/brick_dark.jpg");
+	background-image:url("img/init_village.jpg");
 	background-size:cover;
 }
 #mycanvas{ /*김영록 수정*/
@@ -25,7 +25,7 @@ body{
 #interface{
 	width:1000px;
 	height:100px;
-	margin-top:620px 0 0 0; /* 인터페이스 영역 변경 위해 수정 - 송찬우*/
+/*	margin-top:620px; /* 인터페이스 영역 변경 위해 수정 - 송찬우*/*/
 	text-align:center;
 	display:none;
 }
@@ -127,9 +127,21 @@ button:hover{
 	height:400px;
 	border: 1px solid black;
 }
-.story_div{
+
+#gameover_div{
 	position:fixed;
 	top:0;
+	z-index:1;
+	width:1000px;
+	height:725px;
+	display:none;
+	background-size:cover;
+	background-image:url("img/witchlaugh.gif");
+}
+
+.story_div{
+	position:fixed;
+	top:0px;
 	z-index:1;
 	width:1000px;
 	height:720px;
@@ -141,16 +153,16 @@ button:hover{
 	padding:30px 20px;
 }
 #story_div1{
-	background-image:url("img/witch.jpg");
+	background-image:url("img/story_witch.jpg");
 	background-size: cover;
 }
 
 #story_div2{
-	background-image:url("img/village.jpg");
+	background-image:url("img/story_village.jpg");
 	background-size: cover;
 }
 #story_div3{
-	background-image:url("img/forest.jpg");
+	background-image:url("img/story_forest.jpg");
 	background-size: cover;
 }
 #setting_div{
@@ -242,20 +254,21 @@ div.skill_block{
 #skill3{
 	background-color: blue;
 }
+
+//5.26 송찬우 ending관련 css 변경
 #ending{
-	text-align:center;
+	position:fixed;
+	top:0;
+	z-index:1;
 	width:1000px;
 	height:720px;
-	position:relative;
-	overflow:hidden;
-	margin: 0 auto;
-	background-color: white;
-	display: none;
+	display:none;
+	background-size:cover;
+	background-image:url("img/bossclear.jpg");
+	font-size:30px;
+	text-align: center;
 }
-.ending_story{
-	width:1000px;
-	height:720px;
-	/*display:none;*/
-	color: black;
-    font-size: 30px;
+
+#ending>p{
+	padding:30px 20px;
 }
