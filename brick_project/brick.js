@@ -678,7 +678,7 @@ function moveBall(){
 				
 				Balldx = -Balldx;
 				Ball_x = boss_x - Ball_radius - 1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -692,7 +692,7 @@ function moveBall(){
 				
 				Balldx = -Balldx;
 				Ball_x = boss_x +boss_width + Ball_radius +1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -706,7 +706,7 @@ function moveBall(){
 				
 				Balldy = -Balldy;
 				Ball_y = boss_y + boss_height + Ball_radius +1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -720,7 +720,7 @@ function moveBall(){
 				
 				Balldy = -Balldy;
 				Ball_y = boss_y - Ball_radius - 1;
-				if(BS == 'R') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
+				if(BS == 'B') { // 공격력 증가 스킬 사용시 보스 체력 더 많이 깎이게 구현 5/24 김영록
 					boss_HP -= 60;
 				}
 				else{
@@ -747,8 +747,8 @@ function moveBall(){
 		// 벽돌충돌 이벤트						//가로로 맞았을 때 x축 방향 변화 (김시현 수정)
 		for(var i=0; i<brick.length; i=i+3) {
 			if(brick[i] > 0) {
-				//R스킬 사용 중일 때
-				if(BS === "R" && !(brick[i] == 3)) {
+				//B스킬 사용 중일 때
+				if(BS === "B" && !(brick[i] == 3)) {
 					if(Ball_y+Ball_radius >= brick[i+2] && Ball_y-Ball_radius <= brick[i+2]+brick_height){
 						if(Ball_x+Ball_radius == brick[i+1] || Ball_x-Ball_radius == brick[i+1]+brick_width){
 							brickSmash(i);
@@ -810,7 +810,7 @@ function moveBall(){
 		for(var i=0; i<item_array.length; i=i+3){
 			if(item_array[i] == 1){
 				// 자석 스킬 구현 5/24 김영록
-				if(BS == 'B'){
+				if(BS == 'R'){
 					if((Ball_y+Ball_radius + 25 >= item_array[i+2] && Ball_y-Ball_radius - 25<= item_array[i+2]+item_height)
 					&& Ball_x+Ball_radius + 25 >= item_array[i+1] && Ball_x-Ball_radius - 25 <= item_array[i+1]+item_width){
 						playSound("audio/piece_sound.mp3",effvolume);
