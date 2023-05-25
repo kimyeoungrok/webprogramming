@@ -903,6 +903,14 @@ function brickSmash(i) {
 		$("#life h2").text("");
 		for(var i=0; i<life; i++) $("#life h2").append("♥");
 	}
+	else if(brick[i] == 4) {
+		//B스킬 사용 중일 때
+		if(BS === "B") {
+			brick[i] = 0;;
+			score += 80;
+			$("#score h2").text(score);
+		}
+	}
 }
 
 //김시현 R스킬 메소드
