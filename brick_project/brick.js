@@ -44,6 +44,7 @@ green_piece.src = "img/green_piece.png"
 var blue_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
 blue_piece.src = "img/blue_piece.png"
 
+
 var Rwidth = 0;
 var Rheight = 0;
 var item_width = 50; // 아이템 가로 길이
@@ -194,7 +195,7 @@ $(document).ready(function(){
 	$("button").click(function(){
 		playSound("audio/buttonclick_sound.mp3",effvolume);
 	})
-	$(".stage_field h1").mouseover(function(){
+	$(".stage_field").mouseover(function(){
 		playSound("audio/button_sound.mp3",effvolume);
 	})
 
@@ -958,6 +959,7 @@ function makebossattack(){
 		boss_blackball_y = 250;
 		boss_blackball_x = boss_x + boss_width/2;
 	}
+
 	context.beginPath();
 	context.arc(boss_blackball_x, boss_blackball_y,boss_blackball_radius, 0, 2.0*Math.PI, false);
 	context.fillStyle = "black";
@@ -968,8 +970,8 @@ function makebossattack(){
 
 // 게임 엔딩 페이지(보스 처치시) 제작 김영록, 5/26 송찬우 추가 
 function gameending() {
-  exscore=score;
   clearInterval(interval);
+  exscore=score;
 
   $("#interface").hide();
   // 김영록 추가 수정
