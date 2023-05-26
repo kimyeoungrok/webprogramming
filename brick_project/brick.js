@@ -301,8 +301,8 @@ function init(){
 		itemG();
 		imagemakingG(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
 		// 레벨에 따라 속도 빨라지게
-		Balldx = 7;
-		Balldy = 7;
+		Balldx = 6; //속도 조정 5/27 김영록
+		Balldy = 6; //속도 조정 5/27 김영록
 		
 		$("#item-image-level" + level_count).show();
 	}
@@ -311,8 +311,8 @@ function init(){
 		itemB();
 		imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
 		// 레벨에 따라 속도 빨라지게
-		Balldx = 9;
-		Balldy = 9;
+		Balldx = 7; // 속도 조정 5/27 김영록
+		Balldy = 7; // 속도 조정 5/27 김영록
 		
 		$("#item-image-level" + level_count).show();
 	}
@@ -325,8 +325,8 @@ function init(){
 		// Ball_x = paddle_x + 100;
 		// Ball_y = paddle_y - 50;
 		// 레벨에 따라 속도 빨라지게
-		Balldx = 9;
-		Balldy = 9;
+		Balldx = 7; // 속도 조정 5/27 김영록
+		Balldy = 7; // 속도 조정 5/27 김영록
 		mapBoss();
 		//itemB();
 		//imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
@@ -551,6 +551,11 @@ function makebrick(){
 		}
 		else if(brick[i]==3){
 			context.fillStyle = "black";
+			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
+			context.closePath();
+		}
+		else if(brick[i]==4){ // 안깨지는 벽돌 구현 5/27 김영록
+			context.fillStyle = "#8041D9";
 			context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			context.closePath();
 		}
@@ -882,7 +887,9 @@ function brickSmash(i) {
 //김시현 R스킬 메소드
 function Rskill() {
 	console.log("r스킬");
-	score -= 50;
+	if(score >= 50){ //조건문 추가 5/27 김영록
+		score -= 50;
+	}
 	$("#score h2").text(score);
 	BS = "R";
 	key = true;
@@ -899,7 +906,9 @@ function Rskill() {
 //김시현 G스킬 메소드
 function Gskill() {
 	console.log("g스킬");
-	score -= 100;
+	if(score >= 100){ //조건문 추가 5/27 김영록
+		score -= 100;
+	}
 	$("#score h2").text(score);
 	BS = "G";
 	key = true;
@@ -909,7 +918,10 @@ function Gskill() {
 //김시현 B스킬 메소드
 function Bskill() {
 	console.log("b스킬");
-	score -= 100;
+	if(score >= 100){ //조건문 추가 5/27 김영록
+		score -= 100;
+	}
+	
 	$("#score h2").text(score);
 	BS = "B";
 	key = true;
@@ -1030,106 +1042,158 @@ function mouseMoveHandler(e) {
 }
 //김영록
 function mapR(){ //1단계 벽돌배치
-	brick_x = 450;
+	brick_x = 120;
 	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 80;
+
+	brick_x = 380;
+	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 80;
+
+	brick_x = 640;
+	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 450;
-	brick_y = 140;
+
+	brick_x = 890;
+	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 200;
+
+	brick_x = 10;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 250;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 510;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 770;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 120;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 380;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 880;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 10;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 270;
+
+	brick_x = 250;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 340;
+
+	brick_x = 510;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 200;
+
+	brick_x = 770;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 630;
-	brick_y = 250;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 680;
-	brick_y = 300;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
+	
 }
 //김영록
 function itemR(){ // 1단계 아이템 배치
-	item_x = 300;
-	item_y = 20;
+	item_x = 150;
+	item_y = 90;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 480;
-	item_y = 80;
+	item_x = 280;
+	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 700;
-	item_y = 100;
+	item_x = 410;
+	item_y = 90;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 480;
-	item_y = 300;
+	item_x = 540;
+	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 250;
-	item_y = 330;
+	item_x = 670;
+	item_y = 90;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 700;
-	item_y = 400;
+	item_x = 800;
+	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1139,125 +1203,205 @@ function itemR(){ // 1단계 아이템 배치
 function mapG(){ //2단계 벽돌배치
 	brick_x = 450;
 	brick_y = 30;
-	brick.push(1);
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 80;
-	brick.push(2);
+
+	brick_x = 360;
+	brick_y = 60;
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 80;
-	brick.push(1);
+
+	brick_x = 360;
+	brick_y = 90;
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+
+	brick_x = 540;
+	brick_y = 60;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 540;
+	brick_y = 90;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
 	brick_x = 450;
-	brick_y = 140;
+	brick_y = 120;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 150;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 180;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 260;
+	brick_y = 120;
 	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 200;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 320;
-	brick_y = 270;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 320;
-	brick_y = 340;
+
+	brick_x = 260;
+	brick_y = 150;
 	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 200;
+
+	brick_x = 260;
+	brick_y = 180;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 120;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 180;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 360;
+	brick_y = 210;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 240;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 550;
+	brick_y = 210;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 260;
+	brick_y = 440;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 630;
-	brick_y = 250;
+
+	brick_x = 450;
+	brick_y = 440;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 680;
-	brick_y = 300;
+
+	brick_x = 640;
+	brick_y = 440;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+	
 }
 //김영록
 function itemG(){ //2단계 아이템 배치
-	item_x = 300;
-	item_y = 20;
+	item_x = 460;
+	item_y = 50;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 480;
-	item_y = 80;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 700;
-	item_y = 100;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 480;
-	item_y = 300;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 250;
-	item_y = 330;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 700;
-	item_y = 400;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 30;
-	item_y = 400;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 800;
-	item_y = 400;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 30;
+	item_x = 380;
 	item_y = 150;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 560;
+	item_y = 150;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 280;
+	item_y = 70;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 660;
+	item_y = 70;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 380;
+	item_y = 10;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 560;
+	item_y = 10;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 380;
+	item_y = 380;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 560;
+	item_y = 380;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
