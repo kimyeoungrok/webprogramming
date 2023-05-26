@@ -44,6 +44,7 @@ green_piece.src = "img/green_piece.png"
 var blue_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
 blue_piece.src = "img/blue_piece.png"
 
+
 var Rwidth = 0;
 var Rheight = 0;
 var item_width = 50; // 아이템 가로 길이
@@ -96,13 +97,16 @@ function playSound(source,volume){
 
 $(document).ready(function(){
 
+    
     change_position($("#container"));
+    change_position($("#ending"));//5.26부 추가 -송찬우-
 	
 	$("#start").click(function(){
 		$("#button_field").hide();
 		$("#stage").show();
 		audio.src="./audio/audio1.mp3";
 		audio.play();
+		$("#container").css("background-image","url('img/init_village.jpg')"); // 보스 처치 후 다시 시작할때 배경 초기화 - 송찬우-
 	});
 
 	$("#red").click(function(){
@@ -113,10 +117,10 @@ $(document).ready(function(){
 		level_count = 1;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우
         
-	    Ball_x = paddle_x + paddle_width[pdlIndx]/2;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
+	    Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
 		Ball_y = paddle_y - 50;
 		console.log(Ball_x);
 		console.log(Ball_y);
@@ -130,7 +134,7 @@ $(document).ready(function(){
 		level_count = 2;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 		
 		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -147,7 +151,7 @@ $(document).ready(function(){
 		level_count = 3;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 - 송찬우-
         
         Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -165,7 +169,7 @@ $(document).ready(function(){
 		level_count = 4;
 		canvas_width = parseInt($("#mycanvas").attr("width"));
 		canvas_height = parseInt($("#mycanvas").attr("height"));
-		paddle_x = (canvas_width-paddle_width[pdlIndx])/2; //paddle x축 위치
+		paddle_x = (canvas_width-paddle_width)/2; //paddle x축 위치
 		paddle_y = canvas_height-paddle_height; //paddle y축 위치 변경 -송찬우-
 
 		Ball_x = paddle_x + 100;//Ball의 초기 위치 및 재생성 위치는 paddle의 위
@@ -175,7 +179,6 @@ $(document).ready(function(){
 		init();
 	})
 
-	
 	var bgmvolume=parseFloat($("#bgm_volume").val())/100;
 	$("#bgm_volume").change(function()	{
 		bgmvolume = parseFloat($("#bgm_volume").val())/100;
@@ -207,6 +210,34 @@ $(document).ready(function(){
 		change_position($(".popup"));
 		$("#guide_div").show();
 	});
+	$("#close").click(function(){
+		$("#guide_div").hide();
+		$("#button_field").show();
+	})
+	$("#next1").click(function(){
+		$("#brickguide").hide();
+		$("#pieceguide").show();
+	});
+	$("#next2").click(function(){
+		$("#pieceguide").hide();
+		$("#skillguide").show();
+	});
+	$("#next3").click(function(){
+		$("#skillguide").hide();
+		$("#bossguide").show();
+	});
+	$("#prev2").click(function(){
+		$("#pieceguide").hide();
+		$("#brickguide").show();
+	});
+	$("#prev3").click(function(){
+		$("#skillguide").hide();
+		$("#pieceguide").show();
+	});
+	$("#prev4").click(function(){
+		$("#bossguide").hide();
+		$("#skillguide").show();
+	});
 
 	$("#story").click(function(){
 
@@ -228,6 +259,10 @@ $(document).ready(function(){
 
 	$("#guide_ok").click(function(){
 		$("#guide_div").hide();
+		$("#brickguide").show();
+		$("#pieceguide").hide();
+		$("#skillguide").hide();
+		$("#bossguide").hide();
 		$("#button_field").show();
 	});
 
@@ -240,6 +275,7 @@ $(document).ready(function(){
 		change_position($(".popup"));
 		change_position($("#container")); /* container, stroy_div추가 송찬우 */
 		change_position($(".story_div")); 
+		change_position($("#ending")); //5.26 추가 -송찬우-
 	});
 
 	$("#back").click(function(){
@@ -248,6 +284,7 @@ $(document).ready(function(){
 	});
 
 });
+
 
 //김영록 맵 초기화
 function init(){
@@ -287,6 +324,7 @@ function init(){
 		Balldx = 5;
 		Balldy = 5;
 		
+		$("#interface").show();// 클리어나 실패 화면 후 인터페이스 다시 나타나게끔 - 송찬우 -
 		$("#item-image-level" + level_count).show();
 	}
 	else if(level_count == 2){
@@ -297,6 +335,7 @@ function init(){
 		Balldx = 7;
 		Balldy = 7;
 		
+		$("#interface").show();// 클리어나 실패 화면 후 인터페이스 다시 나타나게끔 - 송찬우 -
 		$("#item-image-level" + level_count).show();
 	}
 	else if(level_count == 3){
@@ -307,6 +346,7 @@ function init(){
 		Balldx = 9;
 		Balldy = 9;
 		
+		$("#interface").show(); // 클리어나 실패 화면 후 인터페이스 다시 나타나게끔 - 송찬우 -
 		$("#item-image-level" + level_count).show();
 	}
 	else if(level_count == 4){
@@ -323,6 +363,7 @@ function init(){
 		mapBoss();
 		//itemB();
 		//imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
+		$("#interface").show(); // 클리어나 실패 화면 후 인터페이스 다시 나타나게끔 - 송찬우 -
 		$("#item-image-level4").css({"display":"block"})  /*보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우*/
 	}
 	if(level_count != 1){
@@ -467,6 +508,7 @@ function draw(){
 		// console.log("다음단계");
 		item_count = 0;
 		item_total = 0;
+		gameclear();
 		audio.src="./audio/boss_audio.mp3";
 		audio.play();
 		clearInterval(interval); // 보스 맵으로 넘어갈때 공이 비정상적으로 빨라지는 현상 막기 위함 김영록
@@ -502,11 +544,7 @@ function draw(){
 	// 	//movebossattack(); // 보스 공격 움직이는 메소드
 	// 	moveBall();
 	// }
-	
-	
-
 }
-
 //김영록
 function drawPaddle(){
 	context.beginPath();
@@ -864,30 +902,71 @@ function Bskill() {
 	setTimeout(function(){key = false; BS = "N";},3000);
 }
 
-//김영록
+//김영록, 5/26부 추가 및 수정 -송찬우
 function gameover(){ // 게임오버시 나타나는 창
 	clearInterval(interval);
+	$("#interface").hide();// 인터페이스 화면 지우기 - 송찬우-
 	playSound("./audio/witchlaugh_sound.mp3",effvolume);
 	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
 	$("#gameover_div").fadeIn("fast");
 	setTimeout(function(){
 		$("#gameover_div").fadeOut("fast");
 	},2000);
+	$("#container").css({
+		"background-image": "url('img/init_village.jpg')",
+	}); // 게임 오버 시 배경 색 변경
 
 	context.font = 'italic 30pt Arial';
 	context.textAlign = "center";
+	context.fillStyle = "black"; // 글자 색상을 검정색으로 설정
 	context.fillText("Game Over! Press Space Bar", canvas_width/2, canvas_height/2);
 }
 //김영록
-function gameclear(){ // 게임 클리어시 나타나는 창
-	clearInterval(interval);
 
+function gameclear(){ // 게임 클리어시 나타나는 창, 5/26부 추가 및 수정 -송찬우-
+	
+	var background_count=level_count-1
+	clearInterval(interval);
 	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
-	context.font = 'italic 30pt Arial'
-	context.textAlign = "center";
-	context.fillText("Game Clear! Press Space Bar", canvas_width/2, canvas_height/2);
+	$("#interface").hide();// 인터페이스 화면 지우기 - 송찬우-
+	context.font = 'italic 30pt Arial';
+    context.textAlign = "center";
+    context.fillStyle = "white"; // 글자 색상을 검정색으로 설정
+    if (background_count == 1) {
+    	var text1 = "Tip) 점수를 소모하면 스킬을 사용할 수 있어!!";
+        var text2 = "Game Clear! Press Space Bar";
+        var lineHeight = 80; // 줄 간격 설정
+        var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
+
+        context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
+        context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    } else if (background_count == 2) {
+    	var text1 = "Tip) 검정 벽돌에 닿으면 큰일나 알고 있지??";
+    	var text2 = "Game Clear! Press Space Bar";
+    	var lineHeight = 80; // 줄 간격 설정
+    	var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
+
+    	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
+    	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    } else if (background_count == 3) {
+    	var text1 = "Tip) 빨강: 크기 증가, 초록: 보호, 파랑: 자석, 색깔별 스킬 꼭 기억해!!";
+    	var text2 = "Game Clear! Press Space Bar";
+    	var lineHeight = 80; // 줄 간격 설정
+    	var y = canvas_height/2 - lineHeight; // 첫 번째 줄의 y 좌표
+    	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
+    	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    }
+
+
+	$("#container").css({
+		"background-image": "url('img/clear" + background_count + ".jpg')",
+		"transition-property":"background-image",
+		"transition-duration":"5s"
+	}); // 게임 클리어 시 배경 색 변경
+	
 
 }
+
 //김영록 보스 생성
 function makeboss(){
 	if(boss_dx > 0 && boss_x + boss_width >= canvas_width){
@@ -913,6 +992,7 @@ function makebossattack(){
 		boss_blackball_y = 250;
 		boss_blackball_x = boss_x + boss_width/2;
 	}
+
 	context.beginPath();
 	context.arc(boss_blackball_x, boss_blackball_y,boss_blackball_radius, 0, 2.0*Math.PI, false);
 	context.fillStyle = "black";
@@ -921,47 +1001,81 @@ function makebossattack(){
 	boss_blackball_y += boss_blackball_dy;
 }
 
-// 게임 엔딩 페이지(보스 처치시) 제작 김영록
-function gameending(){
-	clearInterval(interval);
-	var ending = 3; // 엔딩 스토리 페이지수
-	$("#interface").hide();
-		// 김영록 추가 수정
-	$("#mycanvas").hide();
-	$("#container").hide();
-	$("#ending").fadeIn();
-	
+// 게임 엔딩 페이지(보스 처치시) 제작 김영록, 5/26 송찬우 추가 
+function gameending() {
+  clearInterval(interval);
+  exscore=score;
 
-	$(".ending_story").each(function(){
-		$(this).click(function(){
-			$(this).fadeOut();
-			playSound("./audio/storychangeaudio.wav",effvolume);
-			ending -= 1;
-			console.log(ending);
-			if(ending <= 0){
-				$("#ending").hide();
-				$("#container").show();
-				$("#button_field").show();
-			}		
-		});
-	});
-	//초기화 작업
+  $("#interface").hide();
+  // 김영록 추가 수정
+  $("#mycanvas").hide();
+  $("#container").hide();
+  $("#ending").fadeIn();
+  console.log("ending");
+  playSound("./audio/storychangeaudio.wav", effvolume);
 
-	boss_dx = 1;
-	boss_blackball_dy = 4;
-	boss_HP = 450; //보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
-	life = 3; // 생명력 원상 복구
-	score = 0; // 점수 원상 복구
-	$("#life h2").text("");
-	for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
-		$("#life h2").append("♥");
-	}
-	$("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
+  function showTextOneByOne(element, text, interval) {
+    var index = 0;
+    var timer = setInterval(function() {
+      if (index < text.length) {
+        element.append(text[index]);
+        index++;
+      } else {
+        clearInterval(timer);
+        $("#ending>p").append("<br>당신의 점수는 <span id='scoreDisplay'></span>점입니다"); // 점수 표시 줄 추가
+        showScore();
+      }
+    }, interval);
+  }
 
-	$(".ending_story").each(function(){
-		$(this).show();
-	})
+  $("#ending").ready(function() {
+    setTimeout(function() {
+      showTextOneByOne($("#ending>p"), "축하합니다! 당신은 마녀를 무찌르고 마을의 색깔 조각을 모두 되찾았습니다!! ", 100);
+    }, 100);
+
+  });
+
+  setTimeout(function(){
+  	$("#ending").hide();
+    $("#container").show();
+    $("#button_field").show();
+    $("#ending>p").empty();
+
+  },20000) // 최대 점수 계산 후 시간 변화 예정
+
+  $("#container").css({
+    "background-image": "url('img/allclear.jpg')"
+  }); 
+
+  function showScore() {
+    var targetScore = exscore;
+    var currentScore = -1; // 현재 점수
+    var scoreInterval = 50; // 점수 변경 간격 (밀리초)
+
+    var scoreTimer = setInterval(function() {
+      if (currentScore < targetScore) {
+        currentScore+=1; // 현재 점수 증가, 최대 점수 계산 후 증가 폭 변화 예정
+        $("#scoreDisplay").text(currentScore); // 점수 표시
+      } else {
+        clearInterval(scoreTimer); // 점수 변경 완료 후 타이머 종료
+      }
+    }, scoreInterval);
+  }
+
+  // 초기화 작업
+
+  boss_dx = 1;
+  boss_blackball_dy = 4;
+  boss_HP = 450; //보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
+  life = 3; // 생명력 원상 복구
+  score=0; 
+  $("#life h2").text("");
+  for (var i = 0; i < life; i++) { // 생명 그림 나타나도록 구현
+    $("#life h2").append("♥");
+  }
+  $("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
 }
+
 
 //김영록
 function mouseMoveHandler(e) {
