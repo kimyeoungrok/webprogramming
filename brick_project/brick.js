@@ -42,7 +42,7 @@ var space = false; // 스페이스바 누름 여부
 var key = false;
 
 var life = 3; // 라이프
-var score = 0; //점수
+var score = 1000; //점수
 var brick_count = 0; //벽돌 개수
 
 var red_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
@@ -87,6 +87,11 @@ var dmg_count = 7;
 
 var interval; //인터벌 객체
 
+//배경음악 오디오 객체 생성
+var audio=new Audio();
+audio.src="audio/audio1.mp3";
+audio.loop=true;
+
 var effvolume=0.5;
 //효과음 재생 함수
 function playSound(source,volume){
@@ -99,11 +104,13 @@ function playSound(source,volume){
 $(document).ready(function(){
 
     change_position($("#container"));
+    change_position($("#ending"));//5.26부 추가 -송찬우-
 	
 	$("#start").click(function(){
 		$("#button_field").hide();
 		$("#stage").show();
 		audio.play();
+		$("#container").css("background-image","url('img/init_village.jpg')"); // 보스 처치 후 다시 시작할때 배경 초기화 - 송찬우-
 	});
 
 	$("#red").click(function(){
@@ -180,10 +187,7 @@ $(document).ready(function(){
 		init();
 	})
 
-	//배경음악 오디오 객체 생성
-	var audio=new Audio();
-	audio.src="audio/audio1.mp3";
-	audio.loop=true;
+
 	var bgmvolume=parseFloat($("#bgm_volume").val())/100;
 	$("#bgm_volume").change(function()	{
 		bgmvolume = parseFloat($("#bgm_volume").val())/100;
@@ -200,7 +204,7 @@ $(document).ready(function(){
 	$("button").click(function(){
 		playSound("audio/buttonclick_sound.mp3",effvolume);
 	})
-	$(".stage_field h1").mouseover(function(){
+	$(".stage_field").mouseover(function(){
 		playSound("audio/button_sound.mp3",effvolume);
 	})
 
@@ -215,6 +219,34 @@ $(document).ready(function(){
 		change_position($(".popup"));
 		$("#guide_div").show();
 	});
+	$("#close").click(function(){
+		$("#guide_div").hide();
+		$("#button_field").show();
+	})
+	$("#next1").click(function(){
+		$("#brickguide").hide();
+		$("#pieceguide").show();
+	});
+	$("#next2").click(function(){
+		$("#pieceguide").hide();
+		$("#skillguide").show();
+	});
+	$("#next3").click(function(){
+		$("#skillguide").hide();
+		$("#bossguide").show();
+	});
+	$("#prev2").click(function(){
+		$("#pieceguide").hide();
+		$("#brickguide").show();
+	});
+	$("#prev3").click(function(){
+		$("#skillguide").hide();
+		$("#pieceguide").show();
+	});
+	$("#prev4").click(function(){
+		$("#bossguide").hide();
+		$("#skillguide").show();
+	});
 
 	$("#story").click(function(){
 
@@ -225,6 +257,7 @@ $(document).ready(function(){
 	$(".story_div").each(function(){
 		$(this).click(function(){
 			$(this).fadeOut();
+			playSound("./audio/storychangeaudio.wav",effvolume);
 		});
 	});
 
@@ -235,6 +268,10 @@ $(document).ready(function(){
 
 	$("#guide_ok").click(function(){
 		$("#guide_div").hide();
+		$("#brickguide").show();
+		$("#pieceguide").hide();
+		$("#skillguide").hide();
+		$("#bossguide").hide();
 		$("#button_field").show();
 	});
 
@@ -247,12 +284,14 @@ $(document).ready(function(){
 		change_position($(".popup"));
 		change_position($("#container")); /* container, stroy_div추가 송찬우 */
 		change_position($(".story_div")); 
+		change_position($("#ending")); //5.26 추가 -송찬우-
 	});
 
 	$("#back").click(function(){
 		$("#stage").hide();
 		$("#button_field").show();
 	});
+
 });
 
 //김영록 맵 초기화
@@ -295,8 +334,8 @@ function init(){
 		itemG();
 		imagemakingG(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
 		// 레벨에 따라 속도 빨라지게
-		Balldx = 7;
-		Balldy = 7;
+		Balldx = 6; //속도 조정 5/27 김영록
+		Balldy = 6; //속도 조정 5/27 김영록
 		
 		$("#item-image-level" + level_count).show();
 	}
@@ -305,8 +344,8 @@ function init(){
 		itemB();
 		imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록) - 송찬우 수정-
 		// 레벨에 따라 속도 빨라지게
-		Balldx = 9;
-		Balldy = 9;
+		Balldx = 7; // 속도 조정 5/27 김영록
+		Balldy = 7; // 속도 조정 5/27 김영록
 		
 		$("#item-image-level" + level_count).show();
 	}
@@ -319,8 +358,8 @@ function init(){
 		// Ball_x = paddle_x + 100;
 		// Ball_y = paddle_y - 50;
 		// 레벨에 따라 속도 빨라지게
-		Balldx = 9;
-		Balldy = 9;
+		Balldx = 7; // 속도 조정 5/27 김영록
+		Balldy = 7; // 속도 조정 5/27 김영록
 		boss_x = 450; // 보스 x좌표 위치
 		boss_y = 100; // 보스 y좌표 위치
 		boss_dx = 1; // 보스 x좌표 속도
@@ -445,17 +484,31 @@ function draw(){
 		start = false;
 		console.log("게임오버" + start + interval);
 		gameover();
+		audio.src="./audio/audio1.mp3"; //게임 오버시 첫bgm으로 변경
+		audio.play();
 	}
-	else if(level_count<3 && item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환 수정(05/20) : 4단계는 먹는 아이템 없음(빛의 조각)
+	else if(level_count == 1 && item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환 수정(05/20) : 4단계는 먹는 아이템 없음(빛의 조각)
 		start = false;
 		console.log("게임클리어" + start + item_count + " : " + item_total);
 		//start = false;
+		life = 3;
 		level_count += 1;
 		gameclear();
-
+		audio.src="./audio/audio2.mp3"; //1단계 클리어시 bgm 변경
+		audio.play();
+	}
+	else if(level_count == 2 && item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환 수정(05/20) : 4단계는 먹는 아이템 없음(빛의 조각)
+		start = false;
+		console.log("게임클리어" + start + item_count + " : " + item_total);
+		life = 3;
+		level_count += 1;
+		gameclear();
+		audio.src="./audio/audio3.mp3"; //2단계 클리어시 bgm 변경
+		audio.play();
 	}
 	else if(level_count == 3 && item_count >= item_total){
 		start = false;
+		life = 3;
 		level_count += 1;
 		Ball_x = paddle_x + 100;
 		Ball_y = paddle_y - 50;
@@ -468,17 +521,23 @@ function draw(){
 		// console.log("다음단계");
 		item_count = 0;
 		item_total = 0;
+		audio.src="./audio/boss_audio.mp3";
+		audio.play();
 		clearInterval(interval); // 보스 맵으로 넘어갈때 공이 비정상적으로 빨라지는 현상 막기 위함 김영록
 		init();
 	}
 	//보스 처치
 	else if(level_count==4 && boss_HP <= 0){
 		start = false;
+		audio.src="./audio/audio4-2.mp3";
+		audio.play();
+		playSound("./audio/stageclearaudio.mp3",effvolume);
 		gameending(); // 엔딩화면
 	}
 	else{
-		drawPaddle();
+		moveBall();
 		drawBall();
+		drawPaddle();
 		if(level_count == 4){
 			// makebrick(); // 검은 벽돌만 생성
 			makeboss(); // 보스 생성 메소드
@@ -486,7 +545,6 @@ function draw(){
 		}
 		makebrick();
 		makeitem();
-		moveBall();
 	}
 
 	// else if(level_count == 4){ // 보스맵 생성
@@ -573,7 +631,7 @@ function makebrick(){
 		}
 		//안깨진는 블록 추가
 		else if(brick[i]==4){
-			// context.fillStyle = "black";
+			// context.fillStyle = "#8041D9";
 			// context.fillRect(brick[i+1],brick[i+2],brick_width,brick_height); 
 			// context.closePath();
             context.drawImage(unbreak,brick[i+1],brick[i+2],brick_width,brick_height);
@@ -679,7 +737,7 @@ function moveBall(){
 		}
 		//바닥에 떨어졌을때
 		else if(Ball_y - Ball_radius > canvas_height){
-			start = !start;
+			start = false;
 			life -= 1;
 			$("#life h2").text("");
 			for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
@@ -846,7 +904,7 @@ function moveBall(){
 						//아이템 그림이 선명해지는 작업 추가 김영록
 						$(".level" + level_count + "-image" + ">" + "#" + "img" + item_count).css("opacity","1");
 						if(item_count >= item_total){
-							start = !start;
+							start = false;
 						}
 					}
 				}
@@ -861,7 +919,7 @@ function moveBall(){
 					//아이템 그림이 선명해지는 작업 추가 김영록
 					$(".level" + level_count + "-image" + ">" + "#" + "img" + item_count).css("opacity","1");
 					if(item_count >= item_total){
-						start = !start;
+						start = false;
 					}
 				}
 			}
@@ -961,12 +1019,47 @@ function gameover(){ // 게임오버시 나타나는 창
 	context.fillText("게임 오버 다시 시작하려면 스페이스바 키를 눌러주세요!", canvas_width/6-150, canvas_height/2);
 }
 //김영록
-function gameclear(){ // 게임 클리어시 나타나는 창
+function gameclear(){ // 게임 클리어시 나타나는 창, 5/26부 추가 및 수정 -송찬우-
+	
+	var background_count=level_count-1
 	clearInterval(interval);
-
 	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
-	context.font = 'italic 30pt Arial'
-	context.fillText("게임클리어! 다음단계로 넘어가려면 스페이스바 를 눌러주세요!", canvas_width/6-150, canvas_height/2);
+	$("#interface").hide();// 인터페이스 화면 지우기 - 송찬우-
+	context.font = 'italic 30pt Arial';
+    context.textAlign = "center";
+    context.fillStyle = "white"; // 글자 색상을 검정색으로 설정
+    if (background_count == 1) {
+    	var text1 = "Tip) 점수를 소모하면 스킬을 사용할 수 있어!!";
+        var text2 = "Game Clear! Press Space Bar";
+        var lineHeight = 80; // 줄 간격 설정
+        var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
+
+        context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
+        context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    } else if (background_count == 2) {
+    	var text1 = "Tip) 검정 벽돌에 닿으면 큰일나 알고 있지??";
+    	var text2 = "Game Clear! Press Space Bar";
+    	var lineHeight = 80; // 줄 간격 설정
+    	var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
+
+    	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
+    	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    } else if (background_count == 3) {
+    	var text1 = "Tip) 빨강: 크기 증가, 초록: 보호, 파랑: 자석, 색깔별 스킬 꼭 기억해!!";
+    	var text2 = "Game Clear! Press Space Bar";
+    	var lineHeight = 80; // 줄 간격 설정
+    	var y = canvas_height/2 - lineHeight; // 첫 번째 줄의 y 좌표
+    	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
+    	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    }
+
+
+	$("#container").css({
+		"background-image": "url('img/clear" + background_count + ".jpg')",
+		"transition-property":"background-image",
+		"transition-duration":"5s"
+	}); // 게임 클리어 시 배경 색 변경
+	
 }
 
 //김영록 보스 생성 	//김시현 보스 체력 이펙트 추가 및 위치 조정
@@ -1018,43 +1111,79 @@ function makebossattack(){
 	context.closePath();
 	boss_blackball_y += boss_blackball_dy;
 }
-// 게임 엔딩 페이지(보스 처치시) 제작 김영록
-function gameending(){
-	clearInterval(interval);
-	var ending = 3; // 엔딩 스토리 페이지수
-	$("#interface").hide();
-		// 김영록 추가 수정
-	$("#mycanvas").hide();
-	$("#container").hide();
-	$("#ending").fadeIn();
-	
+// 게임 엔딩 페이지(보스 처치시) 제작 김영록, 5/26 송찬우 추가 
+function gameending() {
+  clearInterval(interval);
+  exscore=score;
 
-	$(".ending_story").each(function(){
-		$(this).click(function(){
-			$(this).fadeOut();
-			ending -= 1;
-			console.log(ending);
-			if(ending <= 0){
-				$("#ending").hide();
-				$("#container").show();
-				$("#button_field").show();
-				
-			}		
-		});
-	});
-	//초기화 작업
+  $("#interface").hide();
+  // 김영록 추가 수정
+  $("#mycanvas").hide();
+  $("#container").hide();
+  $("#ending").fadeIn();
+  console.log("ending");
+  playSound("./audio/storychangeaudio.wav", effvolume);
 
-	boss_dx = 1;
-	boss_blackball_dy = 4;
-	boss_HP = 450; //보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
-	life = 3; // 생명력 원상 복구
-	score = 0; // 점수 원상 복구
-	
-	$("#life h2").text("");
-	for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
-		$("#life h2").append("♥");
-	}
-	$("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
+  function showTextOneByOne(element, text, interval) {
+    var index = 0;
+    var timer = setInterval(function() {
+      if (index < text.length) {
+        element.append(text[index]);
+        index++;
+      } else {
+        clearInterval(timer);
+        $("#ending>p").append("<br>당신의 점수는 <span id='scoreDisplay'></span>점입니다"); // 점수 표시 줄 추가
+        showScore();
+      }
+    }, interval);
+  }
+
+  $("#ending").ready(function() {
+    setTimeout(function() {
+      showTextOneByOne($("#ending>p"), "축하합니다! 당신은 마녀를 무찌르고 마을의 색깔 조각을 모두 되찾았습니다!! ", 100);
+    }, 100);
+
+  });
+
+  setTimeout(function(){
+  	$("#ending").hide();
+    $("#container").show();
+    $("#button_field").show();
+    $("#ending>p").empty();
+
+  },20000) // 최대 점수 계산 후 시간 변화 예정
+
+  $("#container").css({
+    "background-image": "url('img/allclear.jpg')"
+  }); 
+
+  function showScore() {
+    var targetScore = exscore;
+    var currentScore = -1; // 현재 점수
+    var scoreInterval = 50; // 점수 변경 간격 (밀리초)
+
+    var scoreTimer = setInterval(function() {
+      if (currentScore < targetScore) {
+        currentScore+=1; // 현재 점수 증가, 최대 점수 계산 후 증가 폭 변화 예정
+        $("#scoreDisplay").text(currentScore); // 점수 표시
+      } else {
+        clearInterval(scoreTimer); // 점수 변경 완료 후 타이머 종료
+      }
+    }, scoreInterval);
+  }
+
+  // 초기화 작업
+
+  boss_dx = 1;
+  boss_blackball_dy = 4;
+  boss_HP = 450; //보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
+  life = 3; // 생명력 원상 복구
+  score=0; 
+  $("#life h2").text("");
+  for (var i = 0; i < life; i++) { // 생명 그림 나타나도록 구현
+    $("#life h2").append("♥");
+  }
+  $("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
 }
 
 //김영록
@@ -1081,106 +1210,158 @@ function mouseMoveHandler(e) {
 
 //김영록
 function mapR(){ //1단계 벽돌배치
-	brick_x = 450;
+	brick_x = 120;
 	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 80;
+
+	brick_x = 380;
+	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 80;
+
+	brick_x = 640;
+	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 450;
-	brick_y = 140;
+
+	brick_x = 890;
+	brick_y = 30;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 200;
+
+	brick_x = 10;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 250;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 510;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 770;
+	brick_y = 90;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 120;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 380;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 880;
+	brick_y = 150;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 10;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 270;
+
+	brick_x = 250;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 340;
+
+	brick_x = 510;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 200;
+
+	brick_x = 770;
+	brick_y = 210;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 630;
-	brick_y = 250;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 680;
-	brick_y = 300;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
+	
 }
 //김영록
 function itemR(){ // 1단계 아이템 배치
-	item_x = 300;
-	item_y = 20;
+	item_x = 150;
+	item_y = 90;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 480;
-	item_y = 80;
+	item_x = 280;
+	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 700;
-	item_y = 100;
+	item_x = 410;
+	item_y = 90;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 480;
-	item_y = 300;
+	item_x = 540;
+	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 250;
-	item_y = 330;
+	item_x = 670;
+	item_y = 90;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 700;
-	item_y = 400;
+	item_x = 800;
+	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1189,198 +1370,293 @@ function itemR(){ // 1단계 아이템 배치
 function mapG(){ //2단계 벽돌배치
 	brick_x = 450;
 	brick_y = 30;
-	brick.push(1);
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 80;
-	brick.push(2);
+
+	brick_x = 360;
+	brick_y = 60;
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 80;
-	brick.push(1);
+
+	brick_x = 360;
+	brick_y = 90;
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+
+	brick_x = 540;
+	brick_y = 60;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 540;
+	brick_y = 90;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
 	brick_x = 450;
-	brick_y = 140;
+	brick_y = 120;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 150;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 180;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 260;
+	brick_y = 120;
 	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
-	brick_y = 200;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 320;
-	brick_y = 270;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 320;
-	brick_y = 340;
+
+	brick_x = 260;
+	brick_y = 150;
 	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 580;
-	brick_y = 200;
-	brick.push(4);
+
+	brick_x = 260;
+	brick_y = 180;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 630;
-	brick_y = 250;
-	brick.push(4);
+
+	brick_x = 640;
+	brick_y = 120;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 680;
-	brick_y = 300;
-	brick.push(4);
+
+	brick_x = 640;
+	brick_y = 150;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 180;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 360;
+	brick_y = 210;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 240;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 550;
+	brick_y = 210;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 260;
+	brick_y = 440;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 450;
+	brick_y = 440;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = 640;
+	brick_y = 440;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	
 }
 //김영록
 function itemG(){ //2단계 아이템 배치
-	item_x = 300;
-	item_y = 20;
+	item_x = 460;
+	item_y = 50;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 480;
-	item_y = 80;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 700;
-	item_y = 100;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 480;
-	item_y = 300;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 250;
-	item_y = 330;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 700;
-	item_y = 400;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 30;
-	item_y = 400;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 800;
-	item_y = 400;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 30;
+	item_x = 380;
 	item_y = 150;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
-}
 
+	item_x = 560;
+	item_y = 150;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 280;
+	item_y = 70;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 660;
+	item_y = 70;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 380;
+	item_y = 10;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 560;
+	item_y = 10;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 380;
+	item_y = 380;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 560;
+	item_y = 380;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+}
 function mapB(){ //3단계 벽돌배치
 	brick_x = 450;
-	brick_y = 30;
+	brick_y = 10;
 	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
-	brick_y = 80;
+	brick_y = 50;
 	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 580;
-	brick_y = 80;
+	brick_y = 50;
 	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 
 	brick_x = 450;
-	brick_y = 140;
-	brick.push(1);
+	brick_y = 150;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
-	brick_y = 200;
-	brick.push(1);
+	brick_y = 250;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 100;
 	brick_y = 270;
-	brick.push(1);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 400;
-	brick_y = 340;
-	brick.push(1);
+	brick_y = 360;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 580;
 	brick_y = 200;
-	brick.push(1);
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 800;
-	brick_y = 250;
-	brick.push(1);
+	brick_y = 180;
+	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 680;
+	brick_x = 880;
+	brick_y = 420;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 590;
+	brick_y = 380;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 220;
+	brick_y = 420;
+	brick.push(2);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 780;
 	brick_y = 300;
-	brick.push(1);
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-
-
-	brick_x = 100;
+	brick_x = 80;
 	brick_y = 150;
-	brick.push(1);
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
@@ -1388,21 +1664,21 @@ function mapB(){ //3단계 벽돌배치
 //김영록
 function itemB(){ //2단계 아이템 배치
 	item_x = 300;
-	item_y = 20;
+	item_y = 120;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
 	item_x = 480;
-	item_y = 80;
+	item_y = 50;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
 	item_total += 1;
 
 	item_x = 700;
-	item_y = 100;
+	item_y = 200;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1437,7 +1713,7 @@ function itemB(){ //2단계 아이템 배치
 	item_total += 1;
 
 	item_x = 800;
-	item_y = 400;
+	item_y = 350;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1471,7 +1747,6 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_y);
 	item_total += 1;
 } 
-
 function mapBoss(){ //보스 단계 벽돌 배치 테스트 위해서 일반 벽돌로 설정 나중에 검은 벽돌로 바꾸는 것을 권장
 	brick_x = 450;
 	brick_y = 300;

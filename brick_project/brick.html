@@ -7,74 +7,8 @@
 	<script src="brick.js"></script>
 </head>
 <body>
-	<!-- 인터페이스 영역 변경 위해 수정 -송찬우
-	<div id="interface"> 
-		<div class="interfaceMenu" id="score">
-			<h1>Score</h1>
-			<h2>0</h2>
-		</div>
-		<div class="interfaceMenu" id="life">
-			<h1>Life</h1>
-			<h2>♥♥♥</h2>
-		</div>
-		<div class="interfaceMenu" id="skill">
-			<h1>Skills</h1>
-		</div>
-		<div class="interfaceMenu" id="item-image-level1">
-			<div>
-				<div class = 'level1-image'>
-					<img src="ruby_001.png" id = "img1">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_002.png"id = "img2">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_003.png"id = "img3">
-				</div>
-			</div>
-			<div>
-				<div class = 'level1-image'>
-					<img src="ruby_004.png"id = "img4">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_005.png"id = "img5">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_006.png"id = "img6">
-				</div>
-			</div>
-		</div>
-	</div>
--->
-	
 	<div id="container">
 		<canvas id="mycanvas" width="1000px" height="620px"></canvas>
-		<!--루비 이미지 출력 부분 김영록-->
-		<!-- <div id = "item-image-level1">
-			<div>
-				<div class = 'level1-image'>
-					<img src="ruby_001.png" id = "img1">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_002.png"id = "img2">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_003.png"id = "img3">
-				</div>
-			</div>
-			<div>
-				<div class = 'level1-image'>
-					<img src="ruby_004.png"id = "img4">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_005.png"id = "img5">
-				</div>
-				<div class = 'level1-image'>
-					<img src="ruby_006.png"id = "img6">
-				</div>
-			</div>
-			
-		</div> -->
 
 		<div id="interface">
 		<div class="interfaceMenu" id="score">
@@ -215,35 +149,23 @@
 
 
 		<div id="stage">
-			<div id="back" class="stage_field">
-				<h1>⇦</h1>
-			</div>
 			<div id="red" class="stage_field">
-				<h1>Ⓡ</h1>
+				<img src="img/red.png">
 			</div>
 			<div id="green" class="stage_field">
-				<h1>Ⓖ</h1>
+				<img src="img/green.png">
 			</div>
 			<div id="blue" class="stage_field">
-				<h1>Ⓑ</h1>
+				<img src="img/blue.png">
 			</div>
 			<div id="boss" class="stage_field">
-				<h1>???</h1>
+				<img src="img/witch_castle.png">
+			</div>
+			<div id="back" class="stage_field">
+				<img src="img/x_img.png">
 			</div>
 			
 		</div>
-
-		<!-- <div id = "scoreboard">
-			<table>
-				<th>Ranking</th>
-				<th>score</th>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-		</div> -->
-
 
 		<div id="setting_div" class="popup">
 			<h1>환경 설정</h1>
@@ -259,13 +181,14 @@
 		</div>
 
 		<div id="guide_div" class="popup">
+			<!--
 			<h1>게임방법</h1>
 			<div class="guide_list">
 				<ul>
 				
 				<li>   1. 회색 벽돌: 일반 벽돌, 내구도가 다할 시 파괴됨 (내구도는 R스킬/공 충돌에 의해 깎임, 내구도는 추후 조정)</li>
                 <li>   2. 진한 회색 벽돌: 충돌 시 회색 벽돌로 변경</li>
-                <li>   3. 검정 벽돌: 파괴 불가(R스킬로 파괴 가능?), 공과 충돌 시 공이 어두워짐(생명력 감소)</li>
+                <li>   3. 검정 벽돌: 파괴 불가, 공과 충돌 시 공이 어두워짐(생명력 감소)</li>
                 <li>   4. RGB 벽돌: 공과 충돌 시 파괴되며, 해당 빛을 흡수하여 스킬을 1회 사용할 수 있게 됨</li>
                 <li>   5. (미정)R 장애물 벽돌: R 스킬을 사용한 상태에서만 파괴 가능</li>
                 <li>   2. 스킬: 키 입력으로 사용, 사용 시 가능 횟수 소진</li>
@@ -276,6 +199,57 @@
                 </ul>
 			</div>
 			<button id="guide_ok">확인</button>
+			-->
+			<div id="brickguide" class="guide_list">
+				
+				<h1>벽돌</h1>
+				<h2>일반 벽돌</h2>
+				<h3>공에 1번 맞으면 깨지는 벽돌</h3>
+				<h2>회색 벽돌</h2>
+				<h3>공에 2번 맞아야 깨지는 벽돌</h3>
+				<h2>검정 벽돌</h2>
+				<h3>깨지지 않는 벽돌, 공에 닿으면 생명 1감소</h3>
+				<button id="close">닫기</button>
+				<button id="next1">⇨</button>
+			</div>
+
+			<div id="pieceguide" class="guide_list">
+				
+				<h1>스테이지 별 빛의 조각</h1>
+				<h2>R 스테이지</h2>
+				<h3>R 조각 6개 모으면 클리어</h3>
+				<h2>G 스테이지</h2>
+				<h3>G 조각 9개 모으면 클리어</h3>
+				<h2>B 스테이지</h2>
+				<h3>B 조각 12개 모으면 클리어</h3>
+				<button id="prev2">⇦</button>
+				<button id="next2">⇨</button>
+			</div>
+
+			<div id="skillguide" class="guide_list">
+				
+				<h1>스킬(R, G, B 키를 눌러 사용)</h1>
+				<h2>R 스킬</h2>
+				<h3>빛의 조각 획득 범위 증가(점수 50소요)</h3>
+				<h2>G 스킬</h2>
+				<h3>검정 벽돌에 닿아도 생명 감소 X(점수 100소요)</h3>
+				<h2>B 스킬</h2>
+				<h3>벽돌 뚫기 가능(점수 100소요)</h3>
+				<button id="prev3">⇦</button>
+				<button id="next3">⇨</button>
+			</div>
+
+			<div id="bossguide" class="guide_list">
+				<h1>보스</h1>
+				<h2>보스 공격</h2>
+				<h3>보스가 이동하면서 검은 구체 발사</h3>
+				<h2>공격 피격시</h2>
+				<h3>공격 피격시 2단계에 걸쳐 판 길이 감소</h3>
+				<h2>광폭화</h2>
+				<h3>HP가 일정 수치 이하로 내려가면 보스 이동속도 증가</h3>
+				<button id="prev4">⇦</button>
+				<button id="guide_ok">확인</button>
+			</div>
 		</div>
 
 		<div id="story_div3" class="story_div">
@@ -302,21 +276,15 @@
 
 		</div>
 
-		
-
-	</div>
-	<div id = ending>
-		<!--김영록 엔딩 스토리 추가 -->
-		<div class="ending_story" id="end1">
-			<p>엔딩 스토리1</p>
-		</div>
-		<div class="ending_story" id="end2">
-			<p>엔딩 스토리2</p>
-		</div>
-		<div class="ending_story" id="end3">
-			<p>엔딩 스토리3</p>
-		</div>
-	    
+		<div id="gameover_div">
 	    </div>
+	
+	</div>
+
+	<div id="ending"> <!--김영록 엔딩 스토리 추가, 5.26 송찬우 변경 -->
+		<p><br><br><br><br><br><br>
+		</p>
+	</div>
+
 </body>
 
