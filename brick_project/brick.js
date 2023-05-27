@@ -66,9 +66,9 @@ var boss_y = 100; // 보스 y좌표 위치
 var boss_dx = 1; // 보스 x좌표 속도
 //보스 이미지 생성
 var bossImage1 = new Image();
-bossImage1.src = "img/boss1.png"
+bossImage1.src = "img/newwitch2.png"
 var bossImage2 = new Image();
-bossImage2.src = "img/boss2.png";
+bossImage2.src = "img/newwitch1.png";
 var boss_width = 150; //보스 크기
 var boss_height = 150; //보스 크기
 
