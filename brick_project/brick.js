@@ -210,6 +210,34 @@ $(document).ready(function(){
 		change_position($(".popup"));
 		$("#guide_div").show();
 	});
+	$("#close").click(function(){
+		$("#guide_div").hide();
+		$("#button_field").show();
+	})
+	$("#next1").click(function(){
+		$("#brickguide").hide();
+		$("#pieceguide").show();
+	});
+	$("#next2").click(function(){
+		$("#pieceguide").hide();
+		$("#skillguide").show();
+	});
+	$("#next3").click(function(){
+		$("#skillguide").hide();
+		$("#bossguide").show();
+	});
+	$("#prev2").click(function(){
+		$("#pieceguide").hide();
+		$("#brickguide").show();
+	});
+	$("#prev3").click(function(){
+		$("#skillguide").hide();
+		$("#pieceguide").show();
+	});
+	$("#prev4").click(function(){
+		$("#bossguide").hide();
+		$("#skillguide").show();
+	});
 
 	$("#story").click(function(){
 
@@ -231,6 +259,10 @@ $(document).ready(function(){
 
 	$("#guide_ok").click(function(){
 		$("#guide_div").hide();
+		$("#brickguide").show();
+		$("#pieceguide").hide();
+		$("#skillguide").hide();
+		$("#bossguide").hide();
 		$("#button_field").show();
 	});
 
@@ -898,9 +930,9 @@ function gameclear(){ // 게임 클리어시 나타나는 창, 5/26부 추가 �
 	$("#interface").hide();// 인터페이스 화면 지우기 - 송찬우-
 	context.font = 'italic 30pt Arial';
     context.textAlign = "center";
-    context.fillStyle = "white"; // 글자 색상을 검정색으로 설정
+    context.fillStyle = "white"; // 글자 색상을 하얀색으로 설정
     if (background_count == 1) {
-    	var text1 = "Tip) 점수를 소모하면 스킬을 사용할 수 있어!!";
+    	var text1 = "Tip) 점수를 소모하면 스킬을 사용할 수 있습니다.";
         var text2 = "Game Clear! Press Space Bar";
         var lineHeight = 80; // 줄 간격 설정
         var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
@@ -908,7 +940,7 @@ function gameclear(){ // 게임 클리어시 나타나는 창, 5/26부 추가 �
         context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
         context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
     } else if (background_count == 2) {
-    	var text1 = "Tip) 검정 벽돌에 닿으면 큰일나 알고 있지??";
+    	var text1 = "Tip) 검정 벽돌에 닿지 않도록 해야 합니다.";
     	var text2 = "Game Clear! Press Space Bar";
     	var lineHeight = 80; // 줄 간격 설정
     	var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
@@ -916,7 +948,7 @@ function gameclear(){ // 게임 클리어시 나타나는 창, 5/26부 추가 �
     	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
     	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
     } else if (background_count == 3) {
-    	var text1 = "Tip) 빨강: 크기 증가, 초록: 보호, 파랑: 자석, 색깔별 스킬 꼭 기억해!!";
+    	var text1 = "Tip) R스킬: 크기 증가, G스킬: 보호, B스킬: 파괴력 증가";
     	var text2 = "Game Clear! Press Space Bar";
     	var lineHeight = 80; // 줄 간격 설정
     	var y = canvas_height/2 - lineHeight; // 첫 번째 줄의 y 좌표
@@ -1008,7 +1040,7 @@ function gameending() {
     $("#button_field").show();
     $("#ending>p").empty();
 
-  },20000) // 최대 점수 계산 후 시간 변화 예정
+  },15000) // 최대 점수 계산 후 시간 변화 예정
 
   $("#container").css({
     "background-image": "url('img/allclear.jpg')"
@@ -1021,7 +1053,7 @@ function gameending() {
 
     var scoreTimer = setInterval(function() {
       if (currentScore < targetScore) {
-        currentScore+=1; // 현재 점수 증가, 최대 점수 계산 후 증가 폭 변화 예정
+        currentScore+=25; // 현재 점수 증가, 최대 점수 계산 후 2310점 예상 증가 폭 변화 예정
         $("#scoreDisplay").text(currentScore); // 점수 표시
       } else {
         clearInterval(scoreTimer); // 점수 변경 완료 후 타이머 종료

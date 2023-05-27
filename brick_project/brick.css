@@ -187,24 +187,63 @@ button:hover{
 }
 #guide_div{
 	display:none;
-	padding:30px 50px;
 }
 .guide_list{
-	
+	width:500px;
+	height:400px;
 	overflow:hidden;
-	margin:25px 0px;
+}
+.guide_list h2{
+	width:150px;
+	height: 100px;
+	line-height:100px;
+	float:left;
+}
+.guide_list h3{
+	width:350px;
+	height:100px;
+	line-height:100px;
+	float:left;
+}
+#pieceguide{
+	display:none;
+}
+#skillguide{
+	display:none;
+}
+#bossguide{
+	display:none;
+}
+
+#brickguide h2:nth-of-type(1){
+   color:white;
+}
+#brickguide h2:nth-of-type(2){
+   color:darkgray;
+}
+#brickguide h2:nth-of-type(3){
+   color:black;
+}
+#skillguide h2:nth-of-type(1),#pieceguide h2:nth-of-type(1){
+   color:red;
+}
+#skillguide h2:nth-of-type(2),#pieceguide h2:nth-of-type(2){
+   color:green;
+}
+#skillguide h2:nth-of-type(3),#pieceguide h2:nth-of-type(3){
+   color:blue;
 }
 
 #stage{
 	display:none;
-	margin:300px 0px 0px 0px; /*김영록 수정 margintop 0 -> 500으로 수정(가운데 배치)*/
+	margin:0px 0px 0px 0px; /*김영록 수정 margintop 0 -> 500으로 수정(가운데 배치)*/
 	position:relative;
 	overflow:hidden;
 }
 .stage_field{
 	float:left;
-	margin-top:210px;
-	width:200px;
+	margin-top:460px;
+	width:240px;
 
 }
 
@@ -213,12 +252,12 @@ button:hover{
 }
 
 #back{
-	margin-top:330px;
+	margin-top:5px;
 	float:left;
-	width:90px;
+	width:30px;
 }
 #boss{
-	margin-top:25px;
+	margin-top:275px;
 }
 
 #red>img{
@@ -234,8 +273,8 @@ button:hover{
 	height:120px;
 }
 #back>img{
-	width:70px;
-	height:70px;
+	width:30px;
+	height:30px;
 }
 #boss>img{
 	width:140px;
