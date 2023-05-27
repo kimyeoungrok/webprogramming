@@ -1317,22 +1317,23 @@ function itemG(){ //2단계 아이템 배치
 function mapB(){ //3단계 벽돌배치
 	brick_x = 450;
 	brick_y = 30;
-	brick.push(1);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 320;
 	brick_y = 80;
-	brick.push(1);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 580;
 	brick_y = 80;
-	brick.push(1);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+
 	brick_x = 450;
 	brick_y = 140;
 	brick.push(1);
@@ -1345,13 +1346,13 @@ function mapB(){ //3단계 벽돌배치
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
+	brick_x = 100;
 	brick_y = 270;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 320;
+	brick_x = 400;
 	brick_y = 340;
 	brick.push(1);
 	brick.push(brick_x);
@@ -1363,7 +1364,7 @@ function mapB(){ //3단계 벽돌배치
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 630;
+	brick_x = 800;
 	brick_y = 250;
 	brick.push(1);
 	brick.push(brick_x);
@@ -1371,6 +1372,14 @@ function mapB(){ //3단계 벽돌배치
 	brick_count += 1;
 	brick_x = 680;
 	brick_y = 300;
+	brick.push(1);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+
+	brick_x = 100;
+	brick_y = 150;
 	brick.push(1);
 	brick.push(brick_x);
 	brick.push(brick_y);
@@ -1400,7 +1409,7 @@ function itemB(){ //2단계 아이템 배치
 	item_total += 1;
 
 	item_x = 480;
-	item_y = 300;
+	item_y = 250;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1420,7 +1429,7 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 30;
+	item_x = 100;
 	item_y = 400;
 	item_array.push(1);
 	item_array.push(item_x);
@@ -1435,7 +1444,7 @@ function itemB(){ //2단계 아이템 배치
 	item_total += 1;
 
 	item_x = 30;
-	item_y = 150;
+	item_y = 50;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1448,8 +1457,8 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 800;
-	item_y = 300;
+	item_x = 900;
+	item_y = 20;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1465,23 +1474,50 @@ function itemB(){ //2단계 아이템 배치
 
 function mapBoss(){ //보스 단계 벽돌 배치 테스트 위해서 일반 벽돌로 설정 나중에 검은 벽돌로 바꾸는 것을 권장
 	brick_x = 450;
-	brick_y = 30;
-	brick.push(1);
-	brick.push(brick_x);
-	brick.push(brick_y);
-	brick_count += 1;
-	brick_x = 200;
 	brick_y = 300;
-	brick.push(1);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 800;
+	brick_x = 50;
 	brick_y = 300;
-	brick.push(1);
+	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+	brick_x = 850;
+	brick_y = 300;
+	brick.push(3);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	// brick_x = 250;
+	// brick_y = 30;
+	// brick.push(3);
+	// brick.push(brick_x);
+	// brick.push(brick_y);
+	// brick_count += 1;
+	// brick_x = 650;
+	// brick_y = 30;
+	// brick.push(3);
+	// brick.push(brick_x);
+	// brick.push(brick_y);
+	// brick_count += 1;
+
+
+	// brick_x = 200;
+	// brick_y = 300;
+	// brick.push(1);
+	// brick.push(brick_x);
+	// brick.push(brick_y);
+	// brick_count += 1;
+	// brick_x = 800;
+	// brick_y = 300;
+	// brick.push(1);
+	// brick.push(brick_x);
+	// brick.push(brick_y);
+	// brick_count += 1;
 	/*brick_x = 450;
 	brick_y = 500;
 	brick.push(1);
