@@ -13,7 +13,7 @@
 		<div id="interface">
 		<div class="interfaceMenu" id="score">
 			<h1>Score</h1>
-			<h2>0</h2>
+			<h2>0</h2><!--score가 1000으로 초기화되어 있어 수정,다시 0으로 수정 송찬우 5.28-->
 		</div>
 		<div class="interfaceMenu" id="life">
 			<h1>Life</h1>
@@ -141,9 +141,9 @@
 		
 		<div id="button_field">
 			<button id="start">게임 시작</button>
-			<button id="setting">환경 설정</button>
-			<button id="guide">게임방법</button> <!-- 가이드보다 적절한 단어인 것 같아 변경 -->
+			<button id="guide">게임방법</button>
 			<button id="story">스토리</button>
+			<button id="setting">환경 설정</button>
 		</div>
 
 
@@ -180,35 +180,27 @@
 			<button id="setting_ok">확인</button>
 		</div>
 
-		<div id="guide_div" class="popup">
-			<!--
-			<h1>게임방법</h1>
-			<div class="guide_list">
-				<ul>
-				
-				<li>   1. 회색 벽돌: 일반 벽돌, 내구도가 다할 시 파괴됨 (내구도는 R스킬/공 충돌에 의해 깎임, 내구도는 추후 조정)</li>
-                <li>   2. 진한 회색 벽돌: 충돌 시 회색 벽돌로 변경</li>
-                <li>   3. 검정 벽돌: 파괴 불가, 공과 충돌 시 공이 어두워짐(생명력 감소)</li>
-                <li>   4. RGB 벽돌: 공과 충돌 시 파괴되며, 해당 빛을 흡수하여 스킬을 1회 사용할 수 있게 됨</li>
-                <li>   5. (미정)R 장애물 벽돌: R 스킬을 사용한 상태에서만 파괴 가능</li>
-                <li>   2. 스킬: 키 입력으로 사용, 사용 시 가능 횟수 소진</li>
-                <li>   1. R: n초 간 충돌 시 공격력 상승 / (미정)n초 간 빨간 장애물 벽돌 파괴 가능</li>
-                <li>   2. G: n초 간 검정 벽돌과 충돌해도 생명력이 소진되지 않음</li>
-                <li>   3. B: n초 간 주변 특정 범위 내의 빛 조각 획득 가능</li>
-                
-                </ul>
-			</div>
-			<button id="guide_ok">확인</button>
-			-->
+		<div id="guide_div" class="popup"> <!-- 벽돌 안내 수정 -5.28 송찬우-->
 			<div id="brickguide" class="guide_list">
 				
-				<h1>벽돌</h1>
-				<h2>일반 벽돌</h2>
+				<h1>벽돌</h1>			
+				<div>
+					<img src="img/white.png">
+				</div>					
 				<h3>공에 1번 맞으면 깨지는 벽돌</h3>
-				<h2>회색 벽돌</h2>
+				<div>
+					<img src="img/gray.png">
+				</div>	
 				<h3>공에 2번 맞아야 깨지는 벽돌</h3>
-				<h2>검정 벽돌</h2>
+				<div>
+					<img src="img/unbreak.png">
+				</div>
+				<h3>깨지지 않는 벽돌</h3>	
+			    <div>
+			    	<img src="img/black.jpg">
+			    </div>	
 				<h3>깨지지 않는 벽돌, 공에 닿으면 생명 1감소</h3>
+				
 				<button id="close">닫기</button>
 				<button id="next1">⇨</button>
 			</div>

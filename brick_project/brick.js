@@ -2,8 +2,6 @@
 var canvas; // 캔버스 객체
 var context; // context
 
-// var paddle_width = 200; // paddle 너비
-// var paddle_height = 30; // paddle 높이
 var paddle_width = [200, 150, 100]; // paddle 너비
 var paddle_height = 30; // paddle 높이
 var paddleC = ["white", "gray", "black"];
@@ -59,10 +57,6 @@ var item_y; // 아이템 y위치
 var item_array = []; //아이템 위치 저장
 var item_count = 0; //먹은 아이템 개수
 var item_total = 0; //아이템 총 개수
-
-// var Rnum = 100; //김시현 색깔별 스킬 횟수 ----------------- 추후 조정
-// var Gnum = 100;
-// var Bnum = 100;
 
 var level_count; // 레벨을 나타내는 변수
 
@@ -188,7 +182,6 @@ $(document).ready(function(){
 		init();
 	})
 
-
 	var bgmvolume=parseFloat($("#bgm_volume").val())/100;
 	$("#bgm_volume").change(function()	{
 		bgmvolume = parseFloat($("#bgm_volume").val())/100;
@@ -214,7 +207,7 @@ $(document).ready(function(){
 	    change_position($(".popup"));
 		$("#setting_div").show();
 	});
-
+	
 	$("#guide").click(function(){
 		$("#button_field").hide();
 		change_position($(".popup"));
@@ -376,6 +369,11 @@ function init(){
 		//imagemakingB(); // 게임 클리어 조건 이미지 구현(게임 정보 란에있는 루비그림 투명화 작업 김영록)
 		$("#interface").show();
 		$("#item-image-level4").css({"display":"block"})  /*보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우*/
+		
+		$("#life h2").text("");
+		for(var i=0; i<life; i++) { // 블루에서 보스 넘어갈 때 하트 세개로 표시가 안돼서 추가 -송찬우-
+			$("#life h2").append("♥");
+		}
 	}
 	if(level_count != 1){
 		for(var i=1; i<level_count; i++){ //RGB블록 활성화 김영록
@@ -407,7 +405,6 @@ function imagemakingB(){
 	}
 }
 
-//김영록
 function draw(){
 	context.clearRect(0,0,canvas_width,canvas_height);
 	//김영록(05/20) 게임오버, 클리어시 키 값 안먹히는 현상 고치기 위해 위 코드의 위치를 위로 올렸음
@@ -421,7 +418,7 @@ function draw(){
 			else if(k.keyCode == 27) {
 					start = false;
 					life = 3; // 라이프
-					score = 0; //점수 초기화
+					score = 0; //점수 초기화 5/28 김영록 수정
 					$("#life h2").text("");
 					for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
 						$("#life h2").append("♥");
@@ -455,9 +452,8 @@ function draw(){
 					}
 					$("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
 					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
-					
 				}
-				else if(level_count != 4 && item_count >= item_total){
+				else if(level_count != 4&&item_count >= item_total){
 					start = false;
 					//볼 위치 수정
 					// Ball_x = paddle_x + 100;
@@ -469,11 +465,15 @@ function draw(){
 					item_count = 0;
 					item_total = 0;
 					init();
+					
 					$("#life h2").text("");
-					for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
+					for(var i=0; i<life; i++) { /* 생명 그림 나타나도록 구현, 보스 단계에서는 생명그림이 제대로 나타나지 않아서 수정해봤지만
+						버그가 생겨 init함수에 보스 단계에 생명 그리는 함수 추가*/
 						$("#life h2").append("♥");
 					}
-					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
+					
+						$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
+					
 				}
 				else{
 					start=true;
@@ -513,8 +513,10 @@ function draw(){
 	}
 	else if(level_count == 3 && item_count >= item_total){
 		start = false;
+		console.log("게임클리어" + start + item_count + " : " + item_total);
 		life = 3;
 		level_count += 1;
+		gameclear();
 		Ball_x = paddle_x + 100;
 		Ball_y = paddle_y - 50;
 		// // 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
@@ -706,8 +708,14 @@ function moveBall(){
 		}
 		if(Ball_x - Ball_radius <= 0 || Ball_x + Ball_radius >= canvas_width){//좌우 벽에 부딪혔을 때
 		//Balldx += 0.1;
-		Balldx = -Balldx;
-		} 
+			if(Ball_x - Ball_radius <= 0) {
+				Ball_x = Ball_radius + 1;
+			}
+			else if(Ball_x + Ball_radius >= canvas_width){
+				Ball_x = canvas_width - Ball_radius - 1;
+			}
+			Balldx = -Balldx;
+		}
 		else if(Ball_y - Ball_radius <= 0 && Balldy < 0){ // 윗벽에 부딪혔을 때(김영록 작성, 김시현 수정)
 			Balldy = -Balldy;
 		}
@@ -772,6 +780,7 @@ function moveBall(){
 					boss_dmg = 30;
 				}
 				// console.log("boss_HP : " + boss_HP);
+				playSound("./audio/bosshit.mp3",effvolume);
 			}
 			//보스 왼쪽 맞추었을 때
 			else if(Ball_x - Ball_radius <= boss_x + boss_width&& Ball_x + Ball_radius >= boss_x + boss_width && Ball_y + Ball_radius <= boss_y+boss_height && Ball_y - Ball_radius >= boss_y){
@@ -786,6 +795,7 @@ function moveBall(){
 					boss_dmg = 30;
 				}
 				// console.log("boss_HP : "  + boss_HP);
+				playSound("./audio/bosshit.mp3",effvolume);
 			}
 			//보스 아래쪽 맞추었을 때
 			else if(Ball_y - Ball_radius <= boss_y + boss_height && Ball_y + Ball_radius >= boss_y + boss_height && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
@@ -814,10 +824,13 @@ function moveBall(){
 					boss_dmg = 30;
 				}
 				// console.log("boss_HP : "  + boss_HP);
+				playSound("./audio/bosshit.mp3",effvolume);
 				
 			}
+
 			//보스 폭주 기능
 			if(boss_HP <= 200){
+
 				if(boss_dx < 0){
 					boss_dx = -3;
 				}
@@ -827,7 +840,8 @@ function moveBall(){
 				boss_blackball_dy= 8; //보스 검은 공 떨어지는 속도
 			}
 			
-			
+
+
 		}
 
 
@@ -946,6 +960,7 @@ function brickSmash(i) {
 		brick[i]--;
 		score += 20;
 		$("#score h2").text(score);
+		playSound("./audio/breakaudio.mp3",effvolume);
 	}
 	else if(brick[i] == 2) {
 		//B스킬 사용 중일 때
@@ -953,11 +968,13 @@ function brickSmash(i) {
 			brick[i] = 0;;
 			score += 40;
 			$("#score h2").text(score);
+			playSound("./audio/breakaudio.mp3",effvolume);
 		}
 		else {
 			brick[i]--;
 			score += 20;
 			$("#score h2").text(score);
+			playSound("./audio/breakaudio.mp3",effvolume);
 		}
 	}
 	//G스킬 사용 중일 때
@@ -972,6 +989,7 @@ function brickSmash(i) {
 			brick[i] = 0;;
 			score += 80;
 			$("#score h2").text(score);
+			playSound("./audio/breakaudio.mp3",effvolume);
 		}
 	}
 }
@@ -1181,7 +1199,7 @@ function gameending() {
   function showScore() {
     var targetScore = exscore;
     var currentScore = -1; // 현재 점수
-    var scoreInterval = 50; // 점수 변경 간격 (밀리초)
+    var scoreInterval = 10; // 점수 변경 간격 (밀리초)
 
     var scoreTimer = setInterval(function() {
       if (currentScore < targetScore) {
@@ -1199,7 +1217,7 @@ function gameending() {
   boss_blackball_dy = 4;
   boss_HP = 450; // 보스 피 원상복구 : 이렇게 안하면 보스 클리어 후 다시 보스맵 선택시 엔딩 화면으로 바로 넘어감
   life = 3; // 생명력 원상 복구
-  score = 0;
+  score = 1000;// 스코어 1000으로 초기화 - 송찬우 5.28-
   $("#life h2").text("");
   for (var i = 0; i < life; i++) {
     // 생명 그림 나타나도록
