@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="brick.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="brick.js"></script>
+</head>
+<body>
+	<div id="container">
+		<canvas id="mycanvas" width="1000px" height="620px"></canvas>
+
+		<div id="interface">
+		<div class="interfaceMenu" id="score">
+			<h1>Score</h1>
+			<h2>0</h2><!--score가 1000으로 초기화되어 있어 수정,다시 0으로 수정 송찬우 5.28-->
+		</div>
+		<div class="interfaceMenu" id="life">
+			<h1>Life</h1>
+			<h2>♥♥♥</h2>
+		</div>
+		<div class="interfaceMenu" id="skill">
+			<h1>Skills</h1>
+			<div>
+				<div class = "skill_block" id="skill1">R</div>
+				<div class = "skill_block" id="skill2">G</div>
+				<div class = "skill_block" id="skill3">B</div>
+			</div>
+		</div>
+		<div class="interfaceMenu" id="item-image-level1">
+			<div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_001.png" id = "img1">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_002.png"id = "img2">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_004.png"id = "img4">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_005.png"id = "img5">
+				</div>
+				<div class = 'level1-image'>
+					<img src="img/ruby_006.png"id = "img6">
+				</div>
+			</div>
+		</div>
+		<div class="interfaceMenu" id="item-image-level2">
+			<div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_001.png" id = "img1">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_002.png"id = "img2">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_003.png"id = "img3">
+				</div>
+			</div>
+			<div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_004.png"id = "img4">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_005.png"id = "img5">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_006.png"id = "img6">
+				</div>
+			</div>
+			<div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_007.png"id = "img7">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_008.png"id = "img8">
+				</div>
+				<div class = 'level2-image'>
+					<img src="img/Emerald_009.png"id = "img9">
+				</div>
+			</div>
+		</div>
+
+		<div class="interfaceMenu" id="item-image-level3">
+			<div>
+				<div class = 'level3-image'>
+					<img src="img/safire_001.png" id = "img1">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_002.png"id = "img2">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_003.png"id = "img3">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_004.png"id = "img4">
+				</div>
+			</div>
+			<div>
+				<div class = 'level3-image'>
+					<img src="img/safire_005.png"id = "img5">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_006.png"id = "img6">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_007.png"id = "img7">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_008.png"id = "img8">
+				</div>
+			</div>
+			<div>
+				<div class = 'level3-image'>
+					<img src="img/safire_009.png"id = "img9">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_010.png"id = "img10">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_011.png"id = "img11">
+				</div>
+				<div class = 'level3-image'>
+					<img src="img/safire_012.png"id = "img12">
+				</div>
+			</div>
+		</div>
+			
+		<div class="interfaceMenu" id="item-image-level4"> <!--보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우-->
+
+		</div>
+	    
+	    </div>
+		
+		
+		<div id="button_field">
+			<button id="start">게임 시작</button>
+			<button id="guide">게임방법</button>
+			<button id="story">스토리</button>
+			<button id="setting">환경 설정</button>
+		</div>
+
+
+
+		<div id="stage">
+			<div id="red" class="stage_field">
+				<img src="img/red.png">
+			</div>
+			<div id="green" class="stage_field">
+				<img src="img/green.png">
+			</div>
+			<div id="blue" class="stage_field">
+				<img src="img/blue.png">
+			</div>
+			<div id="boss" class="stage_field">
+				<img src="img/witch_castle.png">
+			</div>
+			<div id="back" class="stage_field">
+				<img src="img/x_img.png">
+			</div>
+			
+		</div>
+
+		<div id="setting_div" class="popup">
+			<h1>환경 설정</h1>
+			<div class="setting_list">
+				<h2>배경 음악</h2>
+				<input type="range" min="0" max="100" value="50" id="bgm_volume">
+			</div>
+			<div class="setting_list">
+				<h2>효과음 볼륨</h2>
+				<input type="range" min="0" max="100" value="50" id="effect_volume">
+			</div>
+			<button id="setting_ok">확인</button>
+		</div>
+
+		<div id="guide_div" class="popup"> <!-- 벽돌 안내 수정 -5.28 송찬우-->
+			<div id="brickguide" class="guide_list">
+				
+				<h1>벽돌</h1>			
+				<div>
+					<img src="img/white.png">
+				</div>					
+				<h3>공에 1번 맞으면 깨지는 벽돌</h3>
+				<div>
+					<img src="img/gray.png">
+				</div>	
+				<h3>공에 2번 맞아야 깨지는 벽돌</h3>
+				<div>
+					<img src="img/unbreak.png">
+				</div>
+				<h3>깨지지 않는 벽돌</h3>	
+			    <div>
+			    	<img src="img/black.jpg">
+			    </div>	
+				<h3>깨지지 않는 벽돌, 공에 닿으면 생명 1감소</h3>
+				
+				<button id="close">닫기</button>
+				<button id="next1">⇨</button>
+			</div>
+
+			<div id="pieceguide" class="guide_list">
+				
+				<h1>스테이지 별 빛의 조각</h1>
+				<h2>R 스테이지</h2>
+				<h3>R 조각 6개 모으면 클리어</h3>
+				<h2>G 스테이지</h2>
+				<h3>G 조각 9개 모으면 클리어</h3>
+				<h2>B 스테이지</h2>
+				<h3>B 조각 12개 모으면 클리어</h3>
+				<button id="prev2">⇦</button>
+				<button id="next2">⇨</button>
+			</div>
+
+			<div id="skillguide" class="guide_list">
+				
+				<h1>스킬(R, G, B 키를 눌러 사용)</h1>
+				<h2>R 스킬</h2>
+				<h3>빛의 조각 획득 범위 증가(점수 50소요)</h3>
+				<h2>G 스킬</h2>
+				<h3>검정 벽돌에 닿아도 생명 감소 X(점수 100소요)</h3>
+				<h2>B 스킬</h2>
+				<h3>보스에 대한 공격력 증가(점수 100소요)</h3>
+				<button id="prev3">⇦</button>
+				<button id="next3">⇨</button>
+			</div>
+
+			<div id="bossguide" class="guide_list">
+				<h1>보스</h1>
+				<h2>보스 공격</h2>
+				<h3>보스가 이동하면서 검은 구체 발사</h3>
+				<h2>보스 공격 피격시</h2>
+				<h3>공격 피격시 2단계에 걸쳐 판 길이 감소</h3>
+				<h2>광폭화</h2>
+				<h3>HP가 일정 수치 이하로 내려가면 보스 이동속도 증가</h3>
+				<button id="prev4">⇦</button>
+				<button id="guide_ok">확인</button>
+			</div>
+		</div>
+
+		<div id="story_div3" class="story_div">
+			<br><br><br>
+			<p>
+				당신은 곧 태어날 당신의 아이가 처음으로 볼 풍경을 회색빛이 아닌 알록달록한 빛깔로 만들어 주기 위해 흩어진 색깔 조각들을 모으고자 합니다. 당신의 건투를 빕니다!!!
+			</p>
+		    
+		</div>
+		<div id="story_div2" class="story_div">
+			<br><br><br>
+			<p>
+				다행히 밤에 순찰을 돌고 있던 마을 자경단원 덕분에 마녀를 도중에 멈출 수 있었습니다. 하지만.. 그 과정에서 마을의 색깔 조각들은 이곳저곳에 뿔뿔히 흩어지고 마을은 회색빛이 되버렸습니다.
+			</p>
+		    
+		</div>
+		<div id="story_div1" class="story_div">
+			<br><br>
+			<p>
+				당신이 사는 마을은 다채로운 색으로 둘러싸여 있는 아름답고 평화로운 마을입니다.
+				어느 날 정체를 숨긴 색깔의 마녀가 마을에 찾아왔습니다.
+				마을 사람들은 마녀를 친절히 맞아주었지만 마을의 다채로운 풍경을 탐낸 마녀가 마을의 색깔을 앗아가려고 했습니다.
+			</p>
+
+		</div>
+
+		<div id="gameover_div">
+	    </div>
+	
+	</div>
+
+	<div id="ending"> <!--김영록 엔딩 스토리 추가, 5.26 송찬우 변경 -->
+		<div><img src="img/exit.png"/></div>
+		<p>
+		</p>
+	</div>
+
+</body>
