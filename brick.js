@@ -50,6 +50,9 @@ green_piece.src = "img/green_piece.png"
 var blue_piece = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
 blue_piece.src = "img/blue_piece.png"
 
+var loading = new Image(); /* 아이템 보석 조각 모양으로 변경 -송찬우-*/
+loading.src = "img/loading.png"
+
 var item_width = 50; // 아이템 가로 길이
 var item_height = 50; // 아이템 세로 길이
 var item_x; // 아이템 x위치
@@ -99,12 +102,12 @@ $(document).ready(function(){
 
     change_position($("#container"));
     change_position($("#ending"));//5.26부 추가 -송찬우-
-	$("#container").css({
+    $("#container").css({
 		"background-image": "url('img/init_village.jpg')",
 		"transition-property":"background-image",
 		"transition-duration":"5s"
 	});
-
+	
 	$("#start").click(function(){
 		$("#button_field").hide();
 		$("#stage").show();
@@ -323,6 +326,16 @@ function init(){
 	for(var i=1; i<4; i++){ //RGB블록 활성화 김영록
 		$("#skill" + i).css("opacity","0.3");
 	}
+
+	Ball_x = paddle_x + paddle_width[pdlIndx]/2;;
+	Ball_y = paddle_y - 50;
+	life = 3;
+	item_count = 0;
+	item_total = 0;
+	$("#life h2").text("");
+	    for(var i=0; i<life; i++) { 
+			$("#life h2").append("♥");
+	}
 	
 	if(level_count == 1){
 		mapR();
@@ -331,6 +344,7 @@ function init(){
 		Balldx = 5;
 		Balldy = 5;
 		
+		$("#score h2").text(score);
 		$("#interface").show();
 		$("#item-image-level" + level_count).show();
 	}
@@ -380,10 +394,6 @@ function init(){
 		$("#interface").show();
 		$("#item-image-level4").css({"display":"block"})  /*보스맵에서 비는 인터페이스 창 채우기 위해 수정 -송찬우*/
 		
-		$("#life h2").text("");
-		for(var i=0; i<life; i++) { // 블루에서 보스 넘어갈 때 하트 세개로 표시가 안돼서 추가 -송찬우-
-			$("#life h2").append("♥");
-		}
 	}
 	if(level_count != 1){
 		for(var i=1; i<level_count; i++){ //RGB블록 활성화 김영록
@@ -450,20 +460,11 @@ function draw(){
 					start = false;
 					console.log("다시시작");
 					console.log(start);
-					life = 3;
 					score = 0;
-					item_count = 0;
-					item_total = 0;
 					level_count = 1;
 					init();
-					$("#life h2").text("");
-					for(var i=0; i<life; i++) { // 생명 그림 나타나도록 구현
-						$("#life h2").append("♥");
-					}
-					$("#score h2").text(score); // 다시 시작시 점수, 생명, 먹은 아이템 개수 초기화
-					$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
 				}
-				else if(level_count != 4&&item_count >= item_total){
+				/*else if(level_count != 4&&item_count >= item_total){
 					start = false;
 					//볼 위치 수정
 					// Ball_x = paddle_x + 100;
@@ -478,13 +479,13 @@ function draw(){
 					
 					$("#life h2").text("");
 					for(var i=0; i<life; i++) { /* 생명 그림 나타나도록 구현, 보스 단계에서는 생명그림이 제대로 나타나지 않아서 수정해봤지만
-						버그가 생겨 init함수에 보스 단계에 생명 그리는 함수 추가*/
+						버그가 생겨 init함수에 보스 단계에 생명 그리는 함수 추가
 						$("#life h2").append("♥");
 					}
 					
 						$("#item").text("아이템 : " + item_count + "/" + item_array.length/3);
 					
-				}
+				}*/
 				else{
 					start=true;
 				}
@@ -505,43 +506,32 @@ function draw(){
 	else if(level_count == 1 && item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환 수정(05/20) : 4단계는 먹는 아이템 없음(빛의 조각)
 		start = false;
 		console.log("게임클리어" + start + item_count + " : " + item_total);
-		//start = false;
-		life = 3;
-		level_count += 1;
-		gameclear();
+	    gameclear();
+	    level_count += 1;
+	    console.log("다음단계");
+		setTimeout(init,3000); 
 		audio.src="./audio/audio2.mp3"; //1단계 클리어시 bgm 변경
 		audio.play();
 	}
 	else if(level_count == 2 && item_count >= item_total){ // 아이템을 모두 모으면 클리어 화면으로 전환 수정(05/20) : 4단계는 먹는 아이템 없음(빛의 조각)
 		start = false;
 		console.log("게임클리어" + start + item_count + " : " + item_total);
-		life = 3;
-		level_count += 1;
-		gameclear();
+	    gameclear();
+	    level_count += 1;
+		console.log("다음단계");
+		setTimeout(init,3000) 
 		audio.src="./audio/audio3.mp3"; //2단계 클리어시 bgm 변경
 		audio.play();
 	}
 	else if(level_count == 3 && item_count >= item_total){
 		start = false;
 		console.log("게임클리어" + start + item_count + " : " + item_total);
-		life = 3;
-		level_count += 1;
-		gameclear();
-		Ball_x = paddle_x + 100;
-		Ball_y = paddle_y - 50;
-		// // 다음단계로 넘어갈시 공이 위로 뜨는 현상 제지하기 위함
-		// Balldx = 5;
-		// Balldy = 5;
-		// Ball_x = paddle_x + 100;
-		// Ball_y = paddle_y - 50;
-		// life = 3;
-		// console.log("다음단계");
-		item_count = 0;
-		item_total = 0;
+	    gameclear();
+	    level_count+=1;
+		console.log("다음단계");
 		audio.src="./audio/boss_audio.mp3";
 		audio.play();
-		clearInterval(interval); // 보스 맵으로 넘어갈때 공이 비정상적으로 빨라지는 현상 막기 위함 김영록
-		init();
+		setTimeout(init,3000);
 	}
 	//보스 처치
 	else if(level_count==4 && boss_HP <= 0){
@@ -564,19 +554,7 @@ function draw(){
 		makeitem();
 	}
 
-	// else if(level_count == 4){ // 보스맵 생성
-	// 	console.log(boss_dx);
-	// 	drawPaddle();
-	// 	drawBall();
-		
-	// 	//moveboss(); // 보스 움직이는 메소드
-	// 	//movebossattack(); // 보스 공격 움직이는 메소드
-	// 	moveBall();
-	// }
-	
-	
 }
-
 //김영록
 function drawPaddle(){
 	context.beginPath();
@@ -820,6 +798,7 @@ function moveBall(){
 					boss_dmg = 30;
 				}
 				// console.log("boss_HP : "  + boss_HP);
+				playSound("./audio/bosshit.mp3",effvolume);
 			}
 			//보스 위쪽 맞추었을 때
 			else if(Ball_y + Ball_radius >= boss_y && Ball_y - Ball_radius <= boss_y && Ball_x + Ball_radius >= boss_x && Ball_x - Ball_radius <= boss_x + boss_width){
@@ -922,7 +901,7 @@ function moveBall(){
 			if(item_array[i] == 1){
 				// 자석 스킬 구현 5/24 김영록
 				if(BS == 'R'){
-					if((Ball_y+Ball_radius + 25 >= item_array[i+2] && Ball_y-Ball_radius - 25<= item_array[i+2]+item_height)
+					if((Ball_y+Ball_radius + 25 >= item_array[i+2] && Ball_y-Ball_radius - 25<= item_array[i+2]+item_height + 20)
 					&& Ball_x+Ball_radius + 25 >= item_array[i+1] && Ball_x-Ball_radius - 25 <= item_array[i+1]+item_width){
 						playSound("audio/piece_sound.mp3",effvolume);
 						item_array[i] = 0;
@@ -937,7 +916,7 @@ function moveBall(){
 						}
 					}
 				}
-				else if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height)
+				else if((Ball_y+Ball_radius >= item_array[i+2] && Ball_y-Ball_radius <= item_array[i+2]+item_height + 20)
 					&& Ball_x+Ball_radius >= item_array[i+1] && Ball_x-Ball_radius <= item_array[i+1]+item_width){
 					playSound("audio/piece_sound.mp3",effvolume);
 					item_array[i] = 0;
@@ -989,6 +968,7 @@ function brickSmash(i) {
 	}
 	//G스킬 사용 중일 때
 	else if(brick[i] == 3 && !(BS === "G")) {
+		brick[i] = 0;
 		life -= 1;
 		$("#life h2").text("");
 		for(var i=0; i<life; i++) $("#life h2").append("♥");
@@ -996,7 +976,7 @@ function brickSmash(i) {
 	else if(brick[i] == 4) {
 		//B스킬 사용 중일 때
 		if(BS === "B") {
-			brick[i] = 0;;
+			brick[i] = 0;
 			score += 80;
 			$("#score h2").text(score);
 			playSound("./audio/breakaudio.mp3",effvolume);
@@ -1038,8 +1018,6 @@ function Bskill() {
 	$("#score h2").text(score);
 	BS = "B";
 	key = true;
-	Bwidth = 25;
-	Bheight = 25;
 	setTimeout(function(){key = false; BS = "N";},3000);
 }
 
@@ -1067,43 +1045,42 @@ function gameover(){ // 게임오버시 나타나는 창
 //김영록
 function gameclear(){ // 게임 클리어시 나타나는 창, 5/26부 추가 및 수정 -송찬우-
 	
-	var background_count=level_count-1
 	clearInterval(interval);
 	context.clearRect(0,0,canvas_width,canvas_height); // 게임화면 지우기
 	$("#interface").hide();// 인터페이스 화면 지우기 - 송찬우-
 	context.font = 'italic 30pt Arial';
     context.textAlign = "center";
     context.fillStyle = "white"; // 글자 색상을 검정색으로 설정
-    if (background_count == 1) {
+    if (level_count == 1) {
     	var text1 = "Tip) 점수를 소모하면 스킬을 사용할 수 있습니다.";
-        var text2 = "Game Clear! Press Space Bar";
-        var lineHeight = 80; // 줄 간격 설정
+        var lineHeight = 40; // 줄 간격 설정
         var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
-
         context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
-        context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
-    } else if (background_count == 2) {
+        context.drawImage(loading,canvas_width/2-300,y+lineHeight,600,450);
+        
+    } else if (level_count == 2) {
     	var text1 = "Tip) 검정 벽돌에 닿지 않도록 해야 합니다.";
-    	var text2 = "Game Clear! Press Space Bar";
-    	var lineHeight = 80; // 줄 간격 설정
+    	
+    	var lineHeight = 40; // 줄 간격 설정
     	var y = canvas_height/2 - lineHeight/2; // 첫 번째 줄의 y 좌표
 
     	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
-    	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
-    } else if (background_count == 3) {
+    	context.drawImage(loading,canvas_width/2-300,y+lineHeight,600,450);
+    	
+    } else if (level_count == 3) {
     	var text1 = "Tip) R스킬: 크기 증가, G스킬: 보호, B스킬: 파괴력 증가";
-    	var text2 = "Game Clear! Press Space Bar";
-    	var lineHeight = 80; // 줄 간격 설정
+    	var lineHeight = 40; // 줄 간격 설정
     	var y = canvas_height/2 - lineHeight; // 첫 번째 줄의 y 좌표
     	context.fillText(text1, canvas_width/2, y); // 첫 번째 줄 그리기
-    	context.fillText(text2, canvas_width/2, y + lineHeight); // 두 번째 줄 그리기
+    	context.drawImage(loading,canvas_width/2-3,y+lineHeight,600,450);
+    	
     }
 
 
 	$("#container").css({
-		"background-image": "url('img/clear" + background_count + ".jpg')",
+		"background-image": "url('img/clear" + level_count + ".jpg')",
 		"transition-property":"background-image",
-		"transition-duration":"5s"
+		"transition-duration":"3s"
 	}); // 게임 클리어 시 배경 색 변경
 	
 }
@@ -1659,7 +1636,7 @@ function mapB(){ //3단계 벽돌배치
 	brick_count += 1;
 	brick_x = 100;
 	brick_y = 270;
-	brick.push(2);
+	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
@@ -1676,7 +1653,7 @@ function mapB(){ //3단계 벽돌배치
 	brick.push(brick_y);
 	brick_count += 1;
 	brick_x = 800;
-	brick_y = 180;
+	brick_y = 200;
 	brick.push(2);
 	brick.push(brick_x);
 	brick.push(brick_y);
@@ -1705,8 +1682,52 @@ function mapB(){ //3단계 벽돌배치
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
+
 	brick_x = 80;
-	brick_y = 150;
+	brick_y = 140;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 80;
+	brick_y = 70;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 0;
+	brick_y = 105;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = 160;
+	brick_y = 105;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+
+	brick_x = canvas_width - 100 - 80;
+	brick_y = 140;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = canvas_width - 100 - 80;
+	brick_y = 70;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = canvas_width - 100 - 0;
+	brick_y = 105;
+	brick.push(4);
+	brick.push(brick_x);
+	brick.push(brick_y);
+	brick_count += 1;
+	brick_x = canvas_width - 100 - 160;
+	brick_y = 105;
 	brick.push(4);
 	brick.push(brick_x);
 	brick.push(brick_y);
@@ -1714,6 +1735,20 @@ function mapB(){ //3단계 벽돌배치
 }
 //김영록
 function itemB(){ //2단계 아이템 배치
+	item_x = 110;
+	item_y = 95;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
+	item_x = 845;
+	item_y = 95;
+	item_array.push(1);
+	item_array.push(item_x);
+	item_array.push(item_y);
+	item_total += 1;
+
 	item_x = 300;
 	item_y = 120;
 	item_array.push(1);
@@ -1770,22 +1805,8 @@ function itemB(){ //2단계 아이템 배치
 	item_array.push(item_y);
 	item_total += 1;
 
-	item_x = 30;
-	item_y = 50;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
-	item_x = 800;
-	item_y = 100;
-	item_array.push(1);
-	item_array.push(item_x);
-	item_array.push(item_y);
-	item_total += 1;
-
 	item_x = 900;
-	item_y = 20;
+	item_y = 220;
 	item_array.push(1);
 	item_array.push(item_x);
 	item_array.push(item_y);
@@ -1799,20 +1820,30 @@ function itemB(){ //2단계 아이템 배치
 	item_total += 1;
 } 
 function mapBoss(){ //보스 단계 벽돌 배치 테스트 위해서 일반 벽돌로 설정 나중에 검은 벽돌로 바꾸는 것을 권장
+	for(var i = 0; i < 6; i++) {
+		for(var j = 1; j < 10; j++) {
+			brick_x = 110 * j - 100;
+			brick_y = 300 + 40 * i;
+			brick.push(2);
+			brick.push(brick_x);
+			brick.push(brick_y);
+			brick_count += 1;
+		}
+	}
 	brick_x = 450;
-	brick_y = 300;
+	brick_y = 260;
 	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 50;
-	brick_y = 300;
+	brick_x = 120;
+	brick_y = 260;
 	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
 	brick_count += 1;
-	brick_x = 850;
-	brick_y = 300;
+	brick_x = 780;
+	brick_y = 260;
 	brick.push(3);
 	brick.push(brick_x);
 	brick.push(brick_y);
